@@ -173,6 +173,7 @@ public class FrameBase extends JFrame {
 			this.validate();
 			});
 		
+		//Hola
 		
 	}
 }
