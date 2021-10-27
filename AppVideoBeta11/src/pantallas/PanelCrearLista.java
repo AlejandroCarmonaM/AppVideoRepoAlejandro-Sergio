@@ -25,13 +25,13 @@ import java.awt.Dimension;
 public class PanelCrearLista extends JPanel {
 	private JTextField textField_1;
 	private JTextField textField;
-	private AppVideo appvideo;
+	private FrameBase frameBase;
 
 	/**
 	 * Create the panel.
 	 */
-	public PanelCrearLista(AppVideo appvideo) {
-		this.appvideo = appvideo;
+	public PanelCrearLista(FrameBase frameBase) {
+		this.frameBase=frameBase;
 		setBackground(Color.GRAY);
 		setForeground(Color.LIGHT_GRAY);
 		setLayout(new BorderLayout(0, 0));

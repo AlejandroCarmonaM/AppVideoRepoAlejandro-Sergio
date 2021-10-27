@@ -24,15 +24,15 @@ import dominio.AppVideo;
 public class PanelLogin extends JPanel {
 
 	//Atrib
-	private AppVideo appvideo;
+	private FrameBase frameBase;
 	
-	public PanelLogin(AppVideo appvideo) {
+	public PanelLogin(FrameBase frameBase) {
 
 		//diseno pantalla
-				this.appvideo=appvideo;
 				//this.setResizable(false); //con esto bloqueamos la pantalla a la resolución que queramos
 				//setBounds(100, 100, 667, 448);
 				//JPanel contentPane = new JPanel();
+				this.frameBase=frameBase;
 				this.setBorder(new EmptyBorder(5, 5, 5, 5));
 				this.setLayout(new BorderLayout(0, 0));
 				
@@ -199,7 +199,7 @@ public class PanelLogin extends JPanel {
 						//de otra manera, no se obtiene bien
 				btn_aceptar.addActionListener(ev -> {
 						String user = textFieldLogin.getText();
-							if(appvideo.login(user, String.valueOf(passwordField.getPassword())))
+							if(this.frameBase.getAppVideo().login(user, String.valueOf(passwordField.getPassword())))
 							{
 								JOptionPane.showMessageDialog(panel_centro_central, "Login aceptado");
 								lblNewLabel_1.setText("Hola "+user);
@@ -223,12 +223,12 @@ public class PanelLogin extends JPanel {
 					});
 				
 				btnExplorar.addActionListener(ev -> {
-					PanelExplorar panelExplorar = new PanelExplorar(appvideo);
+					PanelExplorar panelExplorar = new PanelExplorar(this.frameBase);
 					CreadorPaneles.creaPanel(panel_centro, panelExplorar);
 					});
 				
 				btnLogin.addActionListener(ev -> {
-					PanelLogin panelLogin = new PanelLogin(appvideo);
+					PanelLogin panelLogin = new PanelLogin(this.frameBase);
 					CreadorPaneles.creaPanel(this, panelLogin);
 					});
 			

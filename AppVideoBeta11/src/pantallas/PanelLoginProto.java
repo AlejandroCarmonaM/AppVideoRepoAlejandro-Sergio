@@ -22,10 +22,10 @@ import dominio.AppVideo;
 
 public class PanelLoginProto extends JPanel {
 	
-	private AppVideo appVideo;
+	private FrameBase frameBase;
 	
-	public PanelLoginProto(AppVideo appVideo) {
-		this.appVideo=appVideo;
+	public PanelLoginProto(FrameBase frameBase) {
+		this.frameBase=frameBase;
 		setBackground(Color.GRAY);
 		setLayout(new BorderLayout(0, 0));
 		
@@ -99,13 +99,13 @@ public class PanelLoginProto extends JPanel {
 		//nota: se obtiene un string del campo contrasena de la siguiente manera:
 				//de otra manera, no se obtiene bien
 		btn_aceptar.addActionListener(ev -> {
-					if(appVideo.login(textFieldLogin.getText(), String.valueOf(passwordField.getPassword())))
+					if(this.frameBase.getAppVideo().login(textFieldLogin.getText(), String.valueOf(passwordField.getPassword())))
 					{
 						JOptionPane.showMessageDialog(panel_centro_central, "Login aceptado");
 						PanelPrueba panel_prueba = new PanelPrueba();
-						CreadorPaneles.creaPanel(appVideo.getPanelCentro(), panel_prueba);
-						appVideo.setEtiqueta(textFieldLogin.getText());
-						this.appVideo.getFrameBase().validate();
+						CreadorPaneles.creaPanel(this.frameBase.getPanelCentro(), panel_prueba);
+						this.frameBase.getAppVideo().setEtiqueta(textFieldLogin.getText());
+						this.frameBase.validate();
 					}
 					else {
 						JOptionPane.showMessageDialog(panel_centro_central, "Login rechazado", "Error", JOptionPane.ERROR_MESSAGE);
@@ -118,7 +118,7 @@ public class PanelLoginProto extends JPanel {
 			passwordField.setText("");
 			panel_cc_centro.revalidate();
 			panel_cc_centro.repaint();
-			this.appVideo.getFrameBase().validate();
+			this.frameBase.validate();
 			});
 		
 		

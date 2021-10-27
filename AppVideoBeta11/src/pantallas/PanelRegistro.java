@@ -29,10 +29,10 @@ public class PanelRegistro extends JPanel {
 	private JPasswordField campoRepContraseña;
 	private RepositorioUsuarios repositoPrueba = new RepositorioUsuarios();
 	private JTextField campoFNacimiento;
-	private AppVideo controlador;
+	private FrameBase frameBase;
 	
-	public PanelRegistro(AppVideo controlador) {
-		this.controlador = controlador;
+	public PanelRegistro(FrameBase frameBase) {
+		this.frameBase=frameBase;
 		//panelRegistro = new JPanel();
 		this.setBackground(Color.GRAY);
 		this.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -209,7 +209,7 @@ public class PanelRegistro extends JPanel {
 		panelCampos.add(etiquetaCamposObligatorios, gbc_etiquetaCamposObligatorios);
 		
 		botonRegistrar.addActionListener(ev -> {
-				if (controlador.registrarUser(campoNombre.getText(), campoFNacimiento.getText(), campoUsuario.getText(), String.valueOf(campoContraseña.getPassword()), String.valueOf(campoRepContraseña.getPassword()))) {
+				if (this.frameBase.getAppVideo().registrarUser(campoNombre.getText(), campoFNacimiento.getText(), campoUsuario.getText(), String.valueOf(campoContraseña.getPassword()), String.valueOf(campoRepContraseña.getPassword()))) {
 					JOptionPane.showMessageDialog((Component) ev.getSource(), "Registro exitodo");
 				}
 				else {

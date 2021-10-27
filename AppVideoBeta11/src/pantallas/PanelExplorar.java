@@ -37,14 +37,14 @@ public class PanelExplorar extends JPanel {
 	//atributos
 	
 	private JTextField textField;
-	private AppVideo appvideo;
+	private FrameBase frameBase;
 	private List<Etiqueta> etiquetasSeleccionadas= new LinkedList<Etiqueta>();  
 	
 	//constructor
-	public PanelExplorar(AppVideo appvideo) {
+	public PanelExplorar(FrameBase frameBase) {
 		//creacion panel
 		setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		this.appvideo=appvideo;
+		this.frameBase=frameBase;
 		setBackground(Color.WHITE);
 		setLayout(new BorderLayout(0, 0));
 		
@@ -65,15 +65,18 @@ public class PanelExplorar extends JPanel {
 		lista.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		lista.setSelectedIndex(0);
 		
+		
 		DefaultListModel<String> model = new DefaultListModel<String>();
-		for (String item: appvideo.getEtiquetasHabitualesS())
+		for (String item: this.frameBase.getAppVideo().getEtiquetasHabitualesS())
 		{
 			model.addElement(item);
 		}
 		lista.setModel(model);
 		JScrollPane scroller = new JScrollPane(lista);
 		//scroller.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 0));
+		lista.setPrototypeCellValue("Alejandro");
 		panel_este.add(scroller);
+		
 		
 		
 		JLabel lblBuscarEtiquetas = new JLabel("Buscar etiquetas:");
@@ -137,8 +140,12 @@ public class PanelExplorar extends JPanel {
 		Component verticalStrut = Box.createVerticalStrut(200);
 		panel_tabla_videos.add(verticalStrut);
 		
-		Component horizontalStrut = Box.createHorizontalStrut(0);
+		Component horizontalStrut = Box.createHorizontalStrut(500);
 		panel_oeste.add(horizontalStrut);
+		
+		JPanel panel_centro = new JPanel();
+		panel_centro.setBackground(Color.RED);
+		add(panel_centro, BorderLayout.CENTER);
 		
 		//listeners
 		
@@ -153,7 +160,7 @@ public class PanelExplorar extends JPanel {
 					lista1.setModel(model1);
 					panel_este.repaint();
 					panel_este.revalidate();
-					this.appvideo.getFrameBase().validate();
+					this.frameBase.validate();
 				}
 			}
 		});
@@ -167,7 +174,7 @@ public class PanelExplorar extends JPanel {
 			lista1.setModel(model1);
 			panel_este.repaint();
 			panel_este.revalidate();
-			this.appvideo.getFrameBase().validate();
+			this.frameBase.validate();
 
 			});
 	}

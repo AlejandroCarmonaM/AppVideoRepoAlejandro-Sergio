@@ -28,6 +28,7 @@ public class FrameBase extends JFrame {
 
 	private JPanel contentPane;
 	private AppVideo appVideo;
+	private JPanel panel_centro;
 	
 	
 	public static void main(String[] args) {
@@ -51,7 +52,6 @@ public class FrameBase extends JFrame {
 	public FrameBase(AppVideo appVideo) {
 		//diseño frame
 		this.appVideo=appVideo;
-		this.appVideo.setFrameBase(this);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//setBounds(100, 100, 667, 448);
 		setBounds(100, 100, 800, 480);
@@ -143,12 +143,12 @@ public class FrameBase extends JFrame {
 		panel_centro.setBackground(Color.GRAY);
 		this.getContentPane().add(panel_centro, BorderLayout.CENTER);
 		panel_centro.setLayout(new BorderLayout(0, 0));
-		appVideo.setPanelCentro(panel_centro);
+		this.setPanelCentro(panel_centro);
 		
 		//listeners
 		
 		btnLogin.addActionListener(ev -> {
-			PanelLoginProto panelLoginProto = new PanelLoginProto(appVideo);
+			PanelLoginProto panelLoginProto = new PanelLoginProto(this);
 			CreadorPaneles.creaPanel(panel_centro, panelLoginProto);
 			panel_norte.repaint();
 			panel_norte.revalidate();
@@ -156,24 +156,52 @@ public class FrameBase extends JFrame {
 			});
 		
 		btnExplorar.addActionListener(ev -> {
-			PanelExplorar panelExplorar = new PanelExplorar(appVideo);
+			PanelExplorar panelExplorar = new PanelExplorar(this);
 			CreadorPaneles.creaPanel(panel_centro, panelExplorar);
+			/*
+			panel_centro.setVisible(false);
+			panel_centro.removeAll();
+			
+			panel_centro.add(panelExplorar);
+			panelExplorar.setVisible(true);
+			panel_centro.setVisible(true);
+			
+			
+			this.appVideo.getFrameBase().pack();
+			panel_centro.repaint();
+			panel_centro.revalidate();*/
+			
 			this.validate();
 			});
 		
 		btnRegistro.addActionListener(ev -> {
-			PanelRegistro panelRegistro = new PanelRegistro(appVideo);
+			PanelRegistro panelRegistro = new PanelRegistro(this);
 			CreadorPaneles.creaPanel(panel_centro, panelRegistro);
 			this.validate();
 			});
 		
 		btnNuevaLista.addActionListener(ev -> {
-			PanelCrearLista panelCrearLista = new PanelCrearLista(appVideo);
+			PanelCrearLista panelCrearLista = new PanelCrearLista(this);
 			CreadorPaneles.creaPanel(panel_centro, panelCrearLista);
 			this.validate();
 			});
 		
 		//Hola
 		
+	}
+	
+	public AppVideo getAppVideo()
+	{
+		return this.appVideo;
+	}
+	
+	private void setPanelCentro(JPanel panel_centro)
+	{
+		this.panel_centro=panel_centro;
+	}
+	
+	public JPanel getPanelCentro()
+	{
+		return this.panel_centro;
 	}
 }

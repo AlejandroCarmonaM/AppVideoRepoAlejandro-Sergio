@@ -72,7 +72,7 @@ public class AppVideo {
 		this.panelCentro= panelCentro;
 	}
 	
-	public JPanel getPanelCentro()
+	/*public JPanel getPanelCentro()
 	{
 		return this.panelCentro;
 	}
@@ -85,7 +85,7 @@ public class AppVideo {
 	public FrameBase getFrameBase()
 	{
 		return this.frameBase;
-	}
+	}*/
 	
 	public JLabel creaEtiqueta()
 	{
