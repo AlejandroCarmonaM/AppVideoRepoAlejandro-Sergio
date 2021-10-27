@@ -153,50 +153,21 @@ public class FrameBase extends JFrame {
 			this.creaPanel(panel_centro, panelLoginProto);
 			panel_norte.repaint();
 			panel_norte.revalidate();
-			this.validate();
 			});
 		
 		btnExplorar.addActionListener(ev -> {
 			PanelExplorar panelExplorar = new PanelExplorar(this);
 			this.creaPanel(panel_centro, panelExplorar);
-			/*
-			panel_centro.setVisible(false);
-			panel_centro.removeAll();
-			
-			panel_centro.add(panelExplorar);
-			panelExplorar.setVisible(true);
-			panel_centro.setVisible(true);
-			
-			
-			this.pack();
-			panel_centro.repaint();
-			panel_centro.revalidate();*/
 			});
 		
 		btnRegistro.addActionListener(ev -> {
 			PanelRegistro panelRegistro = new PanelRegistro(this);
 			this.creaPanel(panel_centro, panelRegistro);
-			this.validate();
 			});
 		
 		btnNuevaLista.addActionListener(ev -> {
 			PanelCrearLista panelCrearLista = new PanelCrearLista(this);
 			this.creaPanel(panel_centro, panelCrearLista);
-			
-			
-			/*panel_centro.setVisible(false);
-			panel_centro.removeAll();
-			
-			panel_centro.add(panelCrearLista);
-			panelCrearLista.setVisible(true);
-			panel_centro.setVisible(true);
-			
-			
-			this.pack();
-			panel_centro.repaint();
-			panel_centro.revalidate();*/
-			
-			this.validate();
 			});
 		
 		//Hola
@@ -235,6 +206,7 @@ public class FrameBase extends JFrame {
 		panel_central.add(panel_nuevo);
 		panel_central.setVisible(true);
 		panel_central.repaint();
+		//this.pack();
 		panel_central.revalidate();
 		this.validate();
 		
