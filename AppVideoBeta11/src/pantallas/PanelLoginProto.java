@@ -103,7 +103,7 @@ public class PanelLoginProto extends JPanel {
 					{
 						JOptionPane.showMessageDialog(panel_centro_central, "Login aceptado");
 						PanelPrueba panel_prueba = new PanelPrueba();
-						CreadorPaneles.creaPanel(this.frameBase.getPanelCentro(), panel_prueba);
+						this.frameBase.creaPanel(this.frameBase.getPanelCentro(), panel_prueba);
 						this.frameBase.getAppVideo().setEtiqueta(textFieldLogin.getText());
 						this.frameBase.validate();
 					}

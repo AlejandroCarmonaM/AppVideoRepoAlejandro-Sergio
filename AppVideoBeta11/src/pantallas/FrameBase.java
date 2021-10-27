@@ -51,7 +51,7 @@ public class FrameBase extends JFrame {
 	 */
 	public FrameBase(AppVideo appVideo) {
 		//diseño frame
-		this.appVideo=appVideo;
+		this.setAppVideo(appVideo);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//setBounds(100, 100, 667, 448);
 		setBounds(100, 100, 800, 480);
@@ -139,6 +139,7 @@ public class FrameBase extends JFrame {
 		panel_norte2.add(btnNuevaLista);
 		
 		JPanel panel_centro = new JPanel();
+		panel_centro.setSize(new Dimension(742, 383));
 		panel_centro.setForeground(Color.GRAY);
 		panel_centro.setBackground(Color.GRAY);
 		this.getContentPane().add(panel_centro, BorderLayout.CENTER);
@@ -149,7 +150,7 @@ public class FrameBase extends JFrame {
 		
 		btnLogin.addActionListener(ev -> {
 			PanelLoginProto panelLoginProto = new PanelLoginProto(this);
-			CreadorPaneles.creaPanel(panel_centro, panelLoginProto);
+			this.creaPanel(panel_centro, panelLoginProto);
 			panel_norte.repaint();
 			panel_norte.revalidate();
 			this.validate();
@@ -157,7 +158,7 @@ public class FrameBase extends JFrame {
 		
 		btnExplorar.addActionListener(ev -> {
 			PanelExplorar panelExplorar = new PanelExplorar(this);
-			CreadorPaneles.creaPanel(panel_centro, panelExplorar);
+			this.creaPanel(panel_centro, panelExplorar);
 			/*
 			panel_centro.setVisible(false);
 			panel_centro.removeAll();
@@ -167,22 +168,34 @@ public class FrameBase extends JFrame {
 			panel_centro.setVisible(true);
 			
 			
-			this.appVideo.getFrameBase().pack();
+			this.pack();
 			panel_centro.repaint();
 			panel_centro.revalidate();*/
-			
-			this.validate();
 			});
 		
 		btnRegistro.addActionListener(ev -> {
 			PanelRegistro panelRegistro = new PanelRegistro(this);
-			CreadorPaneles.creaPanel(panel_centro, panelRegistro);
+			this.creaPanel(panel_centro, panelRegistro);
 			this.validate();
 			});
 		
 		btnNuevaLista.addActionListener(ev -> {
 			PanelCrearLista panelCrearLista = new PanelCrearLista(this);
-			CreadorPaneles.creaPanel(panel_centro, panelCrearLista);
+			this.creaPanel(panel_centro, panelCrearLista);
+			
+			
+			/*panel_centro.setVisible(false);
+			panel_centro.removeAll();
+			
+			panel_centro.add(panelCrearLista);
+			panelCrearLista.setVisible(true);
+			panel_centro.setVisible(true);
+			
+			
+			this.pack();
+			panel_centro.repaint();
+			panel_centro.revalidate();*/
+			
 			this.validate();
 			});
 		
@@ -190,9 +203,15 @@ public class FrameBase extends JFrame {
 		
 	}
 	
+	//metodos getters y setters
 	public AppVideo getAppVideo()
 	{
 		return this.appVideo;
+	}
+	
+	private void setAppVideo(AppVideo appVideo)
+	{
+		this.appVideo=appVideo;
 	}
 	
 	private void setPanelCentro(JPanel panel_centro)
@@ -203,5 +222,21 @@ public class FrameBase extends JFrame {
 	public JPanel getPanelCentro()
 	{
 		return this.panel_centro;
+	}
+	
+	//metodo creaPanel
+	
+	public void creaPanel(JPanel panel_central, JPanel panel_nuevo)
+	{
+		panel_central.setVisible(false);
+		panel_central.removeAll();
+		//panel_central.setSize(new Dimension(742, 383));
+		panel_nuevo.setVisible(true);
+		panel_central.add(panel_nuevo);
+		panel_central.setVisible(true);
+		panel_central.repaint();
+		panel_central.revalidate();
+		this.validate();
+		
 	}
 }

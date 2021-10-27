@@ -206,7 +206,7 @@ public class PanelLogin extends JPanel {
 								//panel_norte1.validate();
 								//panel_norte1.repaint();
 								PanelPrueba panel_prueba = new PanelPrueba();
-								CreadorPaneles.creaPanel(panel_centro, panel_prueba);
+								this.frameBase.creaPanel(panel_centro, panel_prueba);
 								
 							}
 							else {
@@ -224,12 +224,12 @@ public class PanelLogin extends JPanel {
 				
 				btnExplorar.addActionListener(ev -> {
 					PanelExplorar panelExplorar = new PanelExplorar(this.frameBase);
-					CreadorPaneles.creaPanel(panel_centro, panelExplorar);
+					this.frameBase.creaPanel(panel_centro, panelExplorar);
 					});
 				
 				btnLogin.addActionListener(ev -> {
 					PanelLogin panelLogin = new PanelLogin(this.frameBase);
-					CreadorPaneles.creaPanel(this, panelLogin);
+					this.frameBase.creaPanel(this, panelLogin);
 					});
 			
 	}
