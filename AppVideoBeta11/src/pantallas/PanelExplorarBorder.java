@@ -33,7 +33,7 @@ import javax.swing.border.BevelBorder;
 import dominio.Etiqueta;
 import javax.swing.event.ListSelectionListener;
 
-public class PanelExplorar extends JPanel {
+public class PanelExplorarBorder extends JPanel {
 	//atributos
 	
 	private JTextField textField;
@@ -41,7 +41,7 @@ public class PanelExplorar extends JPanel {
 	private List<Etiqueta> etiquetasSeleccionadas= new LinkedList<Etiqueta>();  
 	
 	//constructor
-	public PanelExplorar(FrameBase frameBase) {
+	public PanelExplorarBorder(FrameBase frameBase) {
 		//creacion panel
 		/*this.setPreferredSize(new Dimension(742, 383));
 		this.setMinimumSize(new Dimension(742, 383));
@@ -49,56 +49,11 @@ public class PanelExplorar extends JPanel {
 		setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		this.frameBase=frameBase;
 		setBackground(Color.WHITE);
-		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-		
-		JPanel panel_oeste = new JPanel();
-		panel_oeste.setBackground(Color.GRAY);
-		//panel_oeste.setPreferredSize(null);
-		add(panel_oeste);
-		panel_oeste.setLayout(new BoxLayout(panel_oeste, BoxLayout.Y_AXIS));
-		
-		JPanel panel = new JPanel();
-		panel.setBackground(Color.GRAY);
-		panel_oeste.add(panel);
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		
-		JPanel panel_2 = new JPanel();
-		panel_2.setBackground(Color.GRAY);
-		panel.add(panel_2);
-		panel_2.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		
-		JLabel lblBuscarTitulo = new JLabel("Buscar t\u00EDtulo");
-		lblBuscarTitulo.setForeground(Color.WHITE);
-		lblBuscarTitulo.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		panel_2.add(lblBuscarTitulo);
-		
-		textField = new JTextField();
-		panel_2.add(textField);
-		textField.setColumns(23);
-		
-		JButton btnBuscar = new JButton("Buscar");
-		panel_2.add(btnBuscar);
-		
-		JPanel panel_3 = new JPanel();
-		panel_3.setBackground(Color.GRAY);
-		panel.add(panel_3);
-		
-		JButton btnNuevaBusqueda = new JButton("Nueva b\u00FAsqueda");
-		panel_3.add(btnNuevaBusqueda);
-		
-		
-		JPanel panel_tabla_videos = new JPanel();
-		panel_tabla_videos.setBackground(Color.GRAY);
-		panel_oeste.add(panel_tabla_videos);
-		
-		Component verticalStrut = Box.createVerticalStrut(300);
-		panel_tabla_videos.add(verticalStrut);
-		
-		
+		setLayout(new BorderLayout(0, 0));
 		
 		JPanel panel_este = new JPanel();
 		panel_este.setBackground(Color.GRAY);
-		add(panel_este);
+		add(panel_este, BorderLayout.EAST);
 		panel_este.setLayout(new BoxLayout(panel_este, BoxLayout.Y_AXIS));
 		
 		JLabel lblEtiquetasDisponibles = new JLabel("Etiquetas disponibles");
@@ -150,6 +105,56 @@ public class PanelExplorar extends JPanel {
 		//scroller1.setMaximumSize(new Dimension(250, 15000));
 		panel_este.add(scroller1);
 		
+		JPanel panel_oeste = new JPanel();
+		panel_oeste.setBackground(Color.GRAY);
+		//panel_oeste.setPreferredSize(null);
+		add(panel_oeste, BorderLayout.WEST);
+		panel_oeste.setLayout(new BoxLayout(panel_oeste, BoxLayout.Y_AXIS));
+		
+		JPanel panel = new JPanel();
+		panel.setBackground(Color.GRAY);
+		panel_oeste.add(panel);
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		
+		JPanel panel_2 = new JPanel();
+		panel_2.setBackground(Color.GRAY);
+		panel.add(panel_2);
+		panel_2.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		
+		JLabel lblBuscarTitulo = new JLabel("Buscar t\u00EDtulo");
+		lblBuscarTitulo.setForeground(Color.WHITE);
+		lblBuscarTitulo.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		panel_2.add(lblBuscarTitulo);
+		
+		textField = new JTextField();
+		panel_2.add(textField);
+		textField.setColumns(23);
+		
+		JButton btnBuscar = new JButton("Buscar");
+		panel_2.add(btnBuscar);
+		
+		JPanel panel_3 = new JPanel();
+		panel_3.setBackground(Color.GRAY);
+		panel.add(panel_3);
+		
+		JButton btnNuevaBusqueda = new JButton("Nueva b\u00FAsqueda");
+		panel_3.add(btnNuevaBusqueda);
+		
+		
+		JPanel panel_tabla_videos = new JPanel();
+		panel_tabla_videos.setBackground(Color.GRAY);
+		panel_oeste.add(panel_tabla_videos);
+		
+		Component verticalStrut = Box.createVerticalStrut(300);
+		panel_tabla_videos.add(verticalStrut);
+		
+		Component horizontalStrut = Box.createHorizontalStrut(600);
+		panel_oeste.add(horizontalStrut);
+		
+		JPanel panel_centro = new JPanel();
+		panel_centro.setBackground(Color.RED);
+		add(panel_centro, BorderLayout.CENTER);
+		
 		//listeners
 		
 		lista.addListSelectionListener(event->{
@@ -172,6 +177,7 @@ public class PanelExplorar extends JPanel {
 			etiquetasSeleccionadas.clear();
 			textField.setText("");
 			panel_tabla_videos.removeAll();
+			panel_tabla_videos.add(verticalStrut);
 			model1.removeAllElements();
 			model1.addElement("");
 			lista1.setModel(model1);

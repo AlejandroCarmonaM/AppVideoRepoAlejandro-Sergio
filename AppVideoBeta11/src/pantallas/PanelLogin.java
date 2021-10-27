@@ -223,7 +223,7 @@ public class PanelLogin extends JPanel {
 					});
 				
 				btnExplorar.addActionListener(ev -> {
-					PanelExplorar panelExplorar = new PanelExplorar(this.frameBase);
+					PanelExplorarBorder panelExplorar = new PanelExplorarBorder(this.frameBase);
 					this.frameBase.creaPanel(panel_centro, panelExplorar);
 					});
 				

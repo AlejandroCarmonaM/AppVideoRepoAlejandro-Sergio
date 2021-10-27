@@ -31,7 +31,7 @@ public class PanelCrearLista extends JPanel {
 	 * Create the panel.
 	 */
 	public PanelCrearLista(FrameBase frameBase) {
-		this.setSize(new Dimension(742, 383));
+		
 		this.frameBase=frameBase;
 		setBackground(Color.GRAY);
 		setForeground(Color.LIGHT_GRAY);

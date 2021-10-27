@@ -54,7 +54,7 @@ public class FrameBase extends JFrame {
 		this.setAppVideo(appVideo);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//setBounds(100, 100, 667, 448);
-		setBounds(100, 100, 800, 480);
+		setBounds(100, 100, 800, 600);
 		this.setResizable(false); //con esto bloqueamos la pantalla a la resolución que queramos
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -139,7 +139,13 @@ public class FrameBase extends JFrame {
 		panel_norte2.add(btnNuevaLista);
 		
 		JPanel panel_centro = new JPanel();
-		panel_centro.setSize(new Dimension(742, 383));
+		//panel_centro.setSize(new Dimension(742, 383));
+		
+		/*panel_centro.setPreferredSize(new Dimension(742, 383));
+		panel_centro.setMinimumSize(new Dimension(742, 383));
+		panel_centro.setMaximumSize(new Dimension(742, 383));*/
+		
+		
 		panel_centro.setForeground(Color.GRAY);
 		panel_centro.setBackground(Color.GRAY);
 		this.getContentPane().add(panel_centro, BorderLayout.CENTER);
@@ -156,8 +162,8 @@ public class FrameBase extends JFrame {
 			});
 		
 		btnExplorar.addActionListener(ev -> {
-			PanelExplorar panelExplorar = new PanelExplorar(this);
-			this.creaPanel(panel_centro, panelExplorar);
+			PanelExplorar panelExplorarBox = new PanelExplorar(this);
+			this.creaPanel(panel_centro, panelExplorarBox);
 			});
 		
 		btnRegistro.addActionListener(ev -> {
@@ -201,7 +207,7 @@ public class FrameBase extends JFrame {
 	{
 		panel_central.setVisible(false);
 		panel_central.removeAll();
-		//panel_central.setSize(new Dimension(742, 383));
+		//panel_nuevo.setSize(panel_central.getSize());
 		panel_nuevo.setVisible(true);
 		panel_central.add(panel_nuevo);
 		panel_central.setVisible(true);
