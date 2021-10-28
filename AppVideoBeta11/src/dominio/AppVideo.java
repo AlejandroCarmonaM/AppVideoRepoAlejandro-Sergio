@@ -17,6 +17,7 @@ public class AppVideo {
 	private JPanel panelCentro;
 	private FrameBase frameBase;
 	private JLabel etiqueta;
+	private RepositorioVideo repositorioVideoPrueba = new RepositorioVideo();
 	
 	
 	public AppVideo() {
@@ -27,6 +28,7 @@ public class AppVideo {
 		{
 			etiquetasHabituales.add(etiqueta);
 		}
+		repositorioVideoPrueba.anadirVideo("primerVideo", "https://www.youtube.com/watch?v=rk7ITikbhs4");
 	}
 
 	
@@ -89,7 +91,7 @@ public class AppVideo {
 	
 	public JLabel creaEtiqueta()
 	{
-		JLabel lblLogin = new JLabel("Hola Usuario");
+		JLabel lblLogin = new JLabel("Hola "+usuario);
 		etiqueta = lblLogin;
 		return etiqueta;
 	}
@@ -97,6 +99,10 @@ public class AppVideo {
 	public void setEtiqueta(String usuario)
 	{
 		etiqueta.setText("Hola "+usuario);
+	}
+	
+	public Video buscarVideo(String titulo) {
+		return repositorioVideoPrueba.buscarVideo(titulo);
 	}
 
 }

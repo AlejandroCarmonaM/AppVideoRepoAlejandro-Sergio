@@ -11,7 +11,6 @@ import java.util.List;
 public class RepositorioUsuarios {
 	//Atributos
 	private HashSet<Usuario> repositorio;
-	
 	private Usuario admin;
 	private List<Usuario> usuarios;
 	

@@ -30,7 +30,6 @@ public class FrameBase extends JFrame {
 	private AppVideo appVideo;
 	private JPanel panel_centro;
 	
-	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -85,7 +84,8 @@ public class FrameBase extends JFrame {
 		panel_norte1.add(rigidArea_0);
 		
 		//JLabel lblNewLabel_1 = new JLabel("Hola "+appVideo.getUsuario());
-		panel_norte1.add(appVideo.creaEtiqueta());
+		JLabel etiquetaUsuario = appVideo.creaEtiqueta();
+		panel_norte1.add(etiquetaUsuario);
 		
 		Component rigidArea = Box.createRigidArea(new Dimension(70, 0));
 		panel_norte1.add(rigidArea);
@@ -176,8 +176,6 @@ public class FrameBase extends JFrame {
 			this.creaPanel(panel_centro, panelCrearLista);
 			});
 		
-		//Hola
-		
 	}
 	
 	//metodos getters y setters
@@ -217,4 +215,9 @@ public class FrameBase extends JFrame {
 		this.validate();
 		
 	}
+	
+	/*public void setUsuario() {
+		etiquetaUsuario = appVideo.creaEtiqueta();
+		this.validate();
+	}*/
 }
