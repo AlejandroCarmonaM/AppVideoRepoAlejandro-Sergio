@@ -32,6 +32,8 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.BevelBorder;
 import dominio.Etiqueta;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.SwingConstants;
+import javax.swing.ScrollPaneConstants;
 
 public class PanelExplorar extends JPanel {
 	//atributos
@@ -58,6 +60,7 @@ public class PanelExplorar extends JPanel {
 		panel_oeste.setLayout(new BoxLayout(panel_oeste, BoxLayout.Y_AXIS));
 		
 		JPanel panel = new JPanel();
+		panel.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
 		panel.setBackground(Color.GRAY);
 		panel_oeste.add(panel);
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -74,7 +77,7 @@ public class PanelExplorar extends JPanel {
 		
 		textField = new JTextField();
 		panel_2.add(textField);
-		textField.setColumns(23);
+		textField.setColumns(30);
 		
 		JButton btnBuscar = new JButton("Buscar");
 		panel_2.add(btnBuscar);
@@ -86,24 +89,34 @@ public class PanelExplorar extends JPanel {
 		JButton btnNuevaBusqueda = new JButton("Nueva b\u00FAsqueda");
 		panel_3.add(btnNuevaBusqueda);
 		
+		Component horizontalStrut = Box.createHorizontalStrut(500);
+		panel.add(horizontalStrut);
+		
 		
 		JPanel panel_tabla_videos = new JPanel();
+		panel_tabla_videos.setMinimumSize(new Dimension(500, 500));
+		panel_tabla_videos.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
 		panel_tabla_videos.setBackground(Color.GRAY);
 		panel_oeste.add(panel_tabla_videos);
 		
-		Component verticalStrut = Box.createVerticalStrut(300);
+		Component verticalStrut = Box.createVerticalStrut(350);
 		panel_tabla_videos.add(verticalStrut);
+		
+		/*Component horizontalStrut = Box.createHorizontalStrut(500);
+		panel_tabla_videos.add(horizontalStrut);*/
 		
 		
 		
 		JPanel panel_este = new JPanel();
+		panel_este.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
 		panel_este.setBackground(Color.GRAY);
 		add(panel_este);
 		panel_este.setLayout(new BoxLayout(panel_este, BoxLayout.Y_AXIS));
 		
 		JLabel lblEtiquetasDisponibles = new JLabel("Etiquetas disponibles");
+		lblEtiquetasDisponibles.setHorizontalAlignment(SwingConstants.CENTER);
 		lblEtiquetasDisponibles.setForeground(Color.WHITE);
-		lblEtiquetasDisponibles.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblEtiquetasDisponibles.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		panel_este.add(lblEtiquetasDisponibles);
 		
 		JList<String> lista = new JList<String>();
@@ -122,17 +135,38 @@ public class PanelExplorar extends JPanel {
 		}
 		lista.setModel(model);
 		JScrollPane scroller = new JScrollPane(lista);
+		scroller.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 		//scroller.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 0));
 		//lista.setPrototypeCellValue("Alejandro");
-		//scroller.setMaximumSize(new Dimension(250, 15000));
+		scroller.setMaximumSize(new Dimension(500, 15000));
 		//scroller.setBounds(700, 100, 250, 200000);
 		panel_este.add(scroller);
 		
 		
+		/*JList<String> lista2 = new JList<String>();/
+		//lista.setFixedCellWidth(0);
+		lista2.setVisibleRowCount(15);
+		lista2.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		lista2.setSelectedIndex(0);
+		
+		
+		DefaultListModel<String> model2 = new DefaultListModel<String>();
+		for (String item: this.frameBase.getAppVideo().getEtiquetasHabitualesS())
+		{
+			model2.addElement(item);
+		}
+		lista2.setModel(model2);
+		JScrollPane scroller2 = new JScrollPane(lista2);
+		scroller2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+		scroller2.setMaximumSize(new Dimension(500, 15000));
+		panel_tabla_videos.add(scroller2);*/
+		
+		
 		
 		JLabel lblBuscarEtiquetas = new JLabel("Buscar etiquetas:");
+		lblBuscarEtiquetas.setHorizontalAlignment(SwingConstants.CENTER);
 		lblBuscarEtiquetas.setForeground(Color.WHITE);
-		lblBuscarEtiquetas.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblBuscarEtiquetas.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		panel_este.add(lblBuscarEtiquetas);
 		
 		JList<String> lista1 = new JList<String>();
@@ -147,7 +181,8 @@ public class PanelExplorar extends JPanel {
 		
 		
 		JScrollPane scroller1 = new JScrollPane(lista1);
-		//scroller1.setMaximumSize(new Dimension(250, 15000));
+		scroller1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+		scroller1.setMaximumSize(new Dimension(500, 15000));
 		panel_este.add(scroller1);
 		
 		//listeners
