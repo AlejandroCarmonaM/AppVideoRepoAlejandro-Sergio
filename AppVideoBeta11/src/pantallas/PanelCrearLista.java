@@ -8,6 +8,7 @@ import javax.swing.ImageIcon;
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import javax.swing.border.BevelBorder;
+import javax.swing.table.DefaultTableModel;
 
 import dominio.Video;
 import tds.video.VideoWeb;
@@ -32,7 +33,7 @@ public class PanelCrearLista extends JPanel {
 	private FrameBase frameBase;
 	private JTextField campoNombreLista;
 	private JTextField campoBuscarTitulo;
-	private static VideoWeb vWeb;
+	private static VideoWeb vWeb = new VideoWeb();
 
 	/**
 	 * Create the panel.
@@ -205,19 +206,32 @@ public class PanelCrearLista extends JPanel {
 		panel_5.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		panel_5.setBackground(Color.GRAY);
 		panelDerecho.add(panel_5);
-		panel_5.setLayout(new BoxLayout(panel_5, BoxLayout.X_AXIS));
+		GridBagLayout gbl_panel_5 = new GridBagLayout();
+		gbl_panel_5.columnWidths = new int[]{0, 0};
+		gbl_panel_5.rowHeights = new int[]{0, 0};
+		gbl_panel_5.columnWeights = new double[]{1.0, Double.MIN_VALUE};
+		gbl_panel_5.rowWeights = new double[]{1.0, Double.MIN_VALUE};
+		panel_5.setLayout(gbl_panel_5);
 		
-		JLabel miniatura = new JLabel();
-		panel_5.add(miniatura);
+		JLabel lblNewLabel = new JLabel("New label");
+		lblNewLabel.setIcon(vWeb.getThumb("https://www.youtube.com/watch?v=q5wugNNNwa8&ab_channel=RTVENoticias"));
+		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+		gbc_lblNewLabel.gridx = 0;
+		gbc_lblNewLabel.gridy = 0;
+		panel_5.add(lblNewLabel, gbc_lblNewLabel);
+		
+		
+
+		
 		//panel_5.add(vWeb);
-		botonBuscarVideo.addActionListener(event -> {
+		/*botonBuscarVideo.addActionListener(event -> {
 			String tituloVideo = campoBuscarTitulo.getText();
 			Video videoBuscado = this.frameBase.getAppVideo().buscarVideo(tituloVideo);
 			
 			miniatura.setIcon(vWeb.getThumb(videoBuscado.getUrl()));
 			validate();
 			
-		});
+		});*/
 	}
 
 }
