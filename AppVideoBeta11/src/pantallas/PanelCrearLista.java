@@ -214,7 +214,7 @@ public class PanelCrearLista extends JPanel {
 		panel_5.setLayout(gbl_panel_5);
 		
 		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setIcon(vWeb.getThumb("https://www.youtube.com/watch?v=q5wugNNNwa8&ab_channel=RTVENoticias"));
+		lblNewLabel.setIcon(vWeb.getThumb("https://www.youtube.com/watch?v=rk7ITikbhs4"));
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.gridx = 0;
 		gbc_lblNewLabel.gridy = 0;
