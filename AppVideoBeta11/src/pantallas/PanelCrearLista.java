@@ -221,7 +221,6 @@ public class PanelCrearLista extends JPanel {
 		panel_5.add(lblNewLabel, gbc_lblNewLabel);
 		
 		
-
 		
 		//panel_5.add(vWeb);
 		/*botonBuscarVideo.addActionListener(event -> {
