@@ -2,6 +2,8 @@ package dominio;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -29,6 +31,10 @@ public class AppVideo {
 			etiquetasHabituales.add(etiqueta);
 		}
 		repositorioVideoPrueba.anadirVideo("primerVideo", "https://www.youtube.com/watch?v=rk7ITikbhs4");
+		repositorioVideoPrueba.anadirVideo("Segundo video", "https://www.youtube.com/watch?v=EdVMSYomYJY");
+		repositorioVideoPrueba.anadirVideo("Tercer video", "https://www.youtube.com/watch?v=0243Z0YXPpY");
+		repositorioVideoPrueba.anadirVideo("Cuarto video", "https://www.youtube.com/watch?v=UtF6Jej8yb4");
+		repositorioVideoPrueba.anadirVideo("Quinto video", "https://www.youtube.com/watch?v=WQo9cHP7MIc");
 	}
 
 	
@@ -103,6 +109,10 @@ public class AppVideo {
 	
 	public Video buscarVideo(String titulo) {
 		return repositorioVideoPrueba.buscarVideo(titulo);
+	}
+	
+	public Set<String> obtenerURLs() {
+		return repositorioVideoPrueba.obtenerURLs();
 	}
 
 }

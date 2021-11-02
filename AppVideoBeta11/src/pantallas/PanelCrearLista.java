@@ -27,13 +27,18 @@ import java.awt.Image;
 
 import javax.swing.JTable;
 import java.awt.event.ActionListener;
+import java.util.Set;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JList;
 
 public class PanelCrearLista extends JPanel {
 	private FrameBase frameBase;
 	private JTextField campoNombreLista;
 	private JTextField campoBuscarTitulo;
 	private static VideoWeb vWeb = new VideoWeb();
+	private JTable tablaVideos;
 
 	/**
 	 * Create the panel.
@@ -102,11 +107,19 @@ public class PanelCrearLista extends JPanel {
 		panelMiLista.setBackground(Color.GRAY);
 		panelIzquierdo.add(panelMiLista);
 		GridBagLayout gbl_panelMiLista = new GridBagLayout();
-		gbl_panelMiLista.columnWidths = new int[]{0};
-		gbl_panelMiLista.rowHeights = new int[]{0};
-		gbl_panelMiLista.columnWeights = new double[]{Double.MIN_VALUE};
-		gbl_panelMiLista.rowWeights = new double[]{Double.MIN_VALUE};
+		gbl_panelMiLista.columnWidths = new int[]{0, 0};
+		gbl_panelMiLista.rowHeights = new int[]{0, 0};
+		gbl_panelMiLista.columnWeights = new double[]{1.0, Double.MIN_VALUE};
+		gbl_panelMiLista.rowWeights = new double[]{1.0, Double.MIN_VALUE};
 		panelMiLista.setLayout(gbl_panelMiLista);
+		
+		JList listaActual = new JList();
+		listaActual.setBackground(Color.GRAY);
+		GridBagConstraints gbc_listaActual = new GridBagConstraints();
+		gbc_listaActual.fill = GridBagConstraints.BOTH;
+		gbc_listaActual.gridx = 0;
+		gbc_listaActual.gridy = 0;
+		panelMiLista.add(listaActual, gbc_listaActual);
 		
 		JPanel panelAQA = new JPanel();
 		panelAQA.setMaximumSize(new Dimension(32767, 10000));
@@ -213,24 +226,80 @@ public class PanelCrearLista extends JPanel {
 		gbl_panel_5.rowWeights = new double[]{1.0, Double.MIN_VALUE};
 		panel_5.setLayout(gbl_panel_5);
 		
-		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setIcon(vWeb.getThumb("https://www.youtube.com/watch?v=rk7ITikbhs4"));
-		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.gridx = 0;
-		gbc_lblNewLabel.gridy = 0;
-		panel_5.add(lblNewLabel, gbc_lblNewLabel);
+		tablaVideos = new JTable();
 		
+		tablaVideos.setCellSelectionEnabled(true);
+		tablaVideos.setBackground(Color.GRAY);
+		GridBagConstraints gbc_tablaVideos = new GridBagConstraints();
+		gbc_tablaVideos.fill = GridBagConstraints.BOTH;
+		gbc_tablaVideos.gridx = 0;
+		gbc_tablaVideos.gridy = 0;
 		
+		tablaVideos.setDefaultRenderer(Object.class, new ImgTabla());
+		String titulos[] = {"Columna 1", "Columna 2", "Columna 3", "Columna 4"};
+		DefaultTableModel tm = new DefaultTableModel(null, titulos);
+		rellenarTabla(tm);
 		
-		//panel_5.add(vWeb);
-		/*botonBuscarVideo.addActionListener(event -> {
+		panel_5.add(tablaVideos, gbc_tablaVideos);
+		
+		//Listener para buscar los videos, si buscamos sin escribir nada la tabla se resetea
+		botonBuscarVideo.addActionListener(event -> {
 			String tituloVideo = campoBuscarTitulo.getText();
-			Video videoBuscado = this.frameBase.getAppVideo().buscarVideo(tituloVideo);
-			
-			miniatura.setIcon(vWeb.getThumb(videoBuscado.getUrl()));
-			validate();
-			
-		});*/
+			if (!tituloVideo.equals("")) {
+				Video videoBuscado = this.frameBase.getAppVideo().buscarVideo(tituloVideo);
+				int filas = tablaVideos.getRowCount();
+				for (int i = filas-1; i >= 0; i--)
+					tm.removeRow(i);
+				if (videoBuscado != null)
+					tm.addRow(new Object[] {new JLabel(vWeb.getThumb(videoBuscado.getUrl()))});
+				validate();
+			}
+			else {
+				int filas = tablaVideos.getRowCount();
+				for (int i = filas-1; i >= 0; i--)
+					tm.removeRow(i);
+				rellenarTabla(tm);
+			}
+				
+		});
 	}
-
+	
+	//Metodo para rellenar la tabla con todos los videos 
+	private void rellenarTabla(DefaultTableModel tm) {
+		
+		Set<String> urls = frameBase.getAppVideo().obtenerURLs();
+		JLabel aux[] = new JLabel[4];
+		int contadorAux = 0;
+		for (String elemento : urls) {
+			if (contadorAux < 4) {
+				aux[contadorAux] = new JLabel(vWeb.getThumb(elemento));
+				contadorAux++;
+			}
+			else {
+				tm.addRow(new Object[] {aux[0], aux[1], aux[2], aux[3]});
+				contadorAux = 0;
+				aux[contadorAux] = new JLabel(vWeb.getThumb(elemento));
+				contadorAux++;
+			}
+		}
+		if (contadorAux < 4) {
+			switch (contadorAux) {
+			case 1:
+				tm.addRow(new Object[] {aux[0]});
+				break;
+			case 2:
+				tm.addRow(new Object[] {aux[0], aux[1]});
+				break;
+			case 3:
+				tm.addRow(new Object[] {aux[0], aux[1], aux[2]});
+				break;
+			default:
+				break;
+			}
+		}
+		
+		
+		tablaVideos.setRowHeight(90);
+		tablaVideos.setModel(tm);
+	}
 }
