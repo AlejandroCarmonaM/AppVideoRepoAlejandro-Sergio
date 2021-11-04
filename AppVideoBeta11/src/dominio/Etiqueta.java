@@ -5,6 +5,15 @@ import java.util.Objects;
 public class Etiqueta {
 
 	private String nombre;
+	private int codigo = 0;
+
+	public int getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(int codigo) {
+		this.codigo = codigo;
+	}
 
 	public Etiqueta(String nombre) {
 		this.nombre = nombre;

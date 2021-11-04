@@ -1,11 +1,15 @@
 package dominio;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Usuario {
-	
+	public static final int LIMITE_SUPERIOR = 500;
 	//Atributos
+	private int codigo = (int) (Math.random()*LIMITE_SUPERIOR);
 	private String nombre;
 	private String apellidos;
 	private Date fecha;
@@ -13,6 +17,8 @@ public class Usuario {
 	private String usuario;
 	private String contrasena;
 	private boolean premium;
+	private List<ListaVideos> listasVideos;
+	private List<Video> recientes;
 	
 	//constructor
 	public Usuario(String nombre, String apellidos, Date fecha, String email, String usuario, String contrasena) {
@@ -22,8 +28,11 @@ public class Usuario {
 		this.email = email;
 		this.usuario = usuario;
 		this.contrasena = contrasena;
+		this.listasVideos = new LinkedList<ListaVideos>();
+		this.recientes = new ArrayList<Video>();
 	}
 	
+
 	public Usuario(String nombre, Date fechaNacimiento, String nombreUsuario, String contrasena) {
 		this.nombre = nombre;
 		this.fecha = fechaNacimiento;
@@ -76,9 +85,19 @@ public class Usuario {
 		return fecha;
 	}
 	
-	
-	
-	
+	public int getCodigo() {
+		return codigo;
+	}
+
+	public List<ListaVideos> getListasVideos() {
+		LinkedList<ListaVideos> copia = new LinkedList<ListaVideos>(listasVideos);
+		return copia;
+	}
+
+	public List<Video> getRecientes() {
+		LinkedList<Video> copia = new LinkedList<Video>(recientes);
+		return copia;
+	}
 	
 	
 	
