@@ -7,9 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Usuario {
-	public static final int LIMITE_SUPERIOR = 500;
 	//Atributos
-	private int codigo = (int) (Math.random()*LIMITE_SUPERIOR);
+	private int codigo = 0;
 	private String nombre;
 	private String apellidos;
 	private Date fecha;
@@ -30,6 +29,7 @@ public class Usuario {
 		this.contrasena = contrasena;
 		this.listasVideos = new LinkedList<ListaVideos>();
 		this.recientes = new ArrayList<Video>();
+		this.premium = false;
 	}
 	
 
@@ -85,6 +85,10 @@ public class Usuario {
 		return fecha;
 	}
 	
+	public void setCodigo(int codigo) {
+		this.codigo = codigo;
+	}
+	
 	public int getCodigo() {
 		return codigo;
 	}
@@ -92,6 +96,14 @@ public class Usuario {
 	public List<ListaVideos> getListasVideos() {
 		LinkedList<ListaVideos> copia = new LinkedList<ListaVideos>(listasVideos);
 		return copia;
+	}
+	
+	public void addListaVideos(ListaVideos lv) {
+		this.listasVideos.add(lv);
+	}
+	
+	public void addVideoRecientes(Video v) {
+		this.recientes.add(v);
 	}
 
 	public List<Video> getRecientes() {

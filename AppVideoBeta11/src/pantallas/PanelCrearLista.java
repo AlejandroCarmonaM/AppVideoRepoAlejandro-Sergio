@@ -27,6 +27,8 @@ import java.awt.Image;
 
 import javax.swing.JTable;
 import java.awt.event.ActionListener;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
@@ -246,12 +248,12 @@ public class PanelCrearLista extends JPanel {
 		botonBuscarVideo.addActionListener(event -> {
 			String tituloVideo = campoBuscarTitulo.getText();
 			if (!tituloVideo.equals("")) {
-				Video videoBuscado = this.frameBase.getAppVideo().buscarVideo(tituloVideo);
+				List<Video> videoBuscado = this.frameBase.getAppVideo().buscarVideo(tituloVideo);
 				int filas = tablaVideos.getRowCount();
 				for (int i = filas-1; i >= 0; i--)
 					tm.removeRow(i);
 				if (videoBuscado != null)
-					tm.addRow(new Object[] {new JLabel(vWeb.getThumb(videoBuscado.getUrl()))});
+					rellenarTabla(tm, videoBuscado);
 				validate();
 			}
 			else {
@@ -267,7 +269,7 @@ public class PanelCrearLista extends JPanel {
 	//Metodo para rellenar la tabla con todos los videos 
 	private void rellenarTabla(DefaultTableModel tm) {
 		
-		Set<String> urls = frameBase.getAppVideo().obtenerURLs();
+		List<String> urls = frameBase.getAppVideo().obtenerURLs();
 		JLabel aux[] = new JLabel[4];
 		int contadorAux = 0;
 		for (String elemento : urls) {
@@ -299,6 +301,46 @@ public class PanelCrearLista extends JPanel {
 		}
 		
 		
+		tablaVideos.setRowHeight(90);
+		tablaVideos.setModel(tm);
+	}
+	
+	private void rellenarTabla(DefaultTableModel tm, List<Video> videos) {
+		
+		JLabel aux[] = new JLabel[4];
+		LinkedList<String> urls = new LinkedList<String>();
+		for (Video elemento : videos) {
+			urls.add(elemento.getUrl());
+		}
+		
+		int contadorAux = 0;
+		for (String elemento : urls) {
+			if (contadorAux < 4) {
+				aux[contadorAux] = new JLabel(vWeb.getThumb(elemento));
+				contadorAux++;
+			}
+			else {
+				tm.addRow(new Object[] {aux[0], aux[1], aux[2], aux[3]});
+				contadorAux = 0;
+				aux[contadorAux] = new JLabel(vWeb.getThumb(elemento));
+				contadorAux++;
+			}
+		}
+		if (contadorAux < 4) {
+			switch (contadorAux) {
+			case 1:
+				tm.addRow(new Object[] {aux[0]});
+				break;
+			case 2:
+				tm.addRow(new Object[] {aux[0], aux[1]});
+				break;
+			case 3:
+				tm.addRow(new Object[] {aux[0], aux[1], aux[2]});
+				break;
+			default:
+				break;
+			}
+		}
 		tablaVideos.setRowHeight(90);
 		tablaVideos.setModel(tm);
 	}

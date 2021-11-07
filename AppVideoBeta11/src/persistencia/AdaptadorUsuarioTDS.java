@@ -1,20 +1,26 @@
 package persistencia;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
 
 import beans.Entidad;
 import beans.Propiedad;
+import dominio.ListaVideos;
 import dominio.Usuario;
+import dominio.Video;
 import tds.driver.FactoriaServicioPersistencia;
 import tds.driver.ServicioPersistencia;
 
 public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO{
 	private static ServicioPersistencia servPersistencia;
 	private static AdaptadorUsuarioTDS unicaInstancia = null;
+	private SimpleDateFormat dateFormat;
 
 	public static AdaptadorUsuarioTDS getUnicaInstancia() { // patron singleton
 		if (unicaInstancia == null)
@@ -25,128 +31,193 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO{
 
 	private AdaptadorUsuarioTDS() {
 		servPersistencia = FactoriaServicioPersistencia.getInstance().getServicioPersistencia();
+		dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 	}
 
 	/* cuando se registra un cliente se le asigna un identificador �nico */
-	public void registrarUsuario(Usuario cliente) {
+	public void registrarUsuario(Usuario usuario) {
 		Entidad eUsuario = null;
 
 		// Si la entidad esta registrada no la registra de nuevo
 		try {
-			eUsuario = servPersistencia.recuperarEntidad(cliente.getCodigo());
+			eUsuario = servPersistencia.recuperarEntidad(usuario.getCodigo());
 		} catch (NullPointerException e) {}
 		if (eUsuario != null) return;
 
 		// registrar primero los atributos que son objetos
-		AdaptadorVentaTDS adaptadorVenta = AdaptadorVentaTDS.getUnicaInstancia();
-		for (Venta v : cliente.getVentas())
-			adaptadorVenta.registrarVenta(v);
+		AdaptadorListaVideosTDS adaptadorLV = AdaptadorListaVideosTDS.getUnicaInstancia();
+		for (ListaVideos v : usuario.getListasVideos())
+			adaptadorLV.recuperarListaVideos(v.getCodigo());
+		
+		AdaptadorVideoTDS adaptadorVideo = AdaptadorVideoTDS.getUnicaInstancia();
+		for (ListaVideos v : usuario.getListasVideos())
+			adaptadorVideo.recuperarVideo(v.getCodigo());
 
 		// crear entidad Cliente
 		eUsuario = new Entidad();
-		eUsuario.setNombre("cliente");
+		eUsuario.setNombre("usuario");
 		eUsuario.setPropiedades(new ArrayList<Propiedad>(
-				Arrays.asList(new Propiedad("dni", cliente.getDni()), new Propiedad("nombre", cliente.getNombre()),
-						new Propiedad("ventas", obtenerCodigosVentas(cliente.getVentas())))));
+				Arrays.asList( 
+						new Propiedad("nombre", usuario.getNombre()),
+						new Propiedad("apellidos", usuario.getApellidos()), 
+						new Propiedad("fecha", dateFormat.format(usuario.getFecha())),
+						new Propiedad("email", usuario.getEmail()),
+						new Propiedad("usuario", usuario.getUsuario()),
+						new Propiedad("contrasena", usuario.getContrasena()),
+						new Propiedad("premium", String.valueOf(usuario.isPremium())),
+						new Propiedad("listasVideos", obtenerCodigosListasVideos(usuario.getListasVideos())),
+						new Propiedad("recientes", obtenerCodigosVideos(usuario.getRecientes())))));
 
 		// registrar entidad cliente
 		eUsuario = servPersistencia.registrarEntidad(eUsuario);
 		// asignar identificador unico
 		// Se aprovecha el que genera el servicio de persistencia
-		cliente.setCodigo(eUsuario.getId());
+		usuario.setCodigo(eUsuario.getId());
 	}
 
-	public void borrarCliente(Usuario cliente) {
-		// No se comprueban restricciones de integridad con Venta
-		Entidad eCliente = servPersistencia.recuperarEntidad(cliente.getCodigo());
+	public void borrarUsuario(Usuario usuario) {
+		Entidad eUsuario;
+		AdaptadorVideoTDS adaptadorVideo = AdaptadorVideoTDS.getUnicaInstancia();
 
-		servPersistencia.borrarEntidad(eCliente);
+		for (Video video : usuario.getRecientes()) {
+			adaptadorVideo.borrarVideo(video);
+		}
+		
+		AdaptadorListaVideosTDS adaptadorLV = AdaptadorListaVideosTDS.getUnicaInstancia();
+
+		for (ListaVideos listaVideo : usuario.getListasVideos()) {
+			adaptadorLV.borrarListaVideos(listaVideo);
+		}
+		
+		eUsuario = servPersistencia.recuperarEntidad(usuario.getCodigo());
+		servPersistencia.borrarEntidad(eUsuario);
+
 	}
 
-	public void modificarCliente(Cliente cliente) {
+	public void modificarUsuario(Usuario usuario) {
 
-		Entidad eCliente = servPersistencia.recuperarEntidad(cliente.getCodigo());
+		Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getCodigo());
 
-		for (Propiedad prop : eCliente.getPropiedades()) {
+		for (Propiedad prop : eUsuario.getPropiedades()) {
 			if (prop.getNombre().equals("codigo")) {
-				prop.setValor(String.valueOf(cliente.getCodigo()));
-			} else if (prop.getNombre().equals("dni")) {
-				prop.setValor(cliente.getDni());
+				prop.setValor(String.valueOf(usuario.getCodigo()));
 			} else if (prop.getNombre().equals("nombre")) {
-				prop.setValor(cliente.getNombre());
-			} else if (prop.getNombre().equals("ventas")) {
-				String ventas = obtenerCodigosVentas(cliente.getVentas());
-				prop.setValor(ventas);
+				prop.setValor(usuario.getNombre());
+			} else if (prop.getNombre().equals("apellidos")) {
+				prop.setValor(usuario.getApellidos());
+			} else if (prop.getNombre().equals("fecha")) {
+				prop.setValor(dateFormat.format(usuario.getFecha()));
+			} else if (prop.getNombre().equals("email")) {
+				prop.setValor(usuario.getEmail());
+			} else if (prop.getNombre().equals("usuario")) {
+				prop.setValor(usuario.getUsuario());
+			} else if (prop.getNombre().equals("contrasena")) {
+				prop.setValor(usuario.getContrasena());
+			} else if (prop.getNombre().equals("premium")) {
+				prop.setValor(String.valueOf(usuario.isPremium()));
+			} else if (prop.getNombre().equals("listasVideos")) {
+				String lineas = obtenerCodigosListasVideos(usuario.getListasVideos());
+				prop.setValor(lineas);
+			} else if (prop.getNombre().equals("recientes")) {
+				String lineas = obtenerCodigosVideos(usuario.getRecientes());
+				prop.setValor(lineas);
 			}
 			servPersistencia.modificarPropiedad(prop);
 		}
 
 	}
 
-	public Cliente recuperarCliente(int codigo) {
-
-		// Si la entidad est� en el pool la devuelve directamente
-		if (PoolDAO.getUnicaInstancia().contiene(codigo))
-			return (Cliente) PoolDAO.getUnicaInstancia().getObjeto(codigo);
-
-		// si no, la recupera de la base de datos
-		Entidad eCliente;
-		List<Venta> ventas = new LinkedList<Venta>();
-		String dni;
+	public Usuario recuperarUsuario(int codigo) {
+		Entidad eUsuario;
+		List<ListaVideos> listasVideos = new LinkedList<ListaVideos>();
+		List<Video> recientes = new LinkedList<Video>();
 		String nombre;
+		String apellidos;
+		String email;
+		String usuario;
+		String contrasena;
+		boolean premium;
 
 		// recuperar entidad
-		eCliente = servPersistencia.recuperarEntidad(codigo);
+		eUsuario = servPersistencia.recuperarEntidad(codigo);
 
 		// recuperar propiedades que no son objetos
-		dni = servPersistencia.recuperarPropiedadEntidad(eCliente, "dni");
-		nombre = servPersistencia.recuperarPropiedadEntidad(eCliente, "nombre");
+		nombre = servPersistencia.recuperarPropiedadEntidad(eUsuario, "nombre");
+		apellidos = servPersistencia.recuperarPropiedadEntidad(eUsuario, "apellidos");
+		Date fecha = null;
+		try {
+			fecha = dateFormat.parse(servPersistencia.recuperarPropiedadEntidad(eUsuario, "fecha"));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		email = servPersistencia.recuperarPropiedadEntidad(eUsuario, "email");
+		usuario = servPersistencia.recuperarPropiedadEntidad(eUsuario, "usuario");
+		contrasena = servPersistencia.recuperarPropiedadEntidad(eUsuario, "contrasena");
+		premium = Boolean.valueOf(servPersistencia.recuperarPropiedadEntidad(eUsuario, "premium"));
 
-		Cliente cliente = new Cliente(dni, nombre);
-		cliente.setCodigo(codigo);
-
-		// IMPORTANTE:a�adir el cliente al pool antes de llamar a otros
-		// adaptadores
-		PoolDAO.getUnicaInstancia().addObjeto(codigo, cliente);
+		Usuario usuarioFinal = new Usuario(nombre, apellidos, fecha, email, usuario, contrasena);
+		usuarioFinal.setPremium(premium);
+		usuarioFinal.setCodigo(codigo);
 
 		// recuperar propiedades que son objetos llamando a adaptadores
 		// ventas
-		ventas = obtenerVentasDesdeCodigos(servPersistencia.recuperarPropiedadEntidad(eCliente, "ventas"));
+		listasVideos = obtenerListasVideosDesdeCodigos(servPersistencia.recuperarPropiedadEntidad(eUsuario, "listasVideos"));
+		recientes = obtenerRecientesDesdeCodigos(servPersistencia.recuperarPropiedadEntidad(eUsuario, "recientes"));
 
-		for (Venta v : ventas)
-			cliente.addVenta(v);
+		for (ListaVideos lv : listasVideos)
+			usuarioFinal.addListaVideos(lv);
+		
+		for (Video v : recientes)
+			usuarioFinal.addVideoRecientes(v);
 
-		return cliente;
+		return usuarioFinal;
 	}
 
-	public List<Cliente> recuperarTodosClientes() {
+	public List<Usuario> recuperarTodosUsuarios() {
 
-		List<Entidad> eClientes = servPersistencia.recuperarEntidades("cliente");
-		List<Cliente> clientes = new LinkedList<Cliente>();
+		List<Entidad> eUsuarios = servPersistencia.recuperarEntidades("usuario");
+		List<Usuario> usuarios = new LinkedList<Usuario>();
 
-		for (Entidad eCliente : eClientes) {
-			clientes.add(recuperarCliente(eCliente.getId()));
+		for (Entidad eUsuario : eUsuarios) {
+			usuarios.add(recuperarUsuario(eUsuario.getId()));
 		}
-		return clientes;
+		return usuarios;
 	}
 
 	// -------------------Funciones auxiliares-----------------------------
-	private String obtenerCodigosVentas(List<Venta> listaVentas) {
+	private String obtenerCodigosListasVideos(List<ListaVideos> listaListasVideos) {
 		String aux = "";
-		for (Venta v : listaVentas) {
-			aux += v.getCodigo() + " ";
+		for (ListaVideos listaVideo : listaListasVideos) {
+			aux += listaVideo.getCodigo() + " ";
+		}
+		return aux.trim();
+	}
+	
+	private String obtenerCodigosVideos(List<Video> listaVideos) {
+		String aux = "";
+		for (Video video : listaVideos) {
+			aux += video.getCodigo() + " ";
 		}
 		return aux.trim();
 	}
 
-	private List<Venta> obtenerVentasDesdeCodigos(String ventas) {
-
-		List<Venta> listaVentas = new LinkedList<Venta>();
-		StringTokenizer strTok = new StringTokenizer(ventas, " ");
-		AdaptadorVentaTDS adaptadorV = AdaptadorVentaTDS.getUnicaInstancia();
+	private List<ListaVideos> obtenerListasVideosDesdeCodigos(String lineas) {
+		List<ListaVideos> listasVideos = new LinkedList<ListaVideos>();
+		StringTokenizer strTok = new StringTokenizer(lineas, " ");
+		AdaptadorListaVideosTDS adaptadorLV = AdaptadorListaVideosTDS.getUnicaInstancia();
 		while (strTok.hasMoreTokens()) {
-			listaVentas.add(adaptadorV.recuperarVenta(Integer.valueOf((String) strTok.nextElement())));
+			listasVideos.add(adaptadorLV.recuperarListaVideos(Integer.valueOf((String) strTok.nextElement())));
 		}
-		return listaVentas;
+		return listasVideos;
+	}
+	
+	private List<Video> obtenerRecientesDesdeCodigos(String lineas) {
+		List<Video> video = new LinkedList<Video>();
+		StringTokenizer strTok = new StringTokenizer(lineas, " ");
+		AdaptadorVideoTDS adaptadorVideo = AdaptadorVideoTDS.getUnicaInstancia();
+		while (strTok.hasMoreTokens()) {
+			video.add(adaptadorVideo.recuperarVideo(Integer.valueOf((String) strTok.nextElement())));
+		}
+		return video;
 	}
 }

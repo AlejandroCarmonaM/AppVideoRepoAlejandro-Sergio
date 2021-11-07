@@ -1,10 +1,7 @@
 package persistencia;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -21,9 +18,6 @@ import tds.driver.ServicioPersistencia;
 public class AdaptadorVideoTDS implements IAdaptadorVideoDAO{
 	private static ServicioPersistencia servPersistencia;
 
-	private SimpleDateFormat dateFormat; // para formatear la fecha de venta en
-											// la base de datos
-
 	private static AdaptadorVideoTDS unicaInstancia;
 
 	public static AdaptadorVideoTDS getUnicaInstancia() { // patron singleton
@@ -35,7 +29,6 @@ public class AdaptadorVideoTDS implements IAdaptadorVideoDAO{
 
 	private AdaptadorVideoTDS() {
 		servPersistencia = FactoriaServicioPersistencia.getInstance().getServicioPersistencia();
-		dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 	}
 
 	/* cuando se registra una venta se le asigna un identificador unico */
@@ -110,16 +103,20 @@ public class AdaptadorVideoTDS implements IAdaptadorVideoDAO{
 		
 		String titulo = servPersistencia.recuperarPropiedadEntidad(eVideo, "titulo");
 		String url = servPersistencia.recuperarPropiedadEntidad(eVideo, "url");
+		int numRepro = Integer.parseInt(servPersistencia.recuperarPropiedadEntidad(eVideo, "numRepro"));
 		
 		Video video = new Video(titulo, url);
+		video.setNumeroReproducciones(numRepro);
 		video.setCodigo(codigo);
 
 		// recuperar propiedades que son objetos llamando a adaptadores
 		// cliente
-		AdaptadorEtiquetaTDS adaptadorEtiqueta = AdaptadorEtiquetaTDS.getUnicaInstancia();
+		/*AdaptadorEtiquetaTDS adaptadorEtiqueta = AdaptadorEtiquetaTDS.getUnicaInstancia();
 		int codigoEtiqueta = Integer.parseInt(servPersistencia.recuperarPropiedadEntidad(eVideo, "etiquetas"));
-
-		// lineas de venta
+		
+		Etiqueta etiqueta = adaptadorEtiqueta.recuperarEtiqueta(codigoEtiqueta);
+		video.anadirEtiqueta(etiqueta);*/
+		
 		Set<Etiqueta> etiquetas = obtenerEtiquetasDesdeCodigos(
 				servPersistencia.recuperarPropiedadEntidad(eVideo, "etiquetas"));
 

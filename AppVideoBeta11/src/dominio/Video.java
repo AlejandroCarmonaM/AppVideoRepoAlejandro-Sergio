@@ -49,4 +49,8 @@ public class Video {
 	public void setCodigo(int codigo) {
 		this.codigo = codigo;
 	}
+	
+	public void setNumeroReproducciones(int numeroRep) {
+		this.numRepro = numeroRep;
+	}
 }

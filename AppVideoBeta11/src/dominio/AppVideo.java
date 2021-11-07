@@ -31,6 +31,7 @@ public class AppVideo {
 			etiquetasHabituales.add(etiqueta);
 		}
 		repositorioVideoPrueba.anadirVideo("primerVideo", "https://www.youtube.com/watch?v=rk7ITikbhs4");
+		repositorioVideoPrueba.anadirVideo("primerVideo", "https://www.youtube.com/watch?v=rk7ITikbhs4");
 		repositorioVideoPrueba.anadirVideo("Segundo video", "https://www.youtube.com/watch?v=EdVMSYomYJY");
 		repositorioVideoPrueba.anadirVideo("Tercer video", "https://www.youtube.com/watch?v=0243Z0YXPpY");
 		repositorioVideoPrueba.anadirVideo("Cuarto video", "https://www.youtube.com/watch?v=UtF6Jej8yb4");
@@ -107,11 +108,11 @@ public class AppVideo {
 		etiqueta.setText("Hola "+usuario);
 	}
 	
-	public Video buscarVideo(String titulo) {
+	public List<Video> buscarVideo(String titulo) {
 		return repositorioVideoPrueba.buscarVideo(titulo);
 	}
 	
-	public Set<String> obtenerURLs() {
+	public List<String> obtenerURLs() {
 		return repositorioVideoPrueba.obtenerURLs();
 	}
 
