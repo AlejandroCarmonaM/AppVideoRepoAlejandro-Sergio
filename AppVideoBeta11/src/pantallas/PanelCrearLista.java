@@ -344,5 +344,5 @@ public class PanelCrearLista extends JPanel {
 		tablaVideos.setRowHeight(90);
 		tablaVideos.setModel(tm);
 	}
-	//Dos metodos para tablas
+	//Dos metodos para tablask
 }
