@@ -53,4 +53,9 @@ public class Video {
 	public void setNumeroReproducciones(int numeroRep) {
 		this.numRepro = numeroRep;
 	}
+	
+	public boolean isLargo(int limite)
+	{
+		return (this.titulo.length()<limite);
+	}
 }

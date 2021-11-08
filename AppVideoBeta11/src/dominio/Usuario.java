@@ -111,6 +111,13 @@ public class Usuario {
 		return copia;
 	}
 	
+	public boolean isVideoListas(Video v)
+	{
+		return listasVideos.stream()
+		.flatMap(l->l.getListaVideos().stream())
+		.anyMatch(video->video.equals(v));
+	}
+	
 	
 	
 
