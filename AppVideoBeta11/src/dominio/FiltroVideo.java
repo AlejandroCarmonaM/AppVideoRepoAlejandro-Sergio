@@ -2,6 +2,6 @@ package dominio;
 
 public interface FiltroVideo {
 	
-	public boolean esVideoOK(Video v);
+	public boolean esVideoOK(Video v, Usuario usuario);
 
 }
