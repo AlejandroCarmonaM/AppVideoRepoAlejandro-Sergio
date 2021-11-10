@@ -27,6 +27,10 @@ public class RepositorioVideo {
 				.collect(Collectors.toList());
 	}
 	
+	public List<Video> obtenerVideos() {
+		return repositorio;
+	}
+	
 	public void anadirVideo(String titulo, String url) {
 		Video nuevoVideo = new Video(titulo, url);
 		repositorio.add(nuevoVideo);

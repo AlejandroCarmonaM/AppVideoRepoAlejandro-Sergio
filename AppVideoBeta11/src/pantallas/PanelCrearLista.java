@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.border.BevelBorder;
 import javax.swing.table.DefaultTableModel;
 
+import dominio.GrupoVideos;
 import dominio.Video;
 import tds.video.VideoWeb;
 
@@ -238,14 +239,92 @@ public class PanelCrearLista extends JPanel {
 		gbc_tablaVideos.gridy = 0;
 		
 		tablaVideos.setDefaultRenderer(Object.class, new ImgTabla());
-		String titulos[] = {"Columna 1", "Columna 2", "Columna 3", "Columna 4"};
-		DefaultTableModel tm = new DefaultTableModel(null, titulos);
-		rellenarTabla(tm);
+		//String titulos[] = {"Columna 1", "Columna 2", "Columna 3", "Columna 4"};
+		GrupoVideos gVideos = new GrupoVideos();
+		LinkedList<GrupoVideos> listaGVideos = new LinkedList<GrupoVideos>();
+		LinkedList<Video> videosAux = new LinkedList<Video>();
+		videosAux = (LinkedList<Video>) frameBase.getAppVideo().obtenerVideos();
+		
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		for(int i = 0; i < 4; i++) {
+			System.out.println("Hola");
+			Video elemento = videosAux.get(i);
+			switch (i) {
+			case 0:
+				gVideos.setVideo1(new JLabel(vWeb.getThumb(elemento.getUrl())));
+				break;
+			case 1:
+				gVideos.setVideo2(new JLabel(vWeb.getThumb(elemento.getUrl())));
+				break;
+			case 2:
+				gVideos.setVideo3(new JLabel(vWeb.getThumb(elemento.getUrl())));
+				break;
+			case 3:
+				gVideos.setVideo4(new JLabel(vWeb.getThumb(elemento.getUrl())));
+				break;
+			default:
+				break;
+			}
+		}
+		
+		listaGVideos.add(gVideos);
+		TablaAbstract tm = new TablaAbstract(listaGVideos);
+		
+		JLabel aux[] = new JLabel[4];
+		boolean escribir = false;
+		if (videosAux.size() > 4) {
+			for(int i = 4; i < videosAux.size(); i++) {
+				Video elemento = videosAux.get(i);
+				switch (i%4) {
+					case 0:
+						aux[0] = new JLabel(vWeb.getThumb(elemento.getUrl()));
+						break;
+					case 1:
+						aux[1] = new JLabel(vWeb.getThumb(elemento.getUrl()));
+						break;
+					case 2:
+						aux[2] = new JLabel(vWeb.getThumb(elemento.getUrl()));
+						break;
+					case 3:
+						aux[3] = new JLabel(vWeb.getThumb(elemento.getUrl()));
+						escribir = true;
+						break;
+					default:
+						break;
+				}
+				if (escribir) {
+					tm.addRow(new GrupoVideos(aux[0], aux[1], aux[2], aux[3]));
+					escribir = false;
+				}
+			}
+		}
+		
+		if ((videosAux.size() % 4) != 0) {
+			switch (videosAux.size() %4) {
+			case 1:
+				tm.addRow(new GrupoVideos(aux[0]));
+				break;
+			case 2:
+				tm.addRow(new GrupoVideos(aux[0], aux[1]));
+				break;
+			case 3:
+				tm.addRow(new GrupoVideos(aux[0], aux[1], aux[2]));
+				break;
+			default:
+				break;
+			}
+		}
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		tablaVideos.setModel(tm);
+		tablaVideos.setRowHeight(90);
+		tablaVideos.setModel(tm);
+		//rellenarTabla(tm);
 		
 		panel_5.add(tablaVideos, gbc_tablaVideos);
 		
 		//Listener para buscar los videos, si buscamos sin escribir nada la tabla se resetea
-		botonBuscarVideo.addActionListener(event -> {
+		/*botonBuscarVideo.addActionListener(event -> {
 			String tituloVideo = campoBuscarTitulo.getText();
 			if (!tituloVideo.equals("")) {
 				List<Video> videoBuscado = this.frameBase.getAppVideo().buscarVideo(tituloVideo);
@@ -263,11 +342,11 @@ public class PanelCrearLista extends JPanel {
 				rellenarTabla(tm);
 			}
 				
-		});
+		});*/
 	}
 	
 	//Metodo para rellenar la tabla con todos los videos 
-	private void rellenarTabla(DefaultTableModel tm) {
+	/*private void rellenarTabla(TablaAbstract tm) {
 		
 		List<String> urls = frameBase.getAppVideo().obtenerURLs();
 		JLabel aux[] = new JLabel[4];
@@ -343,6 +422,6 @@ public class PanelCrearLista extends JPanel {
 		}
 		tablaVideos.setRowHeight(90);
 		tablaVideos.setModel(tm);
-	}
+	}*/
 	//Dos metodos para tablask
 }

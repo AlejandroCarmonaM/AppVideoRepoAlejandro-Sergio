@@ -36,6 +36,10 @@ public class AppVideo {
 		repositorioVideoPrueba.anadirVideo("Tercer video", "https://www.youtube.com/watch?v=0243Z0YXPpY");
 		repositorioVideoPrueba.anadirVideo("Cuarto video", "https://www.youtube.com/watch?v=UtF6Jej8yb4");
 		repositorioVideoPrueba.anadirVideo("Quinto video", "https://www.youtube.com/watch?v=WQo9cHP7MIc");
+		repositorioVideoPrueba.anadirVideo("Sexto video", "https://www.youtube.com/watch?v=WQo9cHP7MIc");
+		repositorioVideoPrueba.anadirVideo("Septimo video", "https://www.youtube.com/watch?v=WQo9cHP7MIc");
+		repositorioVideoPrueba.anadirVideo("Octabo video", "https://www.youtube.com/watch?v=0243Z0YXPpY");
+		//repositorioVideoPrueba.anadirVideo("Noveno video", "https://www.youtube.com/watch?v=WQo9cHP7MIc");
 	}
 
 	
@@ -114,6 +118,10 @@ public class AppVideo {
 	
 	public List<String> obtenerURLs() {
 		return repositorioVideoPrueba.obtenerURLs();
+	}
+	
+	public List<Video> obtenerVideos() {
+		return repositorioVideoPrueba.obtenerVideos();
 	}
 
 }
