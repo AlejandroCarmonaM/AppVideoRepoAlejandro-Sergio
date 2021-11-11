@@ -1,8 +1,11 @@
 package pantallas;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
 import java.awt.Color;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 
 import java.awt.BorderLayout;
@@ -35,6 +38,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JList;
+import javax.swing.ScrollPaneConstants;
 
 public class PanelCrearLista extends JPanel {
 	private FrameBase frameBase;
@@ -116,13 +120,21 @@ public class PanelCrearLista extends JPanel {
 		gbl_panelMiLista.rowWeights = new double[]{1.0, Double.MIN_VALUE};
 		panelMiLista.setLayout(gbl_panelMiLista);
 		
-		JList listaActual = new JList();
+		JList<JLabel> listaActual = new JList<JLabel>();
 		listaActual.setBackground(Color.GRAY);
 		GridBagConstraints gbc_listaActual = new GridBagConstraints();
 		gbc_listaActual.fill = GridBagConstraints.BOTH;
 		gbc_listaActual.gridx = 0;
 		gbc_listaActual.gridy = 0;
-		panelMiLista.add(listaActual, gbc_listaActual);
+		
+		DefaultListModel<JLabel> modeloLista = new DefaultListModel<JLabel>();
+		listaActual.setModel(modeloLista);
+		
+		JScrollPane scroller1 = new JScrollPane(listaActual);
+		scroller1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		//listaActual.setCellRenderer(new ImgTabla());
+		
+		panelMiLista.add(scroller1, gbc_listaActual);
 		
 		JPanel panelAQA = new JPanel();
 		panelAQA.setMaximumSize(new Dimension(32767, 10000));
@@ -246,7 +258,7 @@ public class PanelCrearLista extends JPanel {
 		
 		
 		listaGVideos.add(gVideos);
-		TablaAbstract tm = new TablaAbstract();
+		TablaAbstract tm = new TablaAbstract(videosAux);
 		tm.rellenarTabla(videosAux, vWeb);
 		
 		tablaVideos.setModel(tm);
@@ -275,6 +287,16 @@ public class PanelCrearLista extends JPanel {
 			}
 			tm.fireTableDataChanged();
 			validate();	
+		});
+
+		tablaVideos.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int fila = tablaVideos.rowAtPoint(e.getPoint());
+				int columna = tablaVideos.columnAtPoint(e.getPoint());
+				//System.out.println("fila: "+fila+" columna: "+columna);
+				modeloLista.addElement(new JLabel(vWeb.getThumb("https://www.youtube.com/watch?v=rk7ITikbhs4")));
+			}
 		});
 	}
 }

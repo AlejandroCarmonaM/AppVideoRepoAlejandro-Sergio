@@ -14,10 +14,12 @@ import javax.swing.JLabel;
 public class TablaAbstract extends AbstractTableModel {
 	private static final long serialVersionUID = 1L;
 	private LinkedList<GrupoVideos> videos;
+	private LinkedList<Video> todosVideos;
 	private String[] columnNames = {"Video 1","Video 2", "Video 3", "Video 3"};
 
-	public TablaAbstract(){
+	public TablaAbstract(List<Video> v){
 		this.videos = new LinkedList<GrupoVideos>();
+		this.todosVideos = (LinkedList<Video>) v;
 	}
 	
 	public String getColumnName(int column) {
