@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 public class TablaAbstract extends AbstractTableModel {
 	private static final long serialVersionUID = 1L;
@@ -58,6 +59,7 @@ public class TablaAbstract extends AbstractTableModel {
 		videos.add(gVideos);
 	}
 	
+	//modificacion para incluir el titulo para mostrarlo en la lista
 	public void rellenarTabla(List<Video> videos, VideoWeb vWeb) {
 		JLabel aux[] = new JLabel[4];
 		boolean escribir = false;
@@ -66,16 +68,16 @@ public class TablaAbstract extends AbstractTableModel {
 				Video elemento = videos.get(i);
 				switch (i%4) {
 					case 0:
-						aux[0] = new JLabel(vWeb.getThumb(elemento.getUrl()));
+						aux[0] = creaLabel(elemento, vWeb);
 						break;
 					case 1:
-						aux[1] = new JLabel(vWeb.getThumb(elemento.getUrl()));
+						aux[1] = creaLabel(elemento, vWeb);
 						break;
 					case 2:
-						aux[2] = new JLabel(vWeb.getThumb(elemento.getUrl()));
+						aux[2] = creaLabel(elemento, vWeb);
 						break;
 					case 3:
-						aux[3] = new JLabel(vWeb.getThumb(elemento.getUrl()));
+						aux[3] = creaLabel(elemento, vWeb);
 						escribir = true;
 						break;
 					default:
@@ -92,13 +94,13 @@ public class TablaAbstract extends AbstractTableModel {
 				Video elemento = videos.get(i);
 				switch (i%4) {
 					case 0:
-						aux[0] = new JLabel(vWeb.getThumb(elemento.getUrl()));
+						aux[0] = creaLabel(elemento, vWeb);
 						break;
 					case 1:
-						aux[1] = new JLabel(vWeb.getThumb(elemento.getUrl()));
+						aux[1] = creaLabel(elemento, vWeb);
 						break;
 					case 2:
-						aux[2] = new JLabel(vWeb.getThumb(elemento.getUrl()));
+						aux[2] = creaLabel(elemento, vWeb);
 						break;
 					default:
 						break;
@@ -125,5 +127,14 @@ public class TablaAbstract extends AbstractTableModel {
 	public void removeRow(int i) {
 		if (i <= videos.size())
 			videos.remove(i);
+	}
+	
+	//metodo para crear los label con el nombre
+	private JLabel creaLabel(Video elemento, VideoWeb vWeb)
+	{
+		JLabel label = new JLabel(elemento.getTitulo(), vWeb.getThumb(elemento.getUrl()), SwingConstants.CENTER);
+		label.setHorizontalTextPosition(JLabel.CENTER);
+		label.setVerticalTextPosition(JLabel.BOTTOM);
+		return label;
 	}
 }

@@ -18,6 +18,8 @@ import dominio.Video;
 import tds.video.VideoWeb;
 
 import javax.swing.JTextField;
+import javax.swing.ListCellRenderer;
+
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -121,6 +123,7 @@ public class PanelCrearLista extends JPanel {
 		panelMiLista.setLayout(gbl_panelMiLista);
 		
 		JList<JLabel> listaActual = new JList<JLabel>();
+		listaActual.setCellRenderer(new ImgLista());
 		listaActual.setBackground(Color.GRAY);
 		GridBagConstraints gbc_listaActual = new GridBagConstraints();
 		gbc_listaActual.fill = GridBagConstraints.BOTH;
@@ -132,7 +135,7 @@ public class PanelCrearLista extends JPanel {
 		
 		JScrollPane scroller1 = new JScrollPane(listaActual);
 		scroller1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		//listaActual.setCellRenderer(new ImgTabla());
+		
 		
 		panelMiLista.add(scroller1, gbc_listaActual);
 		
@@ -262,7 +265,7 @@ public class PanelCrearLista extends JPanel {
 		tm.rellenarTabla(videosAux, vWeb);
 		
 		tablaVideos.setModel(tm);
-		tablaVideos.setRowHeight(90);
+		tablaVideos.setRowHeight(120); //cambio en la altura para que se vean los titulos
 		tablaVideos.setModel(tm);
 		
 		panel_5.add(tablaVideos, gbc_tablaVideos);
@@ -295,7 +298,8 @@ public class PanelCrearLista extends JPanel {
 				int fila = tablaVideos.rowAtPoint(e.getPoint());
 				int columna = tablaVideos.columnAtPoint(e.getPoint());
 				//System.out.println("fila: "+fila+" columna: "+columna);
-				modeloLista.addElement(new JLabel(vWeb.getThumb("https://www.youtube.com/watch?v=rk7ITikbhs4")));
+				//modeloLista.addElement(new JLabel(vWeb.getThumb("https://www.youtube.com/watch?v=rk7ITikbhs4")));
+				modeloLista.addElement(tm.getValueAt(fila, columna));
 			}
 		});
 	}
