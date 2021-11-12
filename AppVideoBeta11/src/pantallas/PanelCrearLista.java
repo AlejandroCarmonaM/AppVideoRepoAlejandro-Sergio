@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.border.BevelBorder;
 import javax.swing.table.DefaultTableModel;
 
+import dominio.CuartetoVideos;
 import dominio.GrupoVideos;
 import dominio.Video;
 import tds.video.VideoWeb;
@@ -46,7 +47,6 @@ public class PanelCrearLista extends JPanel {
 	private FrameBase frameBase;
 	private JTextField campoNombreLista;
 	private JTextField campoBuscarTitulo;
-	private static VideoWeb vWeb = new VideoWeb();
 	private JTable tablaVideos;
 
 	/**
@@ -122,7 +122,7 @@ public class PanelCrearLista extends JPanel {
 		gbl_panelMiLista.rowWeights = new double[]{1.0, Double.MIN_VALUE};
 		panelMiLista.setLayout(gbl_panelMiLista);
 		
-		JList<JLabel> listaActual = new JList<JLabel>();
+		JList<Video> listaActual = new JList<Video>();
 		listaActual.setCellRenderer(new ImgLista());
 		listaActual.setBackground(Color.GRAY);
 		GridBagConstraints gbc_listaActual = new GridBagConstraints();
@@ -130,7 +130,7 @@ public class PanelCrearLista extends JPanel {
 		gbc_listaActual.gridx = 0;
 		gbc_listaActual.gridy = 0;
 		
-		DefaultListModel<JLabel> modeloLista = new DefaultListModel<JLabel>();
+		DefaultListModel<Video> modeloLista = new DefaultListModel<Video>();
 		listaActual.setModel(modeloLista);
 		
 		JScrollPane scroller1 = new JScrollPane(listaActual);
@@ -254,15 +254,15 @@ public class PanelCrearLista extends JPanel {
 		gbc_tablaVideos.gridy = 0;
 		
 		tablaVideos.setDefaultRenderer(Object.class, new ImgTabla());
-		GrupoVideos gVideos = new GrupoVideos();
-		LinkedList<GrupoVideos> listaGVideos = new LinkedList<GrupoVideos>();
+		CuartetoVideos gVideos = new CuartetoVideos();
+		LinkedList<CuartetoVideos> listaCVideos = new LinkedList<CuartetoVideos>();
 		LinkedList<Video> videosAux = new LinkedList<Video>();
 		videosAux = (LinkedList<Video>) frameBase.getAppVideo().obtenerVideos();
 		
 		
-		listaGVideos.add(gVideos);
-		TablaAbstract tm = new TablaAbstract(videosAux);
-		tm.rellenarTabla(videosAux, vWeb);
+		listaCVideos.add(gVideos);
+		TablaAbstract tm = new TablaAbstract();
+		tm.rellenarTabla(videosAux, FrameBase.getVideoWeb());
 		
 		tablaVideos.setModel(tm);
 		tablaVideos.setRowHeight(120); //cambio en la altura para que se vean los titulos
@@ -279,14 +279,14 @@ public class PanelCrearLista extends JPanel {
 				for (int i = filas-1; i >= 0; i--)
 					tm.removeRow(i);
 				if (videoBuscado != null)
-					tm.rellenarTabla(videoBuscado, vWeb);
+					tm.rellenarTabla(videoBuscado, FrameBase.getVideoWeb());
 			}
 			else {
 				int filas = tablaVideos.getRowCount();
 				for (int i = filas-1; i >= 0; i--)
 					tm.removeRow(i);
 				List<Video> todosVideos = frameBase.getAppVideo().obtenerVideos();
-				tm.rellenarTabla(todosVideos, vWeb);
+				tm.rellenarTabla(todosVideos, FrameBase.getVideoWeb());
 			}
 			tm.fireTableDataChanged();
 			validate();	
@@ -297,8 +297,6 @@ public class PanelCrearLista extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				int fila = tablaVideos.rowAtPoint(e.getPoint());
 				int columna = tablaVideos.columnAtPoint(e.getPoint());
-				//System.out.println("fila: "+fila+" columna: "+columna);
-				//modeloLista.addElement(new JLabel(vWeb.getThumb("https://www.youtube.com/watch?v=rk7ITikbhs4")));
 				modeloLista.addElement(tm.getValueAt(fila, columna));
 			}
 		});

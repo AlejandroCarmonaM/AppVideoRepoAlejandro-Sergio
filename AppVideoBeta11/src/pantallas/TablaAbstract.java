@@ -2,6 +2,7 @@ package pantallas;
 
 import javax.swing.table.AbstractTableModel;
 
+import dominio.CuartetoVideos;
 import dominio.GrupoVideos;
 import dominio.Video;
 import tds.video.VideoWeb;
@@ -13,14 +14,13 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 public class TablaAbstract extends AbstractTableModel {
+	private static final int NUM_COLUMNAS =4;
 	private static final long serialVersionUID = 1L;
-	private LinkedList<GrupoVideos> videos;
-	private LinkedList<Video> todosVideos;
+	private LinkedList<CuartetoVideos> videos;
 	private String[] columnNames = {"Video 1","Video 2", "Video 3", "Video 3"};
 
-	public TablaAbstract(List<Video> v){
-		this.videos = new LinkedList<GrupoVideos>();
-		this.todosVideos = (LinkedList<Video>) v;
+	public TablaAbstract(){
+		this.videos = new LinkedList<CuartetoVideos>();
 	}
 	
 	public String getColumnName(int column) {
@@ -32,12 +32,12 @@ public class TablaAbstract extends AbstractTableModel {
 	}
 	
 	public int getColumnCount() { 
-		return 4; 
+		return NUM_COLUMNAS; 
 	}
 	
-	public JLabel getValueAt(int row, int col) {
-		JLabel video = null;
-		GrupoVideos sol = videos.get(row);
+	public Video getValueAt(int row, int col) {
+		Video video = null;
+		CuartetoVideos sol = videos.get(row);
 		switch (col) {						 
 			case 0 : 
 				video = sol.getVideo1(); 
@@ -55,36 +55,36 @@ public class TablaAbstract extends AbstractTableModel {
 		return video;
 	}
 	
-	public void addRow(GrupoVideos gVideos) {
+	public void addRow(CuartetoVideos gVideos) {
 		videos.add(gVideos);
 	}
 	
 	//modificacion para incluir el titulo para mostrarlo en la lista
 	public void rellenarTabla(List<Video> videos, VideoWeb vWeb) {
-		JLabel aux[] = new JLabel[4];
+		Video aux[] = new Video[4];
 		boolean escribir = false;
 		if (videos.size() > 4) {
 			for(int i = 0; i < videos.size(); i++) {
 				Video elemento = videos.get(i);
 				switch (i%4) {
 					case 0:
-						aux[0] = creaLabel(elemento, vWeb);
+						aux[0] = elemento;
 						break;
 					case 1:
-						aux[1] = creaLabel(elemento, vWeb);
+						aux[1] = elemento;
 						break;
 					case 2:
-						aux[2] = creaLabel(elemento, vWeb);
+						aux[2] = elemento;
 						break;
 					case 3:
-						aux[3] = creaLabel(elemento, vWeb);
+						aux[3] = elemento;
 						escribir = true;
 						break;
 					default:
 						break;
 				}
 				if (escribir) {
-					this.addRow(new GrupoVideos(aux[0], aux[1], aux[2], aux[3]));
+					this.addRow(new CuartetoVideos(aux[0], aux[1], aux[2], aux[3]));
 					escribir = false;
 				}
 			}
@@ -94,13 +94,13 @@ public class TablaAbstract extends AbstractTableModel {
 				Video elemento = videos.get(i);
 				switch (i%4) {
 					case 0:
-						aux[0] = creaLabel(elemento, vWeb);
+						aux[0] =elemento;
 						break;
 					case 1:
-						aux[1] = creaLabel(elemento, vWeb);
+						aux[1] = elemento;
 						break;
 					case 2:
-						aux[2] = creaLabel(elemento, vWeb);
+						aux[2] = elemento;
 						break;
 					default:
 						break;
@@ -110,13 +110,13 @@ public class TablaAbstract extends AbstractTableModel {
 		if ((videos.size() % 4) != 0) {
 			switch (videos.size() %4) {
 			case 1:
-				this.addRow(new GrupoVideos(aux[0]));
+				this.addRow(new CuartetoVideos(aux[0]));
 				break;
 			case 2:
-				this.addRow(new GrupoVideos(aux[0], aux[1]));
+				this.addRow(new CuartetoVideos(aux[0], aux[1]));
 				break;
 			case 3:
-				this.addRow(new GrupoVideos(aux[0], aux[1], aux[2]));
+				this.addRow(new CuartetoVideos(aux[0], aux[1], aux[2]));
 				break;
 			default:
 				break;
@@ -129,12 +129,5 @@ public class TablaAbstract extends AbstractTableModel {
 			videos.remove(i);
 	}
 	
-	//metodo para crear los label con el nombre
-	private JLabel creaLabel(Video elemento, VideoWeb vWeb)
-	{
-		JLabel label = new JLabel(elemento.getTitulo(), vWeb.getThumb(elemento.getUrl()), SwingConstants.CENTER);
-		label.setHorizontalTextPosition(JLabel.CENTER);
-		label.setVerticalTextPosition(JLabel.BOTTOM);
-		return label;
-	}
+	
 }
