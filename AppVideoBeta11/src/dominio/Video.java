@@ -1,6 +1,7 @@
 package dominio;
 
 import java.util.HashSet;
+import java.util.Set;
 
 public class Video {
 
@@ -57,5 +58,11 @@ public class Video {
 	public boolean isLargo(int limite)
 	{
 		return (this.titulo.length()<limite);
+	}
+
+	public boolean tieneEtiquetas(Set<Etiqueta> setE) {
+		if (etiquetas.isEmpty()) return false;
+		return etiquetas.stream()
+		.anyMatch(setE::contains);
 	}
 }

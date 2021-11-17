@@ -12,11 +12,23 @@ public class RepositorioVideo {
 	
 	public List<Video> buscarVideo(String titulo) {
 		long coincidencias = repositorio.stream()
-								.filter(vid -> vid.getTitulo().equals(titulo))
+								.filter(vid -> vid.getTitulo().contains(titulo))
 								.count();
 		if (coincidencias > 0)
 			return repositorio.stream()
-					.filter(elem -> elem.getTitulo().equals(titulo))
+					.filter(elem -> elem.getTitulo().contains(titulo))
+					.collect(Collectors.toList());
+		return null;
+	}
+	
+	public List<Video> buscarVideo(String titulo, Set<Etiqueta> etiquetas) {
+		if (etiquetas.isEmpty()) return buscarVideo(titulo); 
+		long coincidencias = repositorio.stream()
+								.filter(vid -> vid.getTitulo().contains(titulo) && vid.tieneEtiquetas(etiquetas))
+								.count();
+		if (coincidencias > 0)
+			return repositorio.stream()
+					.filter(elem -> elem.getTitulo().contains(titulo)&& elem.tieneEtiquetas(etiquetas))
 					.collect(Collectors.toList());
 		return null;
 	}
@@ -33,6 +45,15 @@ public class RepositorioVideo {
 	
 	public void anadirVideo(String titulo, String url) {
 		Video nuevoVideo = new Video(titulo, url);
+		repositorio.add(nuevoVideo);
+	}
+	
+	public void anadirVideo(String titulo, String url, Etiqueta...etiquetas) {
+		Video nuevoVideo = new Video(titulo, url);
+		for(Etiqueta e: etiquetas)
+		{
+			nuevoVideo.anadirEtiqueta(e);
+		}
 		repositorio.add(nuevoVideo);
 	}
 	
