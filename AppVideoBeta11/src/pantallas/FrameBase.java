@@ -23,12 +23,14 @@ import javax.swing.border.EmptyBorder;
 
 import dominio.AppVideo;
 import dominio.Usuario;
+import tds.video.VideoWeb;
 
 public class FrameBase extends JFrame {
 
 	private JPanel contentPane;
 	private AppVideo appVideo;
 	private JPanel panel_centro;
+	private static VideoWeb vWeb = new VideoWeb();
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -202,6 +204,27 @@ public class FrameBase extends JFrame {
 	//metodo creaPanel
 	
 	public void creaPanel(JPanel panel_central, JPanel panel_nuevo)
+	{
+		FrameBase.getVideoWeb().cancel();
+		panel_central.setVisible(false);
+		panel_central.removeAll();
+		//panel_nuevo.setSize(panel_central.getSize());
+		panel_nuevo.setVisible(true);
+		panel_central.add(panel_nuevo);
+		panel_central.setVisible(true);
+		panel_central.repaint();
+		//this.pack();
+		panel_central.revalidate();
+		this.validate();
+		
+	}
+
+	public static VideoWeb getVideoWeb() {
+		// TODO Auto-generated method stub
+		return vWeb;
+	}
+	
+	public void creaPanelReproduccion(JPanel panel_central, JPanel panel_nuevo)
 	{
 		panel_central.setVisible(false);
 		panel_central.removeAll();

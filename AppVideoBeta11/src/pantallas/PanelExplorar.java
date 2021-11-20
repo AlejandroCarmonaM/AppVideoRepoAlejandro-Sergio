@@ -3,6 +3,7 @@ package pantallas;
 import javax.swing.JPanel;
 
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -10,6 +11,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 
 import dominio.AppVideo;
+import dominio.CuartetoVideos;
 
 import javax.swing.JLabel;
 import java.awt.GridLayout;
@@ -25,22 +27,30 @@ import javax.swing.JButton;
 import java.awt.Font;
 import javax.swing.JList;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.awt.event.ActionEvent;
 import javax.swing.border.LineBorder;
 import javax.swing.border.BevelBorder;
 import dominio.Etiqueta;
+import dominio.Video;
+
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import javax.swing.SwingConstants;
 import javax.swing.ScrollPaneConstants;
 
 public class PanelExplorar extends JPanel {
 	//atributos
 	
-	private JTextField textField;
+	private JTextField campoBuscarTitulo;
 	private FrameBase frameBase;
-	private List<Etiqueta> etiquetasSeleccionadas= new LinkedList<Etiqueta>();  
+	private Set<Etiqueta> etiquetasSeleccionadas= new HashSet<Etiqueta>();  
 	
 	//constructor
 	public PanelExplorar(FrameBase frameBase) {
@@ -75,9 +85,9 @@ public class PanelExplorar extends JPanel {
 		lblBuscarTitulo.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		panel_2.add(lblBuscarTitulo);
 		
-		textField = new JTextField();
-		panel_2.add(textField);
-		textField.setColumns(30);
+		campoBuscarTitulo = new JTextField();
+		panel_2.add(campoBuscarTitulo);
+		campoBuscarTitulo.setColumns(30);
 		
 		JButton btnBuscar = new JButton("Buscar");
 		panel_2.add(btnBuscar);
@@ -102,9 +112,37 @@ public class PanelExplorar extends JPanel {
 		Component verticalStrut = Box.createVerticalStrut(350);
 		panel_tabla_videos.add(verticalStrut);
 		
-		/*Component horizontalStrut = Box.createHorizontalStrut(500);
-		panel_tabla_videos.add(horizontalStrut);*/
+		JTable tablaVideos = new JTable();
 		
+		tablaVideos.setCellSelectionEnabled(true);
+		tablaVideos.setBackground(Color.GRAY);
+		/*GridBagConstraints gbc_tablaVideos = new GridBagConstraints();
+		gbc_tablaVideos.fill = GridBagConstraints.BOTH;
+		gbc_tablaVideos.gridx = 0;
+		gbc_tablaVideos.gridy = 0;*/
+		
+		tablaVideos.setDefaultRenderer(Object.class, new ImgTabla());
+		CuartetoVideos gVideos = new CuartetoVideos();
+		LinkedList<CuartetoVideos> listaCVideos = new LinkedList<CuartetoVideos>();
+		LinkedList<Video> videosAux = new LinkedList<Video>();
+		videosAux = (LinkedList<Video>) frameBase.getAppVideo().obtenerVideos();
+		
+		
+		listaCVideos.add(gVideos);
+		TablaAbstract tm = new TablaAbstract();
+		tm.rellenarTabla(videosAux, FrameBase.getVideoWeb());
+		
+		tablaVideos.setModel(tm);
+		tablaVideos.setRowHeight(120); //cambio en la altura para que se vean los titulos
+		TableColumnModel colModel=tablaVideos.getColumnModel();
+		for(int i=0; i<4; i++)
+		{
+			TableColumn col=colModel.getColumn(i);
+			col.setPreferredWidth(145);
+		}
+		tablaVideos.setModel(tm);
+		
+		panel_tabla_videos.add(tablaVideos);
 		
 		
 		JPanel panel_este = new JPanel();
@@ -156,8 +194,8 @@ public class PanelExplorar extends JPanel {
 			model2.addElement(item);
 		}
 		lista2.setModel(model2);
-		JScrollPane scroller2 = new JScrollPane(lista2);
-		scroller2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+		JScrollPane scroller2 = new JScrollane(lista2);
+		scroller2.setVerticalScrollBarPolicy(JScrollPane.VERTICALP_SCROLLBAR_NEVER);
 		scroller2.setMaximumSize(new Dimension(500, 15000));
 		panel_tabla_videos.add(scroller2);*/
 		
@@ -205,16 +243,50 @@ public class PanelExplorar extends JPanel {
 
 		btnNuevaBusqueda.addActionListener(ev -> {
 			etiquetasSeleccionadas.clear();
-			textField.setText("");
-			panel_tabla_videos.removeAll();
+			campoBuscarTitulo.setText("");
+			int filas = tablaVideos.getRowCount();
+			for (int i = filas-1; i >= 0; i--)
+				tm.removeRow(i);
 			model1.removeAllElements();
 			model1.addElement("");
 			lista1.setModel(model1);
+			tm.fireTableDataChanged();
 			panel_este.repaint();
 			panel_este.revalidate();
 			this.frameBase.validate();
 
 			});
-	}
+		
+	btnBuscar.addActionListener(event -> {
+		String tituloVideo = campoBuscarTitulo.getText();
+		if (!tituloVideo.equals("")) {
+			List<Video> videoBuscado = this.frameBase.getAppVideo().buscarVideo(tituloVideo, etiquetasSeleccionadas);
+			int filas = tablaVideos.getRowCount();
+			for (int i = filas-1; i >= 0; i--)
+				tm.removeRow(i);
+			if (videoBuscado != null)
+				tm.rellenarTabla(videoBuscado, FrameBase.getVideoWeb());
+		}
+		else {
+			int filas = tablaVideos.getRowCount();
+			for (int i = filas-1; i >= 0; i--)
+				tm.removeRow(i);
+			List<Video> todosVideos = frameBase.getAppVideo().obtenerVideos();
+			tm.rellenarTabla(todosVideos, FrameBase.getVideoWeb());
+		}
+		tm.fireTableDataChanged();
+		validate();	
+	});
 
+	tablaVideos.addMouseListener(new MouseAdapter() {
+		public void mouseClicked(MouseEvent e) {
+			int fila = tablaVideos.rowAtPoint(e.getPoint());
+			int columna = tablaVideos.columnAtPoint(e.getPoint());
+			frameBase.creaPanelReproduccion(frameBase.getPanelCentro(), new PanelReproduccion(frameBase, tm.getValueAt(fila, columna)));
+			validate();
+			//Hay que crear otro panel
+		}
+	});
+	
+	} 
 }
