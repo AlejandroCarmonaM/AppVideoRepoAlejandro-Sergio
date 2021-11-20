@@ -28,6 +28,6 @@ public class ImgTabla extends DefaultTableCellRenderer {
         }
         else return null;
         return label;
-
+        //hola
     }
 }
