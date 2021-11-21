@@ -36,8 +36,10 @@ public class Usuario {
 	public Usuario(String nombre, Date fechaNacimiento, String nombreUsuario, String contrasena) {
 		this.nombre = nombre;
 		this.fecha = fechaNacimiento;
-		this.nombre = nombreUsuario;
+		this.usuario = nombreUsuario;
 		this.contrasena = contrasena;
+		this.listasVideos = new LinkedList<ListaVideos>();
+		this.recientes = new ArrayList<Video>();
 	}
 
 	//metodos get y set

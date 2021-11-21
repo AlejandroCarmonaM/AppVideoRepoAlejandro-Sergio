@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class RepositorioUsuarios {
-	//Atributos
+	/*//Atributos
 	private HashSet<Usuario> repositorio;
 	private Usuario admin;
 	private List<Usuario> usuarios;
@@ -100,6 +100,6 @@ public boolean registrarUsuarioCompleto(String nombre, String apellidos, String 
 
 	public Usuario getAdmin() {
 		return admin;
-	}
+	}*/
 	
 }

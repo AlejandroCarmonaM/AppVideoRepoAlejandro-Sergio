@@ -29,6 +29,7 @@ import javax.swing.JList;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -124,8 +125,7 @@ public class PanelExplorar extends JPanel {
 		tablaVideos.setDefaultRenderer(Object.class, new ImgTabla());
 		CuartetoVideos gVideos = new CuartetoVideos();
 		LinkedList<CuartetoVideos> listaCVideos = new LinkedList<CuartetoVideos>();
-		LinkedList<Video> videosAux = new LinkedList<Video>();
-		videosAux = (LinkedList<Video>) frameBase.getAppVideo().obtenerVideos();
+		ArrayList<Video> videosAux  = (ArrayList<Video>) frameBase.getAppVideo().obtenerVideos();
 		
 		
 		listaCVideos.add(gVideos);

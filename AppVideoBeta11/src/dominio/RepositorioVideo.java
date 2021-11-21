@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 public class RepositorioVideo {
 	private LinkedList<Video> repositorio;
 	
-	public List<Video> buscarVideo(String titulo) {
+	/*public List<Video> buscarVideo(String titulo) {
 		long coincidencias = repositorio.stream()
 								.filter(vid -> vid.getTitulo().contains(titulo))
 								.count();
@@ -59,5 +59,5 @@ public class RepositorioVideo {
 	
 	public RepositorioVideo() {
 		this.repositorio = new LinkedList<Video>();
-	}
+	}*/
 }

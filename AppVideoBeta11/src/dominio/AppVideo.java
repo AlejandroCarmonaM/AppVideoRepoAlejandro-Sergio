@@ -1,5 +1,8 @@
 package dominio;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -8,29 +11,44 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import pantallas.FrameBase;
+import persistencia.DAOException;
+import persistencia.FactoriaDAO;
+import persistencia.IAdaptadorUsuarioDAO;
+import persistencia.IAdaptadorVideoDAO;
 
 public class AppVideo {
 	
 	private static final String[] ETIQUETAS = {"Videoclips", "Peliculas", "Series"};
-	private String usuario;
+	private String nombreUsuario;
+	private Usuario usuario;
 	private List <String> etiquetasHabituales;
 	private RepositorioUsuarios ruf;
 	private RepositorioUsuarios repositoPrueba = new RepositorioUsuarios();
 	private JPanel panelCentro;
 	private FrameBase frameBase;
 	private JLabel etiqueta;
-	private RepositorioVideo repositorioVideoPrueba = new RepositorioVideo();
+	//private RepositorioVideo repositorioVideoPrueba = new RepositorioVideo();
 	
+	
+	private IAdaptadorVideoDAO adaptadorVideo;
+	private IAdaptadorUsuarioDAO adaptadorUsuario;
+	
+	private CatalogoVideo catalogoVideo;
+	private CatalogoUsuarios catalogoUsuario;
 	
 	public AppVideo() {
-		this.usuario = "usuario";
+		this.nombreUsuario = "usuario";
 		this.etiquetasHabituales = new LinkedList<String>();
 		ruf = new RepositorioUsuarios();
 		for(String etiqueta: ETIQUETAS)
 		{
 			etiquetasHabituales.add(etiqueta);
 		}
-		repositorioVideoPrueba.anadirVideo("primerVideo", "https://www.youtube.com/watch?v=rk7ITikbhs4");
+		
+		inicializarAdaptadores();
+		inicializarCatalogos();
+		
+		/*repositorioVideoPrueba.anadirVideo("primerVideo", "https://www.youtube.com/watch?v=rk7ITikbhs4");
 		repositorioVideoPrueba.anadirVideo("primerVideo", "https://www.youtube.com/watch?v=rk7ITikbhs4");
 		repositorioVideoPrueba.anadirVideo("Segundo video", "https://www.youtube.com/watch?v=EdVMSYomYJY");
 		repositorioVideoPrueba.anadirVideo("Tercer video", "https://www.youtube.com/watch?v=0243Z0YXPpY");
@@ -39,30 +57,42 @@ public class AppVideo {
 		repositorioVideoPrueba.anadirVideo("Sexto video", "https://www.youtube.com/watch?v=WQo9cHP7MIc");
 		repositorioVideoPrueba.anadirVideo("Septimo video", "https://www.youtube.com/watch?v=WQo9cHP7MIc");
 		repositorioVideoPrueba.anadirVideo("Octabo video", "https://www.youtube.com/watch?v=0243Z0YXPpY",new Etiqueta("Series"));
-		repositorioVideoPrueba.anadirVideo("Noveno video", "https://www.youtube.com/watch?v=WQo9cHP7MIc", new Etiqueta("Series"));
+		repositorioVideoPrueba.anadirVideo("Noveno video", "https://www.youtube.com/watch?v=WQo9cHP7MIc", new Etiqueta("Series"));*/
 	}
 
 	
 	public boolean registrarUser(String nombre, String fechaNacimiento, String nombreUsuario, String contrasena, String contrasenaRep) {
-		if (repositoPrueba.registrarUsuario(nombre, fechaNacimiento, nombreUsuario, contrasena, contrasenaRep))
+		if (catalogoUsuario.registrarUsuario(nombre, fechaNacimiento, nombreUsuario, contrasena, contrasenaRep)) {
+			SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+			Date fecha;
+			try {
+				fecha = formato.parse(fechaNacimiento);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				return false;
+			}
+			Usuario usuarioAux = new Usuario(nombre, fecha, nombreUsuario, contrasena);
+			adaptadorUsuario.registrarUsuario(usuarioAux);
 			return true;
+		}
 		return false;
 	}
 	public String getUsuario() {
-		return usuario;
+		return nombreUsuario;
 	}
 	
 	public void setUsuario(String usuario)
 	{
-		this.usuario=usuario;
+		this.nombreUsuario=usuario;
 	}
 
 
 	public boolean login(String usuario, String contrasena)
 	{
-		if(ruf.isLoginOK(usuario, contrasena))
+		if(catalogoUsuario.isLoginOK(usuario, contrasena))
 		{
-			this.usuario=usuario;
+			this.nombreUsuario=usuario;
+			this.usuario = catalogoUsuario.getUsuario(usuario);
 			return true;
 			//PanelPrueba panel_prueba = new PanelPrueba();
 			//CreadorPaneles.creaPanel(panel_centro_central, panel_prueba);
@@ -102,7 +132,7 @@ public class AppVideo {
 	
 	public JLabel creaEtiqueta()
 	{
-		JLabel lblLogin = new JLabel("Hola "+usuario);
+		JLabel lblLogin = new JLabel("Hola "+nombreUsuario);
 		etiqueta = lblLogin;
 		return etiqueta;
 	}
@@ -113,18 +143,44 @@ public class AppVideo {
 	}
 	
 	public List<Video> buscarVideo(String titulo) {
-		return repositorioVideoPrueba.buscarVideo(titulo);
+		return catalogoVideo.buscarVideo(titulo);
 	}
 	public List<Video> buscarVideo(String titulo, Set<Etiqueta> etiquetas) {
-		return repositorioVideoPrueba.buscarVideo(titulo, etiquetas);
+		return catalogoVideo.buscarVideo(titulo, etiquetas);
 	}
 	
 	public List<String> obtenerURLs() {
-		return repositorioVideoPrueba.obtenerURLs();
+		return catalogoVideo.obtenerURLs();
 	}
 	
 	public List<Video> obtenerVideos() {
-		return repositorioVideoPrueba.obtenerVideos();
+		return catalogoVideo.obtenerVideos();
+	}
+	
+	public void registrarVideo(String nombre, String url, Set<String> etiquetas) {
+		// No se controla que el valor del string precio sea un double
+		Video video = new Video(nombre, url);
+		for(String e : etiquetas)
+			video.anadirEtiqueta(e);
+		adaptadorVideo.registrarVideo(video);
+
+		catalogoVideo.addVideo(video);
+	}
+	
+	private void inicializarAdaptadores() {
+		FactoriaDAO factoria = null;
+		try {
+			factoria = FactoriaDAO.getInstancia(FactoriaDAO.DAO_TDS);
+		} catch (DAOException e) {
+			e.printStackTrace();
+		}
+		adaptadorVideo = factoria.getVideoDAO();
+		adaptadorUsuario = factoria.getUsuaioDAO();
 	}
 
+	private void inicializarCatalogos() {
+		catalogoVideo = CatalogoVideo.getUnicaInstancia();
+		catalogoUsuario = CatalogoUsuarios.getUnicaInstancia();
+	}
+	
 }

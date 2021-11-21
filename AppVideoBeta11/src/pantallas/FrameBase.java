@@ -24,6 +24,8 @@ import javax.swing.border.EmptyBorder;
 import dominio.AppVideo;
 import dominio.Usuario;
 import tds.video.VideoWeb;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class FrameBase extends JFrame {
 
@@ -140,6 +142,10 @@ public class FrameBase extends JFrame {
 		btnNuevaLista.setBackground(Color.LIGHT_GRAY);
 		panel_norte2.add(btnNuevaLista);
 		
+		JButton botonAnadirVideo = new JButton("A\u00F1adir Video");
+		
+		panel_norte2.add(botonAnadirVideo);
+		
 		JPanel panel_centro = new JPanel();
 		//panel_centro.setSize(new Dimension(742, 383));
 		
@@ -178,6 +184,10 @@ public class FrameBase extends JFrame {
 			this.creaPanel(panel_centro, panelCrearLista);
 			});
 		
+		botonAnadirVideo.addActionListener(ev -> {
+			PanelCargadorVideo panelCargadorVideo = new PanelCargadorVideo(this);
+			this.creaPanel(panel_centro, panelCargadorVideo);
+		});
 	}
 	
 	//metodos getters y setters
