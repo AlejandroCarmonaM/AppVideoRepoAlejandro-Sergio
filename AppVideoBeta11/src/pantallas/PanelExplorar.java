@@ -23,6 +23,7 @@ import javax.swing.Box;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import javax.swing.JTextField;
+import javax.swing.JViewport;
 import javax.swing.JButton;
 import java.awt.Font;
 import javax.swing.JList;
@@ -104,14 +105,14 @@ public class PanelExplorar extends JPanel {
 		panel.add(horizontalStrut);
 		
 		
-		JPanel panel_tabla_videos = new JPanel();
+		/*JPanel panel_tabla_videos = new JPanel();
 		panel_tabla_videos.setMinimumSize(new Dimension(500, 500));
 		panel_tabla_videos.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
 		panel_tabla_videos.setBackground(Color.GRAY);
 		panel_oeste.add(panel_tabla_videos);
 		
 		Component verticalStrut = Box.createVerticalStrut(350);
-		panel_tabla_videos.add(verticalStrut);
+		panel_tabla_videos.add(verticalStrut);*/
 		
 		JTable tablaVideos = new JTable();
 		
@@ -141,8 +142,10 @@ public class PanelExplorar extends JPanel {
 			col.setPreferredWidth(145);
 		}
 		tablaVideos.setModel(tm);
-		
-		panel_tabla_videos.add(tablaVideos);
+		tablaVideos.setShowGrid(false);
+		JScrollPane js=new JScrollPane(tablaVideos);
+        //js.setVisible(true);
+		panel_oeste.add(js);
 		
 		
 		JPanel panel_este = new JPanel();
