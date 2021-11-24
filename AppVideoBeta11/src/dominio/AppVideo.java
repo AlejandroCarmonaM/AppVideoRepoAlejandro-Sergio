@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import pantallas.FrameBase;
 import persistencia.DAOException;
 import persistencia.FactoriaDAO;
+import persistencia.IAdaptadorFiltroDAO;
 import persistencia.IAdaptadorUsuarioDAO;
 import persistencia.IAdaptadorVideoDAO;
 
@@ -32,6 +33,7 @@ public class AppVideo {
 	
 	private IAdaptadorVideoDAO adaptadorVideo;
 	private IAdaptadorUsuarioDAO adaptadorUsuario;
+	private IAdaptadorFiltroDAO adaptadorFiltro;
 	
 	private CatalogoVideo catalogoVideo;
 	private CatalogoUsuarios catalogoUsuario;
@@ -62,7 +64,7 @@ public class AppVideo {
 
 	
 	public boolean registrarUser(String nombre, String fechaNacimiento, String nombreUsuario, String contrasena, String contrasenaRep) {
-		if (catalogoUsuario.registrarUsuario(nombre, fechaNacimiento, nombreUsuario, contrasena, contrasenaRep)) {
+		if (!catalogoUsuario.existeUsuario(nombreUsuario) && (contrasena.equals(contrasenaRep))) {
 			SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
 			Date fecha;
 			try {
@@ -73,6 +75,7 @@ public class AppVideo {
 			}
 			Usuario usuarioAux = new Usuario(nombre, fecha, nombreUsuario, contrasena);
 			adaptadorUsuario.registrarUsuario(usuarioAux);
+			catalogoUsuario.registrarUsuario(usuarioAux);
 			return true;
 		}
 		return false;
@@ -102,9 +105,11 @@ public class AppVideo {
 	{
 		if(catalogoUsuario.isLoginOK(usuario, contrasena))
 		{
+			System.out.println("cacatua");
 			this.nombreUsuario=usuario;
 			this.usuario = catalogoUsuario.getUsuario(usuario); //esto no se si puede causar que appVideo no tenga el usuario
 			//despues de hacer un registro porque me dice que el user de appvideo es null en un momento
+			if(this.usuario==null) System.out.println("null");
 			return true;
 			//PanelPrueba panel_prueba = new PanelPrueba();
 			//CreadorPaneles.creaPanel(panel_centro_central, panel_prueba);
@@ -189,11 +194,17 @@ public class AppVideo {
 		}
 		adaptadorVideo = factoria.getVideoDAO();
 		adaptadorUsuario = factoria.getUsuaioDAO();
+		adaptadorFiltro = factoria.getFiltroDAO();
 	}
 
 	private void inicializarCatalogos() {
 		catalogoVideo = CatalogoVideo.getUnicaInstancia();
 		catalogoUsuario = CatalogoUsuarios.getUnicaInstancia();
+	}
+
+
+	public void registrarFiltro(Filtro filtro) {
+		adaptadorFiltro.registrarFiltro(filtro);
 	}
 	
 }

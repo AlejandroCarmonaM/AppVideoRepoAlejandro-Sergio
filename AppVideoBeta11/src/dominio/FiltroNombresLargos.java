@@ -16,8 +16,7 @@ public class FiltroNombresLargos implements Filtro {
 
 	@Override
 	public int getCodigo() {
-		// TODO Auto-generated method stub
-		return 0;
+		return codigo;
 	}
 
 	@Override

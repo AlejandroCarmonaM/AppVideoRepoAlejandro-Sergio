@@ -179,13 +179,13 @@ public class FrameBase extends JFrame {
 			this.creaPanel(panel_centro, panelRegistro);
 			});
 		
-		/*btnPremium.addActionListener(ev -> {
+		btnPremium.addActionListener(ev -> {
 			if(this.getAppVideo().getUser()!=null) {
 				PanelPremium panelPremium = new PanelPremium(this);
 				this.creaPanel(panel_centro, panelPremium);
 			}
 			
-			});*/
+			});
 		
 		btnNuevaLista.addActionListener(ev -> {
 			PanelCrearLista panelCrearLista = new PanelCrearLista(this);

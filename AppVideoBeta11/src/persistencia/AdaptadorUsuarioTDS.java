@@ -126,7 +126,7 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO{
 			} else if (prop.getNombre().equals("premium")) {
 				prop.setValor(String.valueOf(usuario.isPremium()));
 			} else if (prop.getNombre().equals("filtro")) {
-				prop.setValor(String.valueOf(usuario.getFiltro().getCodigo())); //error
+				prop.setValor(String.valueOf(usuario.getFiltro().getCodigo())); 
 			} else if (prop.getNombre().equals("listasVideos")) {
 				String lineas = obtenerCodigosListasVideos(usuario.getListasVideos());
 				prop.setValor(lineas);
