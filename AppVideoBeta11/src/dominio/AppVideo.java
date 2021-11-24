@@ -179,16 +179,37 @@ public class AppVideo {
 		catalogoVideo.addVideo(video);
 	}
 	
+	public void anadirListaVideos(ListaVideos lv) {
+		if (usuario != null)
+			this.usuario.addListaVideos(lv);
+	}
+	
+	public List<String> getNombreMisListas() {
+		if (usuario != null)
+			return this.usuario.getNombreMisListas();
+		return new LinkedList<String>();
+	}
+	
+	public boolean usuarioLogeado() {
+		if (usuario != null)
+			return true;
+		return false;
+	}
+	
+	public ListaVideos getListaVideosPorNombre(String nombreLista) {
+		return this.usuario.getListaVideosPorNombre(nombreLista);
+	}
 	
 	private void inicializarAdaptadores() {
 		FactoriaDAO factoria = null;
 		try {
 			factoria = FactoriaDAO.getInstancia(FactoriaDAO.DAO_TDS);
+			adaptadorVideo = factoria.getVideoDAO();
+			adaptadorUsuario = factoria.getUsuaioDAO();
 		} catch (DAOException e) {
 			e.printStackTrace();
 		}
-		adaptadorVideo = factoria.getVideoDAO();
-		adaptadorUsuario = factoria.getUsuaioDAO();
+		
 	}
 
 	private void inicializarCatalogos() {

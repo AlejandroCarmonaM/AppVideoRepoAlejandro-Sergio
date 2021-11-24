@@ -147,7 +147,21 @@ public class Usuario {
 		.anyMatch(video->video.equals(v));
 	}
 	
+	public List<String> getNombreMisListas() {
+		LinkedList<String> listaNombres = new LinkedList<String>();
+		for(int i = 0; i < listasVideos.size(); i++) {
+			listaNombres.add(listasVideos.get(i).getNombre());
+		}
+		return listaNombres;
+	}
 	
+	public ListaVideos getListaVideosPorNombre(String nombreLista) {
+		for(ListaVideos elemento : listasVideos) {
+			if (elemento.getNombre().equals(nombreLista))
+				return elemento;
+		}
+		return null;
+	}
 	
 
 }

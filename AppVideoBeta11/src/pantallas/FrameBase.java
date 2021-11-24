@@ -196,6 +196,11 @@ public class FrameBase extends JFrame {
 			PanelCargadorVideo panelCargadorVideo = new PanelCargadorVideo(this);
 			this.creaPanel(panel_centro, panelCargadorVideo);
 		});
+		
+		btnMisListas.addActionListener(ev -> {
+			PanelMisListas panelMisListas = new PanelMisListas(this);
+			this.creaPanel(panel_centro, panelMisListas);
+		});
 	}
 	
 	//metodos getters y setters

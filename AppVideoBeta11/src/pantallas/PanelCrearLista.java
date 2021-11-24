@@ -15,6 +15,7 @@ import javax.swing.table.DefaultTableModel;
 
 import dominio.CuartetoVideos;
 import dominio.GrupoVideos;
+import dominio.ListaVideos;
 import dominio.Video;
 import tds.video.VideoWeb;
 
@@ -42,6 +43,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.ScrollPaneConstants;
 
 public class PanelCrearLista extends JPanel {
@@ -160,6 +162,7 @@ public class PanelCrearLista extends JPanel {
 		panelAQA.add(botonAnadir, gbc_botonAnadir);
 		
 		JButton botonQuitar = new JButton("Quitar");
+		
 		GridBagConstraints gbc_botonQuitar = new GridBagConstraints();
 		gbc_botonQuitar.anchor = GridBagConstraints.WEST;
 		gbc_botonQuitar.insets = new Insets(5, 0, 5, 5);
@@ -168,6 +171,7 @@ public class PanelCrearLista extends JPanel {
 		panelAQA.add(botonQuitar, gbc_botonQuitar);
 		
 		JButton botonAceptar = new JButton("Aceptar");
+		
 		GridBagConstraints gbc_botonAceptar = new GridBagConstraints();
 		gbc_botonAceptar.gridwidth = 4;
 		gbc_botonAceptar.insets = new Insets(0, 0, 5, 5);
@@ -291,7 +295,34 @@ public class PanelCrearLista extends JPanel {
 			tm.fireTableDataChanged();
 			validate();	
 		});
-
+		
+		botonQuitar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (modeloLista.size() > 0)
+					modeloLista.remove(listaActual.getSelectedIndex());
+			}
+		});
+		
+		botonAceptar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ev) {
+				String nombreLista = campoNombreLista.getText();
+				if (!frameBase.getAppVideo().usuarioLogeado())
+					JOptionPane.showMessageDialog(panelDerecho, "Necesitas estar registrado");
+				else if (nombreLista.equals(""))
+					JOptionPane.showMessageDialog(panelDerecho, "Necesitar introducir un nombre para la lista");
+				else if (modeloLista.size() == 0)
+					JOptionPane.showMessageDialog(panelDerecho, "La lista esta vacía");
+				else {
+					ListaVideos nuevaLisa = new ListaVideos(nombreLista);
+					for(int i = 0; i < modeloLista.size(); i++){
+						nuevaLisa.addVideo(modeloLista.get(i));
+					}
+					frameBase.getAppVideo().anadirListaVideos(nuevaLisa);
+					JOptionPane.showMessageDialog(panelDerecho, "Nueva lista añadida");
+				}
+			}
+		});
+		
 		tablaVideos.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
