@@ -302,7 +302,7 @@ public class PanelCrearLista extends JPanel {
 					modeloLista.remove(listaActual.getSelectedIndex());
 			}
 		});
-		//
+		
 		botonAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
 				String nombreLista = campoNombreLista.getText();
