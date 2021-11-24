@@ -77,6 +77,12 @@ public class AppVideo {
 		}
 		return false;
 	}
+	
+	public void modificarUsuarioAppVideo()
+	{
+		catalogoUsuario.modificarUsuario(usuario);
+	}
+	
 	public String getUsuario() {
 		return nombreUsuario;
 	}
@@ -85,6 +91,11 @@ public class AppVideo {
 	{
 		this.nombreUsuario=usuario;
 	}
+	
+	public Usuario getUser()
+	{
+		return this.usuario;
+	}
 
 
 	public boolean login(String usuario, String contrasena)
@@ -92,7 +103,8 @@ public class AppVideo {
 		if(catalogoUsuario.isLoginOK(usuario, contrasena))
 		{
 			this.nombreUsuario=usuario;
-			this.usuario = catalogoUsuario.getUsuario(usuario);
+			this.usuario = catalogoUsuario.getUsuario(usuario); //esto no se si puede causar que appVideo no tenga el usuario
+			//despues de hacer un registro porque me dice que el user de appvideo es null en un momento
 			return true;
 			//PanelPrueba panel_prueba = new PanelPrueba();
 			//CreadorPaneles.creaPanel(panel_centro_central, panel_prueba);
@@ -166,6 +178,7 @@ public class AppVideo {
 
 		catalogoVideo.addVideo(video);
 	}
+	
 	
 	private void inicializarAdaptadores() {
 		FactoriaDAO factoria = null;

@@ -118,6 +118,11 @@ public boolean registrarUsuarioCompleto(String nombre, String apellidos, String 
 		}
 		return false;
 	}
+
+	public void modificarUsuario(Usuario usuario)
+	{
+		adaptadorUsuario.modificarUsuario(usuario);
+	}
 	
 	public boolean isLoginOK(String nombreUsuario, String contrasena)
 	{
@@ -142,4 +147,5 @@ public boolean registrarUsuarioCompleto(String nombre, String apellidos, String 
 		 for (Usuario u: usuariosBD) 
 			     usuarios.put(u.getUsuario(),u);
 	}
+	
 }

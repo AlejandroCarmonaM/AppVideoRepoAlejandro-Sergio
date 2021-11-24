@@ -18,6 +18,8 @@ public class Usuario {
 	private boolean premium;
 	private List<ListaVideos> listasVideos;
 	private List<Video> recientes;
+	private Filtro filtro;
+	//Lo que si tenemos que anadir es un atributo filtro
 	
 	//constructor
 	public Usuario(String nombre, String apellidos, Date fecha, String email, String usuario, String contrasena) {
@@ -30,6 +32,21 @@ public class Usuario {
 		this.listasVideos = new LinkedList<ListaVideos>();
 		this.recientes = new ArrayList<Video>();
 		this.premium = false;
+		this.filtro = new NoFiltro();
+	}
+	
+	public Usuario(String nombre, String apellidos, Date fecha, String email, String usuario, String contrasena,
+			boolean premium, Filtro filtro) {
+		this.nombre = nombre;
+		this.apellidos = apellidos;
+		this.fecha = fecha;
+		this.email = email;
+		this.usuario = usuario;
+		this.contrasena = contrasena;
+		this.listasVideos = new LinkedList<ListaVideos>();
+		this.recientes = new ArrayList<Video>();
+		this.premium = premium;
+		this.filtro = filtro;
 	}
 	
 
@@ -40,6 +57,8 @@ public class Usuario {
 		this.contrasena = contrasena;
 		this.listasVideos = new LinkedList<ListaVideos>();
 		this.recientes = new ArrayList<Video>();
+		this.premium = false;
+		this.filtro = new NoFiltro();
 	}
 
 	//metodos get y set
@@ -93,6 +112,14 @@ public class Usuario {
 	
 	public int getCodigo() {
 		return codigo;
+	}
+	
+	public Filtro getFiltro() {
+		return filtro;
+	}
+	
+	public void setFiltro(Filtro filtro) {
+		if(this.premium) this.filtro=filtro;
 	}
 
 	public List<ListaVideos> getListasVideos() {

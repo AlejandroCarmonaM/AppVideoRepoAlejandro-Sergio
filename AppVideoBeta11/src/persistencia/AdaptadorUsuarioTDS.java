@@ -11,6 +11,7 @@ import java.util.StringTokenizer;
 
 import beans.Entidad;
 import beans.Propiedad;
+import dominio.Filtro;
 import dominio.ListaVideos;
 import dominio.Usuario;
 import dominio.Video;
@@ -46,12 +47,15 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO{
 
 		// registrar primero los atributos que son objetos
 		AdaptadorListaVideosTDS adaptadorLV = AdaptadorListaVideosTDS.getUnicaInstancia();
-		for (ListaVideos v : usuario.getListasVideos())
-			adaptadorLV.recuperarListaVideos(v.getCodigo());
+		for (ListaVideos lv : usuario.getListasVideos())
+			adaptadorLV.registrarListaVideos(lv);
 		
 		AdaptadorVideoTDS adaptadorVideo = AdaptadorVideoTDS.getUnicaInstancia();
-		for (ListaVideos v : usuario.getListasVideos())
-			adaptadorVideo.recuperarVideo(v.getCodigo());
+		for (Video v : usuario.getRecientes())
+			adaptadorVideo.registrarVideo(v);
+		
+		AdaptadorFiltroTDS adaptadorFiltroTDS = AdaptadorFiltroTDS.getUnicaInstancia();
+		adaptadorFiltroTDS.registrarFiltro(usuario.getFiltro());
 
 		// crear entidad Cliente
 		eUsuario = new Entidad();
@@ -65,8 +69,10 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO{
 						new Propiedad("usuario", usuario.getUsuario()),
 						new Propiedad("contrasena", usuario.getContrasena()),
 						new Propiedad("premium", String.valueOf(usuario.isPremium())),
+						new Propiedad("filtro", String.valueOf(usuario.getFiltro().getCodigo())), //repasar en caso de fallo
 						new Propiedad("listasVideos", obtenerCodigosListasVideos(usuario.getListasVideos())),
 						new Propiedad("recientes", obtenerCodigosVideos(usuario.getRecientes())))));
+						
 
 		// registrar entidad cliente
 		eUsuario = servPersistencia.registrarEntidad(eUsuario);
@@ -89,12 +95,16 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO{
 			adaptadorLV.borrarListaVideos(listaVideo);
 		}
 		
+		AdaptadorFiltroTDS adaptadorFiltroTDS = AdaptadorFiltroTDS.getUnicaInstancia();
+		adaptadorFiltroTDS.borrarFiltro(usuario.getFiltro());
+		
 		eUsuario = servPersistencia.recuperarEntidad(usuario.getCodigo());
 		servPersistencia.borrarEntidad(eUsuario);
 
 	}
 
-	public void modificarUsuario(Usuario usuario) {
+	public void modificarUsuario(Usuario usuario) { //antes de modificar un objeto, si lo que hago es cambiar ese objeto
+		//por otro, debería registrarlo, no?
 
 		Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getCodigo());
 
@@ -115,6 +125,8 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO{
 				prop.setValor(usuario.getContrasena());
 			} else if (prop.getNombre().equals("premium")) {
 				prop.setValor(String.valueOf(usuario.isPremium()));
+			} else if (prop.getNombre().equals("filtro")) {
+				prop.setValor(String.valueOf(usuario.getFiltro().getCodigo())); //error
 			} else if (prop.getNombre().equals("listasVideos")) {
 				String lineas = obtenerCodigosListasVideos(usuario.getListasVideos());
 				prop.setValor(lineas);
@@ -137,6 +149,7 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO{
 		String usuario;
 		String contrasena;
 		boolean premium;
+		Filtro filtro;
 
 		// recuperar entidad
 		eUsuario = servPersistencia.recuperarEntidad(codigo);
@@ -160,7 +173,11 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO{
 		usuarioFinal.setCodigo(codigo);
 
 		// recuperar propiedades que son objetos llamando a adaptadores
-		// ventas
+		AdaptadorFiltroTDS adaptadorFiltroTDS = AdaptadorFiltroTDS.getUnicaInstancia();
+		//prop.setValor(String.valueOf(usuario.getFiltro()));
+		filtro = adaptadorFiltroTDS.recuperarFiltro
+				(Integer.parseInt(servPersistencia.recuperarPropiedadEntidad(eUsuario, "filtro"))); //da fallo al cambiar el filtro
+		usuarioFinal.setFiltro(filtro);
 		listasVideos = obtenerListasVideosDesdeCodigos(servPersistencia.recuperarPropiedadEntidad(eUsuario, "listasVideos"));
 		recientes = obtenerRecientesDesdeCodigos(servPersistencia.recuperarPropiedadEntidad(eUsuario, "recientes"));
 
