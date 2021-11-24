@@ -45,7 +45,7 @@ public class AdaptadorFiltroTDS implements IAdaptadorFiltroDAO {
 		eFiltro = servPersistencia.registrarEntidad(eFiltro);
 		// asignar identificador unico
 		// Se aprovecha el que genera el servicio de persistencia
-		filtro.setCodigo(eFiltro.getId());  
+		filtro.setCodigo(eFiltro.getId());
 	}
 
 	public void borrarFiltro(Filtro filtro) {
@@ -73,6 +73,7 @@ public class AdaptadorFiltroTDS implements IAdaptadorFiltroDAO {
 
 		eFiltro = servPersistencia.recuperarEntidad(codigo);
 		nombre = servPersistencia.recuperarPropiedadEntidad(eFiltro, "nombre");
+		//filtro nulo->no se registra el filtro
 
 		Filtro filtro;
 		try {

@@ -103,6 +103,8 @@ public class PanelPremium extends JPanel {
 					try {
 						//System.out.println("oooooooolaaaaaaa");
 						Filtro filtro =(Filtro)Class.forName("dominio."+selected).getDeclaredConstructor().newInstance();
+						//registrar filtro persistencia
+						this.frameBase.getAppVideo().registrarFiltro(filtro); //funciona, pero poco eficiente
 						this.frameBase.getAppVideo().getUser().setPremium(true);
 						this.frameBase.getAppVideo().getUser().setFiltro(filtro); //corregir cuando sea posible
 						this.frameBase.getAppVideo().modificarUsuarioAppVideo();

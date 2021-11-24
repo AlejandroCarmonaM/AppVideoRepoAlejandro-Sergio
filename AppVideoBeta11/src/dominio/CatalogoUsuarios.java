@@ -64,7 +64,7 @@ public class CatalogoUsuarios {
 		usuarios.remove(u.getUsuario());
 	}
 	
-public boolean registrarUsuario(String nombre, String fechaNacimiento, String nombreUsuario, String contrasena, String contrasenaRep) {
+/*public boolean registrarUsuario(String nombre, String fechaNacimiento, String nombreUsuario, String contrasena, String contrasenaRep) {
 		
 		boolean existeUsuario = false;
 		boolean coincideContrasena = true;
@@ -82,7 +82,8 @@ public boolean registrarUsuario(String nombre, String fechaNacimiento, String no
 			try {
 				Date fecha = formato.parse(fechaNacimiento);
 				Usuario nuevoUsuario = new Usuario(nombre, fecha, nombreUsuario, contrasena);
-				this.addUsuario(nuevoUsuario);
+				this.addUsuario(nuevoUsuario); //los usuarios registrados durante la primera ejecucion no tienen el codigo correcto
+				//y por tanto no se pueden modificar sin error
 				
 			} catch (ParseException e) {
 				return false;
@@ -90,9 +91,22 @@ public boolean registrarUsuario(String nombre, String fechaNacimiento, String no
 			return true;
 		}
 		return false;
-	}
+	}*/
 	
-public boolean registrarUsuarioCompleto(String nombre, String apellidos, String fechaNacimiento, String email, String nombreUsuario, String contrasena, String contrasenaRep) {
+public void registrarUsuario(Usuario usuario) {
+	this.addUsuario(usuario);
+}
+	
+public boolean existeUsuario(String nombreUsuario)
+{
+	for (Usuario elemento : this.getUsuarios()) {
+		if (elemento.getNombre().equals(nombreUsuario))
+			return true;
+	}
+	return false;
+}
+	
+/*public boolean registrarUsuarioCompleto(String nombre, String apellidos, String fechaNacimiento, String email, String nombreUsuario, String contrasena, String contrasenaRep) {
 		
 		boolean existeUsuario = false;
 		boolean coincideContrasena = true;
@@ -117,7 +131,7 @@ public boolean registrarUsuarioCompleto(String nombre, String apellidos, String 
 			return true;
 		}
 		return false;
-	}
+	}*/
 
 	public void modificarUsuario(Usuario usuario)
 	{

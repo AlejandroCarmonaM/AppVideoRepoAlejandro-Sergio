@@ -209,6 +209,7 @@ public class PanelRegistro extends JPanel {
 		panelCampos.add(etiquetaCamposObligatorios, gbc_etiquetaCamposObligatorios);
 		
 		botonRegistrar.addActionListener(ev -> {
+			//hay que ver esto para que si tiene los opcionales, mandarlo a un registrarUser con los atrib opcionales
 				if (this.frameBase.getAppVideo().registrarUser(campoNombre.getText(), campoFNacimiento.getText(), campoUsuario.getText(), String.valueOf(campoContraseña.getPassword()), String.valueOf(campoRepContraseña.getPassword()))) {
 					JOptionPane.showMessageDialog((Component) ev.getSource(), "Registro exitodo");
 					frameBase.getAppVideo().login(campoUsuario.getText(), String.valueOf(campoContraseña.getPassword()));
