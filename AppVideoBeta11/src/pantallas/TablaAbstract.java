@@ -17,7 +17,7 @@ public class TablaAbstract extends AbstractTableModel {
 	private static final int NUM_COLUMNAS =4;
 	private static final long serialVersionUID = 1L;
 	private LinkedList<CuartetoVideos> videos;
-	private String[] columnNames = {"Video 1","Video 2", "Video 3", "Video 4"};
+	private String[] columnNames = {"","", "", ""};
 
 	public TablaAbstract(){
 		this.videos = new LinkedList<CuartetoVideos>();

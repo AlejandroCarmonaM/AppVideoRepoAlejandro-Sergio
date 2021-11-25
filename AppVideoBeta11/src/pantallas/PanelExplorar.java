@@ -62,7 +62,7 @@ public class PanelExplorar extends JPanel {
 		this.setMaximumSize(new Dimension(742, 383));*/
 		setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		this.frameBase=frameBase;
-		setBackground(Color.WHITE);
+		setBackground(Color.GRAY);
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		
 		JPanel panel_oeste = new JPanel();
@@ -161,6 +161,7 @@ public class PanelExplorar extends JPanel {
 		panel_este.add(lblEtiquetasDisponibles);
 		
 		JList<String> lista = new JList<String>();
+		lista.setBackground(Color.WHITE);
 		/*lista.setPreferredSize(new Dimension(100, 200));
 		lista.setMaximumSize(new Dimension(100, 200));*/
 		//lista.setFixedCellWidth(0);

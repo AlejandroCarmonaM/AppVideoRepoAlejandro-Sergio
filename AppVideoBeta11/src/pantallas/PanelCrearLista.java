@@ -318,6 +318,7 @@ public class PanelCrearLista extends JPanel {
 						nuevaLisa.addVideo(modeloLista.get(i));
 					}
 					frameBase.getAppVideo().anadirListaVideos(nuevaLisa);
+					
 					JOptionPane.showMessageDialog(panelDerecho, "Nueva lista añadida");
 				}
 			}

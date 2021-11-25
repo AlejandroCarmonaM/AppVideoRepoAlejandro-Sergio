@@ -68,13 +68,26 @@ public class CatalogoVideo {
 			     videos.put(v.getTitulo(),v);
 	}
 	
+	public List<Video> buscarVideoUsuario(String titulo, Usuario usuario) {
+		long coincidencias = this.getVideos().stream()
+								.filter(vid -> vid.getTitulo().contains(titulo)
+										&& usuario.getFiltro().esVideoOK(vid, usuario))
+								.count();
+		if (coincidencias > 0)
+			return this.getVideos().stream()
+					.filter(vid -> vid.getTitulo().contains(titulo)
+							&& usuario.getFiltro().esVideoOK(vid, usuario))
+					.collect(Collectors.toList());
+		return null;
+	}
+	
 	public List<Video> buscarVideo(String titulo) {
 		long coincidencias = this.getVideos().stream()
 								.filter(vid -> vid.getTitulo().contains(titulo))
 								.count();
 		if (coincidencias > 0)
 			return this.getVideos().stream()
-					.filter(elem -> elem.getTitulo().contains(titulo))
+					.filter(vid -> vid.getTitulo().contains(titulo))
 					.collect(Collectors.toList());
 		return null;
 	}
@@ -82,11 +95,28 @@ public class CatalogoVideo {
 	public List<Video> buscarVideo(String titulo, Set<Etiqueta> etiquetas) {
 		if (etiquetas.isEmpty()) return buscarVideo(titulo); 
 		long coincidencias = this.getVideos().stream()
-								.filter(vid -> vid.getTitulo().contains(titulo) && vid.tieneEtiquetas(etiquetas))
+								.filter(vid -> vid.getTitulo().contains(titulo) 
+										&& vid.tieneEtiquetas(etiquetas))
 								.count();
 		if (coincidencias > 0)
 			return this.getVideos().stream()
-					.filter(elem -> elem.getTitulo().contains(titulo)&& elem.tieneEtiquetas(etiquetas))
+					.filter(vid -> vid.getTitulo().contains(titulo)&& vid.tieneEtiquetas(etiquetas))
+					.collect(Collectors.toList());
+		return null;
+	}
+	
+	
+	public List<Video> buscarVideoUsuario(String titulo, Usuario usuario, Set<Etiqueta> etiquetas) {
+		if (etiquetas.isEmpty()) return buscarVideoUsuario(titulo, usuario); 
+		long coincidencias = this.getVideos().stream()
+								.filter(vid -> vid.getTitulo().contains(titulo) 
+										&& vid.tieneEtiquetas(etiquetas)&& 
+										usuario.getFiltro().esVideoOK(vid, usuario))
+								.count();
+		if (coincidencias > 0)
+			return this.getVideos().stream()
+					.filter(vid -> vid.getTitulo().contains(titulo)&& vid.tieneEtiquetas(etiquetas)
+							&& usuario.getFiltro().esVideoOK(vid, usuario))
 					.collect(Collectors.toList());
 		return null;
 	}

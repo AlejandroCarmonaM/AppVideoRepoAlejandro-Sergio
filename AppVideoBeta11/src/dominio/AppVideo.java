@@ -14,6 +14,7 @@ import pantallas.FrameBase;
 import persistencia.DAOException;
 import persistencia.FactoriaDAO;
 import persistencia.IAdaptadorFiltroDAO;
+import persistencia.IAdaptadorListaVideosDAO;
 import persistencia.IAdaptadorUsuarioDAO;
 import persistencia.IAdaptadorVideoDAO;
 
@@ -34,6 +35,7 @@ public class AppVideo {
 	private IAdaptadorVideoDAO adaptadorVideo;
 	private IAdaptadorUsuarioDAO adaptadorUsuario;
 	private IAdaptadorFiltroDAO adaptadorFiltro;
+	private IAdaptadorListaVideosDAO adaptadorListaVideos;
 	
 	private CatalogoVideo catalogoVideo;
 	private CatalogoUsuarios catalogoUsuario;
@@ -105,7 +107,6 @@ public class AppVideo {
 	{
 		if(catalogoUsuario.isLoginOK(usuario, contrasena))
 		{
-			System.out.println("cacatua");
 			this.nombreUsuario=usuario;
 			this.usuario = catalogoUsuario.getUsuario(usuario); //esto no se si puede causar que appVideo no tenga el usuario
 			//despues de hacer un registro porque me dice que el user de appvideo es null en un momento
@@ -159,10 +160,13 @@ public class AppVideo {
 		etiqueta.setText("Hola "+usuario);
 	}
 	
+	
 	public List<Video> buscarVideo(String titulo) {
+		if(usuario!=null) return catalogoVideo.buscarVideoUsuario(titulo, usuario);
 		return catalogoVideo.buscarVideo(titulo);
 	}
 	public List<Video> buscarVideo(String titulo, Set<Etiqueta> etiquetas) {
+		if(usuario!=null) return catalogoVideo.buscarVideoUsuario(titulo, usuario, etiquetas);
 		return catalogoVideo.buscarVideo(titulo, etiquetas);
 	}
 	
@@ -184,9 +188,13 @@ public class AppVideo {
 		catalogoVideo.addVideo(video);
 	}
 	
+	//hay que registrar la lista de videos en este metodo
 	public void anadirListaVideos(ListaVideos lv) {
 		if (usuario != null)
+			adaptadorListaVideos.registrarListaVideos(lv);
 			this.usuario.addListaVideos(lv);
+			this.modificarUsuarioAppVideo();
+			
 	}
 	
 	public List<String> getNombreMisListas() {
@@ -217,6 +225,7 @@ public class AppVideo {
 		adaptadorVideo = factoria.getVideoDAO();
 		adaptadorUsuario = factoria.getUsuaioDAO();
 		adaptadorFiltro = factoria.getFiltroDAO();
+		adaptadorListaVideos = factoria.getListaVideosDAO();
 	}
 
 	private void inicializarCatalogos() {

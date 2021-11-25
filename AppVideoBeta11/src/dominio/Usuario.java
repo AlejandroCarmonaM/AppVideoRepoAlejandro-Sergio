@@ -119,7 +119,7 @@ public class Usuario {
 	}
 	
 	public void setFiltro(Filtro filtro) {
-		if(this.premium) this.filtro=filtro;
+		this.filtro=filtro;
 	}
 
 	public List<ListaVideos> getListasVideos() {

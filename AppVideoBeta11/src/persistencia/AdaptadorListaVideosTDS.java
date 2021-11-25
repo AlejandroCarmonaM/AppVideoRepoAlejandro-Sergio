@@ -13,7 +13,7 @@ import dominio.Video;
 import tds.driver.FactoriaServicioPersistencia;
 import tds.driver.ServicioPersistencia;
 
-public class AdaptadorListaVideosTDS {
+public class AdaptadorListaVideosTDS implements IAdaptadorListaVideosDAO{
 	private static ServicioPersistencia servPersistencia;
 	private static AdaptadorListaVideosTDS unicaInstancia;
 

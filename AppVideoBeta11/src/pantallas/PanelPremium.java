@@ -73,6 +73,7 @@ public class PanelPremium extends JPanel {
 		JScrollPane scroller = new JScrollPane(lista);
 		scroller.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 		scroller.setMaximumSize(new Dimension(500, 15000));
+		scroller.setVisible(frameBase.getAppVideo().getUser().isPremium());
 		this.add(scroller);
 		
 		JLabel lblFiltroActual = new JLabel("FiltroActual: "+filtroActual.getNombre());
@@ -80,11 +81,19 @@ public class PanelPremium extends JPanel {
 		add(lblFiltroActual);
 		
 		rdbtnPremium.addActionListener(ev ->{
-			if (rdbtnPremium.isSelected()) this.frameBase.getAppVideo().getUser().setPremium(true);
+			if (rdbtnPremium.isSelected()) {
+				this.frameBase.getAppVideo().getUser().setPremium(true);
+				scroller.setVisible(true);
+				this.repaint();
+				this.validate();
+				this.frameBase.validate();
+			}
 			else {
-				Filtro noFiltro = new NoFiltro();
+				scroller.setVisible(false);
 				this.frameBase.getAppVideo().getUser().setPremium(false);
-				this.frameBase.getAppVideo().getUser().setFiltro(noFiltro); //corregir cuando sea posible
+				Filtro noFiltro = new NoFiltro();
+				this.frameBase.getAppVideo().registrarFiltro(noFiltro);
+				this.frameBase.getAppVideo().getUser().setFiltro(noFiltro);
 				this.frameBase.getAppVideo().modificarUsuarioAppVideo();
 				this.filtroActual=noFiltro;
 				lblFiltroActual.setText("FiltroActual: "+filtroActual.getNombre());
@@ -98,13 +107,14 @@ public class PanelPremium extends JPanel {
 			if (!event.getValueIsAdjusting()){
 				JList source = (JList)event.getSource();
 				String selected = source.getSelectedValue().toString();
-				if(rdbtnPremium.isSelected())
-				{
+				
 					try {
 						//System.out.println("oooooooolaaaaaaa");
 						Filtro filtro =(Filtro)Class.forName("dominio."+selected).getDeclaredConstructor().newInstance();
 						//registrar filtro persistencia
 						this.frameBase.getAppVideo().registrarFiltro(filtro); //funciona, pero poco eficiente
+						//pd:es completamente necesario tener el filtro del usuario registrado en persistencia
+						//deberiamos eliminar el filtro anterior?
 						this.frameBase.getAppVideo().getUser().setPremium(true);
 						this.frameBase.getAppVideo().getUser().setFiltro(filtro); //corregir cuando sea posible
 						this.frameBase.getAppVideo().modificarUsuarioAppVideo();
@@ -120,8 +130,7 @@ public class PanelPremium extends JPanel {
 					}
 					
 				}
-			}
-		});
+			});
 
 	}
 
