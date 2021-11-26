@@ -55,6 +55,11 @@ public class Video {
 		this.numRepro = numeroRep;
 	}
 	
+	public void actualizarNumRepro()
+	{
+		this.numRepro++;
+	}
+	
 	public boolean isLargo(int limite)
 	{
 		return (this.titulo.length()<limite);

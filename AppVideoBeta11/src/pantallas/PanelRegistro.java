@@ -213,7 +213,8 @@ public class PanelRegistro extends JPanel {
 				if (this.frameBase.getAppVideo().registrarUser(campoNombre.getText(), campoFNacimiento.getText(), campoUsuario.getText(), String.valueOf(campoContraseña.getPassword()), String.valueOf(campoRepContraseña.getPassword()))) {
 					JOptionPane.showMessageDialog((Component) ev.getSource(), "Registro exitodo");
 					frameBase.getAppVideo().login(campoUsuario.getText(), String.valueOf(campoContraseña.getPassword()));
-					this.frameBase.getAppVideo().setEtiqueta(campoUsuario.getText());
+					this.frameBase.actualizarEtiqueta();
+					this.frameBase.validate();
 					frameBase.creaPanel(frameBase.getPanelCentro(), new PanelExplorar(frameBase));
 					//frameBase.setUsuario();
 				}

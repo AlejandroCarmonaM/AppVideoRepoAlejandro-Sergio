@@ -6,13 +6,11 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
-import pantallas.FrameBase;
 import persistencia.DAOException;
 import persistencia.FactoriaDAO;
+import persistencia.IAdaptadorEtiquetaDAO;
 import persistencia.IAdaptadorFiltroDAO;
 import persistencia.IAdaptadorListaVideosDAO;
 import persistencia.IAdaptadorUsuarioDAO;
@@ -20,30 +18,22 @@ import persistencia.IAdaptadorVideoDAO;
 
 public class AppVideo {
 	
-	private static final String[] ETIQUETAS = {"Videoclips", "Peliculas", "Series"};
-	private String nombreUsuario;
+	private static final String[] ETIQUETAS = {"Videoclips", "Peliculas", "Series", "Comedia", "Drama"};
 	private Usuario usuario;
 	private List <String> etiquetasHabituales;
-	private RepositorioUsuarios ruf;
-	private RepositorioUsuarios repositoPrueba = new RepositorioUsuarios();
-	private JPanel panelCentro;
-	private FrameBase frameBase;
-	private JLabel etiqueta;
-	//private RepositorioVideo repositorioVideoPrueba = new RepositorioVideo();
 	
 	
 	private IAdaptadorVideoDAO adaptadorVideo;
 	private IAdaptadorUsuarioDAO adaptadorUsuario;
 	private IAdaptadorFiltroDAO adaptadorFiltro;
+	private IAdaptadorEtiquetaDAO adaptadorEtiqueta;
 	private IAdaptadorListaVideosDAO adaptadorListaVideos;
 	
 	private CatalogoVideo catalogoVideo;
 	private CatalogoUsuarios catalogoUsuario;
 	
 	public AppVideo() {
-		this.nombreUsuario = "usuario";
 		this.etiquetasHabituales = new LinkedList<String>();
-		ruf = new RepositorioUsuarios();
 		for(String etiqueta: ETIQUETAS)
 		{
 			etiquetasHabituales.add(etiqueta);
@@ -51,6 +41,8 @@ public class AppVideo {
 		
 		inicializarAdaptadores();
 		inicializarCatalogos();
+		
+		//urls videos
 		
 		/*repositorioVideoPrueba.anadirVideo("primerVideo", "https://www.youtube.com/watch?v=rk7ITikbhs4");
 		repositorioVideoPrueba.anadirVideo("primerVideo", "https://www.youtube.com/watch?v=rk7ITikbhs4");
@@ -72,7 +64,6 @@ public class AppVideo {
 			try {
 				fecha = formato.parse(fechaNacimiento);
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
 				return false;
 			}
 			Usuario usuarioAux = new Usuario(nombre, fecha, nombreUsuario, contrasena);
@@ -85,18 +76,14 @@ public class AppVideo {
 	
 	public void modificarUsuarioAppVideo()
 	{
-		catalogoUsuario.modificarUsuario(usuario);
+		if(usuario!=null) catalogoUsuario.modificarUsuario(usuario);
 	}
 	
-	public String getUsuario() {
-		return nombreUsuario;
+	public String getNombreUsuario() {
+		if(usuario==null) return null;
+		return usuario.getUsuario();
 	}
-	
-	public void setUsuario(String usuario)
-	{
-		this.nombreUsuario=usuario;
-	}
-	
+		
 	public Usuario getUser()
 	{
 		return this.usuario;
@@ -107,14 +94,8 @@ public class AppVideo {
 	{
 		if(catalogoUsuario.isLoginOK(usuario, contrasena))
 		{
-			this.nombreUsuario=usuario;
-			this.usuario = catalogoUsuario.getUsuario(usuario); //esto no se si puede causar que appVideo no tenga el usuario
-			//despues de hacer un registro porque me dice que el user de appvideo es null en un momento
-			if(this.usuario==null) System.out.println("null");
+			this.usuario = catalogoUsuario.getUsuario(usuario);
 			return true;
-			//PanelPrueba panel_prueba = new PanelPrueba();
-			//CreadorPaneles.creaPanel(panel_centro_central, panel_prueba);
-			//esto funciona
 			
 		}
 		else {
@@ -128,46 +109,11 @@ public class AppVideo {
 		return etiquetasHabituales;
 	}
 	
-	public void setPanelCentro(JPanel panelCentro)
-	{
-		this.panelCentro= panelCentro;
-	}
-	
-	/*public JPanel getPanelCentro()
-	{
-		return this.panelCentro;
-	}
-	
-	public void setFrameBase(FrameBase frameBase)
-	{
-		this.frameBase= frameBase;
-	}
-	
-	public FrameBase getFrameBase()
-	{
-		return this.frameBase;
-	}*/
-	
-	public JLabel creaEtiqueta()
-	{
-		JLabel lblLogin = new JLabel("Hola "+nombreUsuario);
-		etiqueta = lblLogin;
-		return etiqueta;
-	}
-	
-	public void setEtiqueta(String usuario)
-	{
-		etiqueta.setText("Hola "+usuario);
-	}
-	
-	
 	public List<Video> buscarVideo(String titulo) {
-		if(usuario!=null) return catalogoVideo.buscarVideoUsuario(titulo, usuario);
-		return catalogoVideo.buscarVideo(titulo);
+		return this.filtraVideos(catalogoVideo.buscarVideo(titulo));
 	}
 	public List<Video> buscarVideo(String titulo, Set<Etiqueta> etiquetas) {
-		if(usuario!=null) return catalogoVideo.buscarVideoUsuario(titulo, usuario, etiquetas);
-		return catalogoVideo.buscarVideo(titulo, etiquetas);
+		return this.filtraVideos(catalogoVideo.buscarVideo(titulo, etiquetas));
 	}
 	
 	public List<String> obtenerURLs() {
@@ -214,8 +160,10 @@ public class AppVideo {
 	}
 	
 	public void addVideoRecientes(Video v) {
-		this.modificarUsuarioAppVideo();
-		this.usuario.addVideoRecientes(v);
+		if(usuario!=null) {
+			this.modificarUsuarioAppVideo();
+			this.usuario.addVideoRecientes(v);
+		}
 	}
 	
 	public boolean isPremium() {
@@ -239,6 +187,7 @@ public class AppVideo {
 		adaptadorUsuario = factoria.getUsuaioDAO();
 		adaptadorFiltro = factoria.getFiltroDAO();
 		adaptadorListaVideos = factoria.getListaVideosDAO();
+		adaptadorEtiqueta = factoria.getEtiquetaDAO();
 	}
 
 	private void inicializarCatalogos() {
@@ -251,4 +200,34 @@ public class AppVideo {
 		adaptadorFiltro.registrarFiltro(filtro);
 	}
 	
+	public void registrarEtiqueta(Etiqueta e) {
+		adaptadorEtiqueta.registrarEtiqueta(e);
+	}
+
+
+	public void logOut() {
+		this.usuario=null;
+	}
+	
+	private boolean filtraVideo(Video v)
+	{
+		if(usuario!=null)
+		{
+			return this.usuario.filtraVideo(v);
+		}
+		return true;
+	}
+	
+	private List<Video> filtraVideos(List<Video> listaVideos)
+	{
+		return listaVideos.stream()
+		.filter(vid->filtraVideo(vid))
+		.collect(Collectors.toList());
+		
+	}
+
+
+	public void modificarVideo(Video v) {
+		this.adaptadorVideo.modificarVideo(v);
+	}
 }

@@ -9,5 +9,5 @@ public interface IAdaptadorEtiquetaDAO {
 	public void borrarEtiqueta(Etiqueta etiqueta);
 	public void modificarEtiqueta(Etiqueta etiqueta);
 	public Etiqueta recuperarEtiqueta(int codigo);
-	public List<Etiqueta> recuperarTodasEtiqueta();
+	public List<Etiqueta> recuperarTodasEtiquetas();
 }

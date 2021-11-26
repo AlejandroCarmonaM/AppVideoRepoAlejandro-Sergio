@@ -164,5 +164,10 @@ public class Usuario {
 		}
 		return null;
 	}
+	
+	public boolean filtraVideo(Video v)
+	{
+		return this.filtro.esVideoOK(v, this);
+	}
 
 }

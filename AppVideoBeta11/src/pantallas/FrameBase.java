@@ -32,6 +32,7 @@ public class FrameBase extends JFrame {
 	private JPanel contentPane;
 	private AppVideo appVideo;
 	private JPanel panel_centro;
+	private JLabel etiquetaUsuario = new JLabel("");
 	private static VideoWeb vWeb = new VideoWeb();
 	
 	public static void main(String[] args) {
@@ -87,8 +88,7 @@ public class FrameBase extends JFrame {
 		Component rigidArea_0 = Box.createRigidArea(new Dimension(70, 0));
 		panel_norte1.add(rigidArea_0);
 		
-		//JLabel lblNewLabel_1 = new JLabel("Hola "+appVideo.getUsuario());
-		JLabel etiquetaUsuario = appVideo.creaEtiqueta();
+		this.actualizarEtiqueta();
 		panel_norte1.add(etiquetaUsuario);
 		
 		Component rigidArea = Box.createRigidArea(new Dimension(70, 0));
@@ -169,6 +169,14 @@ public class FrameBase extends JFrame {
 			panel_norte.revalidate();
 			});
 		
+		btnLogout.addActionListener(ev -> {
+			this.appVideo.logOut();
+			
+			this.actualizarEtiqueta();
+			panel_norte.repaint();
+			panel_norte.revalidate();
+			});
+		
 		btnExplorar.addActionListener(ev -> {
 			PanelExplorar panelExplorarBox = new PanelExplorar(this);
 			this.creaPanel(panel_centro, panelExplorarBox);
@@ -210,6 +218,12 @@ public class FrameBase extends JFrame {
 		});
 	}
 	
+	public void actualizarEtiqueta() {
+		String nombreUsuario = this.appVideo.getNombreUsuario();
+		if(nombreUsuario!=null) etiquetaUsuario.setText("Hola "+nombreUsuario);
+		else etiquetaUsuario.setText("Hola usuario"); 
+	}
+
 	//metodos getters y setters
 	public AppVideo getAppVideo()
 	{
@@ -250,7 +264,6 @@ public class FrameBase extends JFrame {
 	}
 
 	public static VideoWeb getVideoWeb() {
-		// TODO Auto-generated method stub
 		return vWeb;
 	}
 	

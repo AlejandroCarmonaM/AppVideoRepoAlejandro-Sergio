@@ -63,35 +63,7 @@ public class CatalogoUsuarios {
 	public void removeUsuario (Usuario u) {
 		usuarios.remove(u.getUsuario());
 	}
-	
-/*public boolean registrarUsuario(String nombre, String fechaNacimiento, String nombreUsuario, String contrasena, String contrasenaRep) {
-		
-		boolean existeUsuario = false;
-		boolean coincideContrasena = true;
-		
-		for (Usuario elemento : this.getUsuarios()) {
-			if (elemento.getNombre().equals(nombreUsuario))
-				existeUsuario = true;
-		}
-		
-		if (!contrasena.equals(contrasenaRep))
-			coincideContrasena = false;
-		
-		if (!existeUsuario && coincideContrasena) {
-			SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-			try {
-				Date fecha = formato.parse(fechaNacimiento);
-				Usuario nuevoUsuario = new Usuario(nombre, fecha, nombreUsuario, contrasena);
-				this.addUsuario(nuevoUsuario); //los usuarios registrados durante la primera ejecucion no tienen el codigo correcto
-				//y por tanto no se pueden modificar sin error
-				
-			} catch (ParseException e) {
-				return false;
-			}
-			return true;
-		}
-		return false;
-	}*/
+
 	
 public void registrarUsuario(Usuario usuario) {
 	this.addUsuario(usuario);
@@ -150,10 +122,6 @@ public boolean existeUsuario(String nombreUsuario)
 		return false;
 		
 	}
-
-	/*public Usuario getAdmin() {
-		return admin;
-	}*/
 	
 	/*Recupera todos los clientes para trabajar con ellos en memoria*/
 	private void cargarCatalogo() throws DAOException {

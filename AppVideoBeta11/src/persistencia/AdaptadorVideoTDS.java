@@ -86,7 +86,7 @@ public class AdaptadorVideoTDS implements IAdaptadorVideoDAO{
 				prop.setValor(String.valueOf(video.getUrl()));
 			} else if (prop.getNombre().equals("numRepro")) {
 				prop.setValor(String.valueOf(video.getNumeroReproducciones()));
-			} else if (prop.getNombre().equals("lineasventa")) {
+			} else if (prop.getNombre().equals("etiquetas")) {
 				String lineas = obtenerCodigosEtiquetas(video.getEtiquetas());
 				prop.setValor(lineas);
 			}

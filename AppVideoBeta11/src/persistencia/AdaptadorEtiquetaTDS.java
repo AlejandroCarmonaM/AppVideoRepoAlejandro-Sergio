@@ -11,7 +11,7 @@ import dominio.Etiqueta;
 import tds.driver.FactoriaServicioPersistencia;
 import tds.driver.ServicioPersistencia;
 
-public class AdaptadorEtiquetaTDS {
+public class AdaptadorEtiquetaTDS implements IAdaptadorEtiquetaDAO {
 	private static ServicioPersistencia servPersistencia;
 	private static AdaptadorEtiquetaTDS unicaInstancia = null;
 
