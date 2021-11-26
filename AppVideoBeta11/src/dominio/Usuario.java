@@ -151,8 +151,8 @@ public class Usuario {
 	
 	public List<String> getNombreMisListas() {
 		LinkedList<String> listaNombres = new LinkedList<String>();
-		for(int i = 0; i < listasVideos.size(); i++) {
-			listaNombres.add(listasVideos.get(i).getNombre());
+		for(ListaVideos elemento : listasVideos) {
+			listaNombres.add(elemento.getNombre());
 		}
 		return listaNombres;
 	}

@@ -135,6 +135,7 @@ public class PanelExplorar extends JPanel {
 		
 		tablaVideos.setModel(tm);
 		tablaVideos.setRowHeight(120); //cambio en la altura para que se vean los titulos
+		tablaVideos.getTableHeader().setUI(null);  //Elimina la cabecera
 		TableColumnModel colModel=tablaVideos.getColumnModel();
 		for(int i=0; i<4; i++)
 		{
