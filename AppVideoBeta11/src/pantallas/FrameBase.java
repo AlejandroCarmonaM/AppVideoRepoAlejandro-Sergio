@@ -201,6 +201,13 @@ public class FrameBase extends JFrame {
 			PanelMisListas panelMisListas = new PanelMisListas(this);
 			this.creaPanel(panel_centro, panelMisListas);
 		});
+		
+		btnRecientes.addActionListener(ev -> {
+			if (this.getAppVideo().usuarioLogeado()) {
+				PanelRecientes panelRecientes = new PanelRecientes(this);
+				this.creaPanel(panel_centro, panelRecientes);
+			}
+		});
 	}
 	
 	//metodos getters y setters

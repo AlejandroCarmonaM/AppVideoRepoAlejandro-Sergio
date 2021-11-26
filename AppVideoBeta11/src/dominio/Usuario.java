@@ -132,7 +132,9 @@ public class Usuario {
 	}
 	
 	public void addVideoRecientes(Video v) {
-		this.recientes.add(v);
+		recientes.add(0, v);
+		if (recientes.size() > 10)
+			recientes.remove(10);
 	}
 
 	public List<Video> getRecientes() {
@@ -162,6 +164,5 @@ public class Usuario {
 		}
 		return null;
 	}
-	
 
 }

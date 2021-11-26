@@ -286,6 +286,7 @@ public class PanelExplorar extends JPanel {
 		public void mouseClicked(MouseEvent e) {
 			int fila = tablaVideos.rowAtPoint(e.getPoint());
 			int columna = tablaVideos.columnAtPoint(e.getPoint());
+			frameBase.getAppVideo().addVideoRecientes(tm.getValueAt(fila, columna));
 			frameBase.creaPanelReproduccion(frameBase.getPanelCentro(), new PanelReproduccion(frameBase, tm.getValueAt(fila, columna)));
 			validate();
 			//Hay que crear otro panel

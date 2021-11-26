@@ -1,46 +1,33 @@
 package pantallas;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.border.BevelBorder;
-
-import dominio.CuartetoVideos;
-import dominio.ListaVideos;
-import dominio.Video;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.swing.JComboBox;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.ActionEvent;
-import java.awt.FlowLayout;
-import java.awt.ComponentOrientation;
+import java.util.List;
 
-public class PanelMisListas extends JPanel {
+import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.border.BevelBorder;
+
+import dominio.ListaVideos;
+import dominio.Video;
+
+public class PanelRecientes extends JPanel {
 
 	private FrameBase frameBase;
-	
-	public PanelMisListas(FrameBase frameBase) {
+	public PanelRecientes(FrameBase frameBase) {
 		this.frameBase=frameBase;
 		setBackground(Color.GRAY);
 		setForeground(Color.LIGHT_GRAY);
@@ -76,10 +63,7 @@ public class PanelMisListas extends JPanel {
 		panelSL.add(etiquetaSL, gbc_etiquetaSL);
 		
 		JComboBox misListas = new JComboBox();
-		List<String> listaNombres = frameBase.getAppVideo().getNombreMisListas();
-		for(int i = 0; i < listaNombres.size(); i++) {
-			misListas.addItem(listaNombres.get(i));
-		}
+		misListas.addItem("Recientes");
 		GridBagConstraints gbc_misListas = new GridBagConstraints();
 		gbc_misListas.gridwidth = 2;
 		gbc_misListas.insets = new Insets(0, 0, 5, 5);
@@ -130,9 +114,8 @@ public class PanelMisListas extends JPanel {
 		panelDerecho.setLayout(new BoxLayout(panelDerecho, BoxLayout.Y_AXIS));
 		
 		misListas.addActionListener(ev -> {
-				String nombreListaSeleccionada = misListas.getSelectedItem().toString();
-				ListaVideos lv = frameBase.getAppVideo().getListaVideosPorNombre(nombreListaSeleccionada);
-				for (Video elemento : lv.getListaVideos())
+				List<Video> lv = frameBase.getAppVideo().getRecientes();
+				for (Video elemento : lv)
 					modeloLista.addElement(elemento);
 		});
 		
@@ -142,13 +125,13 @@ public class PanelMisListas extends JPanel {
 				if (modeloLista.size() > 0) {
 					Video v = modeloLista.get(listaActual.getSelectedIndex());
 					frameBase.getAppVideo().addVideoRecientes(v);
+					modeloLista.add(0, v);
 					frameBase.creaPanelReproduccion(panelDerecho, new PanelReproduccion(frameBase, v));
 					validate();
 				}
 				//Hay que crear otro panel
 			}
 		});
-		
 	}
 
 }

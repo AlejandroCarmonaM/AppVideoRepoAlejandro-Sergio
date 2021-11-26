@@ -213,6 +213,19 @@ public class AppVideo {
 		return this.usuario.getListaVideosPorNombre(nombreLista);
 	}
 	
+	public void addVideoRecientes(Video v) {
+		this.modificarUsuarioAppVideo();
+		this.usuario.addVideoRecientes(v);
+	}
+	
+	public boolean isPremium() {
+		return this.usuario.isPremium();
+	}
+	
+	public List<Video> getRecientes() {
+		return this.usuario.getRecientes();
+	}
+	
 	private void inicializarAdaptadores() {
 		FactoriaDAO factoria = null;
 		try {
