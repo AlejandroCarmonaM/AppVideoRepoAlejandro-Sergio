@@ -76,7 +76,7 @@ public class PanelPremium extends JPanel {
 		scroller.setVisible(frameBase.getAppVideo().getUser().isPremium());
 		this.add(scroller);
 		
-		JLabel lblFiltroActual = new JLabel("FiltroActual: "+filtroActual.getNombre());
+		JLabel lblFiltroActual = new JLabel("FiltroActual: "+filtroActual.getNombre().substring(8));
 		lblFiltroActual.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		add(lblFiltroActual);
 		
@@ -96,7 +96,7 @@ public class PanelPremium extends JPanel {
 				this.frameBase.getAppVideo().getUser().setFiltro(noFiltro);
 				this.frameBase.getAppVideo().modificarUsuarioAppVideo();
 				this.filtroActual=noFiltro;
-				lblFiltroActual.setText("FiltroActual: "+filtroActual.getNombre());
+				lblFiltroActual.setText("FiltroActual: "+filtroActual.getNombre().substring(8));
 				this.repaint();
 				this.validate();
 				this.frameBase.validate();
@@ -119,7 +119,7 @@ public class PanelPremium extends JPanel {
 						this.frameBase.getAppVideo().getUser().setFiltro(filtro); //corregir cuando sea posible
 						this.frameBase.getAppVideo().modificarUsuarioAppVideo();
 						this.filtroActual=filtro;
-						lblFiltroActual.setText("FiltroActual: "+filtroActual.getNombre());
+						lblFiltroActual.setText("FiltroActual: "+selected);
 						this.repaint();
 						this.validate();
 						this.frameBase.validate();
