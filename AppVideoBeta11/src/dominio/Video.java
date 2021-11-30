@@ -1,6 +1,7 @@
 package dominio;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class Video {
@@ -60,6 +61,24 @@ public class Video {
 		this.numRepro++;
 	}
 	
+	@Override
+	public int hashCode() {
+		return Objects.hash(codigo, etiquetas, numRepro, titulo, url);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Video other = (Video) obj;
+		return codigo == other.codigo && Objects.equals(etiquetas, other.etiquetas) && numRepro == other.numRepro
+				&& Objects.equals(titulo, other.titulo) && Objects.equals(url, other.url);
+	}
+
 	public boolean isLargo(int limite)
 	{
 		return (this.titulo.length()<limite);

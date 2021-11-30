@@ -12,7 +12,7 @@ public class FiltroMisListas implements Filtro {
 
 	@Override
 	public boolean esVideoOK(Video v, Usuario usuario) {
-		return usuario.isVideoListas(v);
+		return !usuario.isVideoListas(v);
 	}
 
 	@Override
