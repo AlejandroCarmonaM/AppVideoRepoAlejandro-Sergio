@@ -18,38 +18,38 @@
   </build>
   <dependencies>
   			<dependency>
-    		<groupId>org.eclipse.persistence</groupId>
-		    <artifactId>eclipselink</artifactId>
-		    <version>2.7.7</version>
+	    		<groupId>org.eclipse.persistence</groupId>
+			    <artifactId>eclipselink</artifactId>
+			    <version>2.7.7</version>
 			</dependency>
 			<dependency>
-		    <groupId>javax.persistence</groupId>
-		    <artifactId>javax.persistence-api</artifactId>
-		    <version>2.2</version>
+			    <groupId>javax.persistence</groupId>
+			    <artifactId>javax.persistence-api</artifactId>
+			    <version>2.2</version>
 			</dependency>
 			<dependency>
-		    <groupId>com.h2database</groupId>
-		    <artifactId>h2</artifactId>
-		    <version>1.3.160</version>
+			    <groupId>com.h2database</groupId>
+			    <artifactId>h2</artifactId>
+			    <version>1.3.160</version>
 			</dependency>
 			<dependency>
-		    <groupId>com.miglayout</groupId>
-		    <artifactId>miglayout-swing</artifactId>
-		    <version>11.0</version>
+			    <groupId>com.miglayout</groupId>
+			    <artifactId>miglayout-swing</artifactId>
+			    <version>11.0</version>
 			</dependency>
 			<dependency>
-			<groupId>es.um.tds.videoweb</groupId>
-			<artifactId>videoweb</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>C:\Users\ALEJANDRO-PC\git\AppVideoRepoAlejandro-Sergio\AppVideoBeta11\lib\VideoWeb.jar</systemPath>
+			    <groupId>es.um.tds.videoweb</groupId>
+			    <artifactId>videoweb</artifactId>
+			    <version>1.0</version>
+			    <scope>system</scope>
+			    <systemPath>${project.basedir}\lib\VideoWeb.jar</systemPath>
 			</dependency>
 			<dependency>
-			<groupId>es.um.tds.DriverPersistencia</groupId>
-			<artifactId>DriverPersistencia</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>C:\Users\ALEJANDRO-PC\git\AppVideoRepoAlejandro-Sergio\AppVideoBeta11\lib\VideoWeb.jar</systemPath>
+				<groupId>es.um.tds.DriverPersistencia</groupId>
+				<artifactId>DriverPersistencia</artifactId>
+				<version>1.0</version>
+				<scope>system</scope>
+				<systemPath>${project.basedir}\lib\DriverPersistencia.jar</systemPath>
 			</dependency>
 		</dependencies>
 </project>
