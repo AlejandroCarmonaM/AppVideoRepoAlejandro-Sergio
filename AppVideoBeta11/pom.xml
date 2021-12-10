@@ -42,7 +42,7 @@
 			<artifactId>videoweb</artifactId>
 			<version>1.0</version>
 			<scope>system</scope>
-			<systemPath>${project.basedir}\lib\VideoWeb.jar</systemPath>
+			<systemPath>C:\Users\ALEJANDRO-PC\git\AppVideoRepoAlejandro-Sergio\AppVideoBeta11\lib\VideoWeb.jar</systemPath>
 			</dependency>
 			<dependency>
 			<groupId>es.um.tds.DriverPersistencia</groupId>
