@@ -1,6 +1,7 @@
 package dominio;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -31,6 +32,11 @@ public class Video {
 	
 	public void anadirEtiqueta(Etiqueta nueva) {
 		this.etiquetas.add(nueva);
+	}
+	
+	public void anadirEtiquetas(List<Etiqueta> etiquetas) {
+		etiquetas.stream()
+		.forEach(e->this.etiquetas.add(e));
 	}
 	
 	public Video(String titulo, String url) {

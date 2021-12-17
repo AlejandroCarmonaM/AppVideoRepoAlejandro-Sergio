@@ -25,6 +25,10 @@ import javax.swing.border.EmptyBorder;
 import dominio.AppVideo;
 import dominio.Usuario;
 import tds.video.VideoWeb;
+import umu.tds.componente.VideoEvent;
+import umu.tds.componente.Videos;
+import umu.tds.componente.VideosListener;
+
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.EventObject;
@@ -33,7 +37,7 @@ import java.awt.event.ActionEvent;
 import pulsador.IEncendidoListener;
 import pulsador.Luz;
 
-public class FrameBase extends JFrame implements IEncendidoListener {
+public class FrameBase extends JFrame {
 
 	private JPanel contentPane;
 	private AppVideo appVideo;
@@ -179,6 +183,7 @@ public class FrameBase extends JFrame implements IEncendidoListener {
 			if (seleccion == JFileChooser.APPROVE_OPTION)
 			{
 			   File fichero = fileChooser.getSelectedFile();
+			   this.getAppVideo().cargarVideos(fichero);
 			}
 		});
 		
@@ -302,9 +307,6 @@ public class FrameBase extends JFrame implements IEncendidoListener {
 		
 	}
 
-	@Override
-	public void enteradoCambioEncendido(EventObject arg0) {
-	}
 
 	
 	/*public void setUsuario() {

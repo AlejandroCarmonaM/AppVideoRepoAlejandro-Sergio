@@ -93,5 +93,12 @@
 				<scope>system</scope>
 				<systemPath>${project.basedir}\lib\Luz.jar</systemPath>
 			</dependency>
+			<dependency>
+				<groupId>umu.tds</groupId>
+				<artifactId>CargadorVideos</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+				<scope>system</scope>
+				<systemPath>${project.basedir}\lib\CargadorVideos-0.0.1-SNAPSHOT-jar-with-dependencies.jar</systemPath>
+			</dependency>
 		</dependencies>
 </project>

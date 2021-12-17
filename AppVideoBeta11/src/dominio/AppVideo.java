@@ -1,8 +1,11 @@
 package dominio;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
+import java.util.EventObject;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -15,12 +18,17 @@ import persistencia.IAdaptadorFiltroDAO;
 import persistencia.IAdaptadorListaVideosDAO;
 import persistencia.IAdaptadorUsuarioDAO;
 import persistencia.IAdaptadorVideoDAO;
+import umu.tds.componente.CargadorVideos;
+import umu.tds.componente.VideoEvent;
+import umu.tds.componente.Videos;
+import umu.tds.componente.VideosListener;
 
-public class AppVideo {
+public class AppVideo implements VideosListener {
 	
 	private static final String[] ETIQUETAS = {"Videoclips", "Peliculas", "Series", "Comedia", "Drama"};
 	private Usuario usuario;
 	private List <String> etiquetasHabituales;
+	private CargadorVideos cv;
 	
 	
 	private IAdaptadorVideoDAO adaptadorVideo;
@@ -33,6 +41,8 @@ public class AppVideo {
 	private CatalogoUsuarios catalogoUsuario;
 	
 	public AppVideo() {
+		cv = new CargadorVideos();
+		cv.addSueldoListener(this);
 		this.etiquetasHabituales = new LinkedList<String>();
 		for(String etiqueta: ETIQUETAS)
 		{
@@ -124,7 +134,7 @@ public class AppVideo {
 		return catalogoVideo.obtenerVideos();
 	}
 	
-	public void registrarVideo(String nombre, String url, Set<String> etiquetas) {
+	public void registrarVideo(String nombre, String url, Collection<String> etiquetas) {
 		// No se controla que el valor del string precio sea un double
 		Video video = new Video(nombre, url);
 		for(String e : etiquetas)
@@ -229,5 +239,21 @@ public class AppVideo {
 
 	public void modificarVideo(Video v) {
 		this.adaptadorVideo.modificarVideo(v);
+	}
+
+
+	public void cargarVideos(File archivo)
+	{
+		this.cv.setArchivoVideos(archivo);
+	}
+	
+	@Override
+	public void enteradoCambioVideos(EventObject arg0) {
+		VideoEvent ve = (VideoEvent) arg0;
+		Videos videos = ve.getNuevoVideos();
+		for(umu.tds.componente.Video v: videos.getVideo())
+		{
+			this.registrarVideo(v.getTitulo(), v.getURL(), v.getEtiqueta());
+		}
 	}
 }

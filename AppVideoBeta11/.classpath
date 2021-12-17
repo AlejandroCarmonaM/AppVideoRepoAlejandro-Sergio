@@ -25,6 +25,5 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/ALEJANDRO-PC/git/AppVideoRepoAlejandro-Sergio/AppVideoBeta11/lib/Luz.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
