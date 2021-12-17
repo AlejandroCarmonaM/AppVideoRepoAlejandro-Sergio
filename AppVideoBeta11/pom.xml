@@ -51,5 +51,12 @@
 				<scope>system</scope>
 				<systemPath>${project.basedir}\lib\DriverPersistencia.jar</systemPath>
 			</dependency>
+			<dependency>
+				<groupId>Luz.jar</groupId>
+				<artifactId>Luz</artifactId>
+				<version>1.0</version>
+				<scope>system</scope>
+				<systemPath>${project.basedir}\lib\Luz.jar</systemPath>
+			</dependency>
 		</dependencies>
 </project>

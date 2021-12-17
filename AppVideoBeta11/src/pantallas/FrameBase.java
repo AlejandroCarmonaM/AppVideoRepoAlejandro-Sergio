@@ -11,6 +11,7 @@ import java.awt.Font;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -25,9 +26,14 @@ import dominio.AppVideo;
 import dominio.Usuario;
 import tds.video.VideoWeb;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.EventObject;
 import java.awt.event.ActionEvent;
 
-public class FrameBase extends JFrame {
+import pulsador.IEncendidoListener;
+import pulsador.Luz;
+
+public class FrameBase extends JFrame implements IEncendidoListener {
 
 	private JPanel contentPane;
 	private AppVideo appVideo;
@@ -146,6 +152,10 @@ public class FrameBase extends JFrame {
 		
 		panel_norte2.add(botonAnadirVideo);
 		
+		Luz luz = new Luz();
+		luz.setColor(Color.GREEN);
+		panel_norte2.add(luz);
+		
 		JPanel panel_centro = new JPanel();
 		//panel_centro.setSize(new Dimension(742, 383));
 		
@@ -161,6 +171,16 @@ public class FrameBase extends JFrame {
 		this.setPanelCentro(panel_centro);
 		
 		//listeners
+		
+		luz.addEncendidoListener(ev->
+		{
+			JFileChooser fileChooser = new JFileChooser();
+			int seleccion = fileChooser.showSaveDialog(this);
+			if (seleccion == JFileChooser.APPROVE_OPTION)
+			{
+			   File fichero = fileChooser.getSelectedFile();
+			}
+		});
 		
 		btnLogin.addActionListener(ev -> {
 			PanelLoginProto panelLoginProto = new PanelLoginProto(this);
@@ -281,6 +301,11 @@ public class FrameBase extends JFrame {
 		this.validate();
 		
 	}
+
+	@Override
+	public void enteradoCambioEncendido(EventObject arg0) {
+	}
+
 	
 	/*public void setUsuario() {
 		etiquetaUsuario = appVideo.creaEtiqueta();
