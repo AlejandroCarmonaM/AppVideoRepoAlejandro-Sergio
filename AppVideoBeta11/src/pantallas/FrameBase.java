@@ -156,6 +156,9 @@ public class FrameBase extends JFrame {
 		
 		panel_norte2.add(botonAnadirVideo);
 		
+		Component horizontalStrut = Box.createHorizontalStrut(250);
+		panel_norte2.add(horizontalStrut);
+		
 		Luz luz = new Luz();
 		luz.setColor(Color.GREEN);
 		panel_norte2.add(luz);
