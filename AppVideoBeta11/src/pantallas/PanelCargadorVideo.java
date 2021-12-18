@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 import java.awt.GridBagLayout;
 import javax.swing.JTextField;
 
+import dominio.Etiqueta;
 import dominio.Video;
 
 import java.awt.GridBagConstraints;
@@ -11,8 +12,10 @@ import java.awt.Insets;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.awt.event.ActionEvent;
+import java.util.Arrays;
 
 public class PanelCargadorVideo extends JPanel {
 	private JTextField textField;
@@ -85,7 +88,7 @@ public class PanelCargadorVideo extends JPanel {
 		gbc_textField_2.gridx = 5;
 		gbc_textField_2.gridy = 4;
 		add(textField_2, gbc_textField_2);
-		textField_2.setColumns(10);
+		textField_2.setColumns(20);
 		
 		botonAceptar = new JButton("Aceptar");
 		
@@ -95,11 +98,12 @@ public class PanelCargadorVideo extends JPanel {
 		add(botonAceptar, gbc_botonAceptar);
 
 		
-		
 		botonAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				HashSet<String> etiquetas = new HashSet<String>();
-				etiquetas.add(textField_2.getText());
+				//HashSet<String> etiquetas = new HashSet<String>();
+				//etiquetas.add(textField_2.getText());
+				String textoSinEspacios = textField_2.getText()/*.replace(" ", "")*/;
+				ArrayList<String> etiquetas = new ArrayList<String>(Arrays.asList(textoSinEspacios.split(",")));
 				frameBase.getAppVideo().registrarVideo(textField.getText(), textField_1.getText(), etiquetas);
 			}
 		});

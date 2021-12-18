@@ -53,13 +53,10 @@ public class PanelExplorar extends JPanel {
 	private JTextField campoBuscarTitulo;
 	private FrameBase frameBase;
 	private Set<Etiqueta> etiquetasSeleccionadas= new HashSet<Etiqueta>();  
+	private JTextField etiquetaPersonalizada;
 	
 	//constructor
 	public PanelExplorar(FrameBase frameBase) {
-		//creacion panel
-		/*this.setPreferredSize(new Dimension(742, 383));
-		this.setMinimumSize(new Dimension(742, 383));
-		this.setMaximumSize(new Dimension(742, 383));*/
 		setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		this.frameBase=frameBase;
 		setBackground(Color.GRAY);
@@ -67,7 +64,6 @@ public class PanelExplorar extends JPanel {
 		
 		JPanel panel_oeste = new JPanel();
 		panel_oeste.setBackground(Color.GRAY);
-		//panel_oeste.setPreferredSize(null);
 		add(panel_oeste);
 		panel_oeste.setLayout(new BoxLayout(panel_oeste, BoxLayout.Y_AXIS));
 		
@@ -98,11 +94,31 @@ public class PanelExplorar extends JPanel {
 		panel_3.setBackground(Color.GRAY);
 		panel.add(panel_3);
 		
+		JLabel lblAnadeEtiqueta = new JLabel("Introduce una etiqueta ");
+		lblAnadeEtiqueta.setForeground(Color.WHITE);
+		lblAnadeEtiqueta.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		panel_3.add(lblAnadeEtiqueta);
+		
+		etiquetaPersonalizada = new JTextField();
+		etiquetaPersonalizada.setColumns(15);
+		panel_3.add(etiquetaPersonalizada);
+		
+		JButton btnAnadir = new JButton("A\u00F1adir");
+		panel_3.add(btnAnadir);
+		
+		Component horizontalStrut_1 = Box.createHorizontalStrut(30);
+		panel_3.add(horizontalStrut_1);
+		
 		JButton btnNuevaBusqueda = new JButton("Nueva b\u00FAsqueda");
 		panel_3.add(btnNuevaBusqueda);
 		
 		Component horizontalStrut = Box.createHorizontalStrut(500);
 		panel.add(horizontalStrut);
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setBackground(Color.GRAY);
+		panel_1.setForeground(Color.GRAY);
+		panel.add(panel_1);
 		
 		
 		/*JPanel panel_tabla_videos = new JPanel();
@@ -206,7 +222,7 @@ public class PanelExplorar extends JPanel {
 		
 		
 		
-		JLabel lblBuscarEtiquetas = new JLabel("Buscar etiquetas:");
+		JLabel lblBuscarEtiquetas = new JLabel("Buscar etiquetas");
 		lblBuscarEtiquetas.setHorizontalAlignment(SwingConstants.CENTER);
 		lblBuscarEtiquetas.setForeground(Color.WHITE);
 		lblBuscarEtiquetas.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -245,7 +261,7 @@ public class PanelExplorar extends JPanel {
 				}
 			}
 		});
-
+		
 		btnNuevaBusqueda.addActionListener(ev -> {
 			etiquetasSeleccionadas.clear();
 			campoBuscarTitulo.setText("");
@@ -259,40 +275,58 @@ public class PanelExplorar extends JPanel {
 			panel_este.repaint();
 			panel_este.revalidate();
 			this.frameBase.validate();
-
-			});
+		});
 		
-	btnBuscar.addActionListener(event -> {
-		String tituloVideo = campoBuscarTitulo.getText();
-		if (!tituloVideo.equals("")) {
-			List<Video> videoBuscado = this.frameBase.getAppVideo().buscarVideo(tituloVideo, etiquetasSeleccionadas);
-			int filas = tablaVideos.getRowCount();
-			for (int i = filas-1; i >= 0; i--)
-				tm.removeRow(i);
-			if (videoBuscado != null)
-				tm.rellenarTabla(videoBuscado, FrameBase.getVideoWeb());
-		}
-		else {
-			int filas = tablaVideos.getRowCount();
-			for (int i = filas-1; i >= 0; i--)
-				tm.removeRow(i);
-			List<Video> todosVideos = frameBase.getAppVideo().obtenerVideos();
-			tm.rellenarTabla(todosVideos, FrameBase.getVideoWeb());
-		}
-		tm.fireTableDataChanged();
-		validate();	
-	});
+		btnAnadir.addActionListener(ev -> {
+			String textoEtiquetaNueva = etiquetaPersonalizada.getText();
+			Etiqueta etiquetaNueva = new Etiqueta(textoEtiquetaNueva);
+			etiquetaPersonalizada.setText("");
+			if(!etiquetasSeleccionadas.contains(etiquetaNueva))
+			{
+				etiquetasSeleccionadas.add(etiquetaNueva);
+				model1.addElement(textoEtiquetaNueva);
+				lista1.setModel(model1);
+				panel_este.repaint();
+				panel_3.repaint();
+				panel_este.revalidate();
+				panel_3.revalidate();
+				this.frameBase.validate();
+			}
+			
+		});
+		
+		btnBuscar.addActionListener(event -> {
+			String tituloVideo = campoBuscarTitulo.getText();
+			if (!tituloVideo.equals("")) {
+				List<Video> videoBuscado = this.frameBase.getAppVideo().buscarVideo(tituloVideo, etiquetasSeleccionadas);
+				int filas = tablaVideos.getRowCount();
+				for (int i = filas-1; i >= 0; i--)
+					tm.removeRow(i);
+				if (videoBuscado != null)
+					tm.rellenarTabla(videoBuscado, FrameBase.getVideoWeb());
+			}
+			else {
+				int filas = tablaVideos.getRowCount();
+				for (int i = filas-1; i >= 0; i--)
+					tm.removeRow(i);
+				List<Video> todosVideos = frameBase.getAppVideo().obtenerVideos();
+				tm.rellenarTabla(todosVideos, FrameBase.getVideoWeb());
+			}
+			tm.fireTableDataChanged();
+			validate();	
+		});
 
-	tablaVideos.addMouseListener(new MouseAdapter() {
-		public void mouseClicked(MouseEvent e) {
-			int fila = tablaVideos.rowAtPoint(e.getPoint());
-			int columna = tablaVideos.columnAtPoint(e.getPoint());
-			if(frameBase.getAppVideo().usuarioLogeado())frameBase.getAppVideo().addVideoRecientes(tm.getValueAt(fila, columna));
-			frameBase.creaPanelReproduccion(frameBase.getPanelCentro(), new PanelReproduccion(frameBase, tm.getValueAt(fila, columna)));
-			validate();
-			//Hay que crear otro panel
-		}
-	});
+		tablaVideos.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				int fila = tablaVideos.rowAtPoint(e.getPoint());
+				int columna = tablaVideos.columnAtPoint(e.getPoint());
+				if(frameBase.getAppVideo().usuarioLogeado())frameBase.getAppVideo().addVideoRecientes(tm.getValueAt(fila, columna));
+				frameBase.creaPanelReproduccion(frameBase.getPanelCentro(), new PanelReproduccion(frameBase, tm.getValueAt(fila, columna)));
+				validate();
+				//Hay que crear otro panel
+			}
+		});
 	
 	} 
+	
 }
