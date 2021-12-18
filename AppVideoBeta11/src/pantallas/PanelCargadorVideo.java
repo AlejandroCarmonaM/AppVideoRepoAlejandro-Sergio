@@ -73,7 +73,7 @@ public class PanelCargadorVideo extends JPanel {
 		add(textField_1, gbc_textField_1);
 		textField_1.setColumns(10);
 		
-		etiqueta = new JLabel("etiqueta");
+		etiqueta = new JLabel("etiquetas");
 		GridBagConstraints gbc_etiqueta = new GridBagConstraints();
 		gbc_etiqueta.insets = new Insets(0, 0, 5, 5);
 		gbc_etiqueta.anchor = GridBagConstraints.EAST;
