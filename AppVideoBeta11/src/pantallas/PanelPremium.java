@@ -29,6 +29,8 @@ import java.util.List;
 import javax.swing.JList;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JButton;
+import pulsador.Luz;
 
 public class PanelPremium extends JPanel {
 	private FrameBase frameBase;
@@ -80,6 +82,14 @@ public class PanelPremium extends JPanel {
 		lblFiltroActual.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		add(lblFiltroActual);
 		
+		JButton btnGenerarPDF = new JButton("Generar PDF listas");
+		btnGenerarPDF.setForeground(Color.WHITE);
+		btnGenerarPDF.setBackground(Color.RED);
+		btnGenerarPDF.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnGenerarPDF.setHorizontalAlignment(SwingConstants.RIGHT);
+		add(btnGenerarPDF);
+		
+		
 		rdbtnPremium.addActionListener(ev ->{
 			if (rdbtnPremium.isSelected()) {
 				this.frameBase.getAppVideo().getUser().setPremium(true);
@@ -101,6 +111,13 @@ public class PanelPremium extends JPanel {
 				this.validate();
 				this.frameBase.validate();
 			}
+		});
+		
+		btnGenerarPDF.addActionListener(ev->{
+			if(this.frameBase.getAppVideo().generaPDF()) {
+				btnGenerarPDF.setBackground(Color.GREEN);
+				this.validate();
+			};
 		});
 		
 		lista.addListSelectionListener(event->{

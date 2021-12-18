@@ -169,5 +169,16 @@ public class Usuario {
 	{
 		return this.filtro.esVideoOK(v, this);
 	}
+	
+	public String getInfoListas()
+	{
+		String infoListas="Listas de videos de "+this.getUsuario()+"\n\n";
+		for(ListaVideos lv: listasVideos)
+		{
+			infoListas+=lv.getInfoLista();
+		}
+		return infoListas;
+		
+	}
 
 }

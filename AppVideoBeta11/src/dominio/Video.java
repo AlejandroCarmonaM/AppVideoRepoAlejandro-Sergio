@@ -95,4 +95,9 @@ public class Video {
 		return etiquetas.stream()
 		.anyMatch(setE::contains);
 	}
+	
+	public String getInfoVideo()
+	{
+		return "\""+this.getTitulo()+"\", numero de reproducciones: "+this.getNumeroReproducciones()+"\n";
+	}
 }

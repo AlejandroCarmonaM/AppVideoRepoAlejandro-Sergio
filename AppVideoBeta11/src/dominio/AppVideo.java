@@ -23,6 +23,14 @@ import umu.tds.componente.VideoEvent;
 import umu.tds.componente.Videos;
 import umu.tds.componente.VideosListener;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+
 public class AppVideo implements VideosListener {
 	
 	private static final String[] ETIQUETAS = {"Videoclips", "Peliculas", "Series", "Comedia", "Drama"};
@@ -255,5 +263,37 @@ public class AppVideo implements VideosListener {
 		{
 			this.registrarVideo(v.getTitulo(), v.getURL(), v.getEtiqueta());
 		}
+	}
+	
+	private String infoListas()
+	{
+		return this.usuario.getInfoListas();
+	}
+	
+	public boolean generaPDF()
+	{
+		FileOutputStream archivo=null;
+		try {
+			archivo = new FileOutputStream("C:\\listasAppVideoDe_"+this.getUser().getUsuario()+".pdf");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return false;
+		}
+	    Document documento = new Document();
+	     try {
+			PdfWriter.getInstance(documento, archivo);
+		} catch (DocumentException e) {
+			e.printStackTrace();
+			return false;
+		}
+	    documento.open();
+	    try {
+			documento.add(new Paragraph(this.infoListas()));
+		} catch (DocumentException e) {
+			e.printStackTrace();
+			return false;
+		}
+	    documento.close();
+	    return true;
 	}
 }

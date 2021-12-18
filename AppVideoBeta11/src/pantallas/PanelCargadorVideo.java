@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.awt.event.ActionEvent;
 import java.util.Arrays;
+import java.awt.Color;
 
 public class PanelCargadorVideo extends JPanel {
 	private JTextField textField;
@@ -91,6 +92,8 @@ public class PanelCargadorVideo extends JPanel {
 		textField_2.setColumns(20);
 		
 		botonAceptar = new JButton("Aceptar");
+		botonAceptar.setBackground(Color.RED);
+		botonAceptar.setForeground(Color.WHITE);
 		
 		GridBagConstraints gbc_botonAceptar = new GridBagConstraints();
 		gbc_botonAceptar.gridx = 5;
@@ -98,14 +101,14 @@ public class PanelCargadorVideo extends JPanel {
 		add(botonAceptar, gbc_botonAceptar);
 
 		
-		botonAceptar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				//HashSet<String> etiquetas = new HashSet<String>();
-				//etiquetas.add(textField_2.getText());
-				String textoSinEspacios = textField_2.getText()/*.replace(" ", "")*/;
-				ArrayList<String> etiquetas = new ArrayList<String>(Arrays.asList(textoSinEspacios.split(",")));
-				frameBase.getAppVideo().registrarVideo(textField.getText(), textField_1.getText(), etiquetas);
-			}
+		botonAceptar.addActionListener(ev-> {
+			//HashSet<String> etiquetas = new HashSet<String>();
+			//etiquetas.add(textField_2.getText());
+			String textoSinEspacios = textField_2.getText()/*.replace(" ", "")*/;
+			ArrayList<String> etiquetas = new ArrayList<String>(Arrays.asList(textoSinEspacios.split(",")));
+			frameBase.getAppVideo().registrarVideo(textField.getText(), textField_1.getText(), etiquetas);
+			botonAceptar.setBackground(Color.GREEN);
+			this.validate();
 		});
 	}
 

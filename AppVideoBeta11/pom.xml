@@ -100,5 +100,10 @@
 				<scope>system</scope>
 				<systemPath>${project.basedir}\lib\CargadorVideos-0.0.1-SNAPSHOT-jar-with-dependencies.jar</systemPath>
 			</dependency>
+			<dependency>
+    			<groupId>com.itextpdf</groupId>
+			    <artifactId>itextpdf</artifactId>
+			    <version>5.0.6</version>
+			</dependency>
 		</dependencies>
 </project>

@@ -32,4 +32,14 @@ public class ListaVideos {
 		listaVideos.add(video);
 	}
 	
+	public String getInfoLista()
+	{
+		String infoLista =this.getNombre()+"\n";
+		for(Video v: listaVideos)
+		{
+			infoLista+=v.getInfoVideo();
+		}
+		infoLista+="\n";
+		return infoLista;
+	}
 }
