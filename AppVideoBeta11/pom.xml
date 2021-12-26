@@ -5,16 +5,17 @@
   <version>0.0.1-SNAPSHOT</version>
   <build>
     <sourceDirectory>src</sourceDirectory>
-    <plugins>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version>
-        <configuration>
-          <release>11</release>
-        </configuration>
-    
-      </plugin>
-    </plugins>
+    <pluginManagement>
+	    <plugins>
+	      <plugin>
+	        <artifactId>maven-compiler-plugin</artifactId>
+	        <version>3.8.1</version>
+	        <configuration>
+	          <release>11</release>
+	        </configuration>
+	      </plugin>
+	    </plugins>
+    </pluginManagement>
   </build>
   <dependencies>
   			<dependency>
@@ -105,5 +106,39 @@
 			    <artifactId>itextpdf</artifactId>
 			    <version>5.0.6</version>
 			</dependency>
+			<dependency>
+    			<groupId>com.toedter</groupId>
+    			<artifactId>jcalendar</artifactId>
+    			<version>1.4</version>
+			</dependency>
+
+		    <dependency>
+		      <groupId>org.junit.jupiter</groupId>
+		      <artifactId>junit-jupiter-api</artifactId>
+		      <version>5.8.1</version>
+		      <scope>test</scope>
+		  	</dependency>
+		
+		  	<dependency>
+		    	<groupId>org.junit.jupiter</groupId>
+		    	<artifactId>junit-jupiter-params</artifactId>
+		    	<version>5.7.2</version>
+		    	<scope>test</scope>
+		   	</dependency>
+		
+		  	<dependency>
+		      <groupId>org.junit.platform</groupId>
+		      <artifactId>junit-platform-suite</artifactId>
+		      <version>1.8.1</version>
+		      <scope>test</scope>
+		  	</dependency>
+			
+			<dependency>
+			    <groupId>org.junit.jupiter</groupId>
+			    <artifactId>junit-jupiter-engine</artifactId>
+			    <version>5.3.1</version>
+			    <scope>test</scope>
+			</dependency>
+			
 		</dependencies>
 </project>

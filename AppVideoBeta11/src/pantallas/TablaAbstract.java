@@ -3,7 +3,6 @@ package pantallas;
 import javax.swing.table.AbstractTableModel;
 
 import dominio.CuartetoVideos;
-import dominio.GrupoVideos;
 import dominio.Video;
 import tds.video.VideoWeb;
 

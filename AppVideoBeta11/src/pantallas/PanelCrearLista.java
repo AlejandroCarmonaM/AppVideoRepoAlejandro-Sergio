@@ -14,7 +14,6 @@ import javax.swing.border.BevelBorder;
 import javax.swing.table.DefaultTableModel;
 
 import dominio.CuartetoVideos;
-import dominio.GrupoVideos;
 import dominio.ListaVideos;
 import dominio.Video;
 import tds.video.VideoWeb;
@@ -329,7 +328,8 @@ public class PanelCrearLista extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				int fila = tablaVideos.rowAtPoint(e.getPoint());
 				int columna = tablaVideos.columnAtPoint(e.getPoint());
-				modeloLista.addElement(tm.getValueAt(fila, columna));
+				if ((fila >= 0) && (columna >= 0))
+					modeloLista.addElement(tm.getValueAt(fila, columna));
 			}
 		});
 	}

@@ -139,7 +139,7 @@ public class PanelMisListas extends JPanel {
 		listaActual.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (modeloLista.size() > 0) {
+				if (modeloLista.size() > 0 ) {
 					Video v = modeloLista.get(listaActual.getSelectedIndex());
 					frameBase.getAppVideo().addVideoRecientes(v);
 					frameBase.creaPanelReproduccion(panelDerecho, new PanelReproduccion(frameBase, v));

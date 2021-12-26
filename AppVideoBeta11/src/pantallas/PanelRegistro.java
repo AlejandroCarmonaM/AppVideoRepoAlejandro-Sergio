@@ -16,7 +16,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import dominio.AppVideo;
-import dominio.RepositorioUsuarios;
+import com.toedter.calendar.JDateChooser;
 
 public class PanelRegistro extends JPanel {
 
@@ -27,8 +27,6 @@ public class PanelRegistro extends JPanel {
 	private JTextField campoUsuario;
 	private JPasswordField campoContraseña;
 	private JPasswordField campoRepContraseña;
-	private RepositorioUsuarios repositoPrueba = new RepositorioUsuarios();
-	private JTextField campoFNacimiento;
 	private FrameBase frameBase;
 	
 	public PanelRegistro(FrameBase frameBase) {
@@ -97,15 +95,14 @@ public class PanelRegistro extends JPanel {
 		gbc_etiquetaFNacimiento.gridy = 2;
 		panelCampos.add(etiquetaFNacimiento, gbc_etiquetaFNacimiento);
 		
-		campoFNacimiento = new JTextField();
-		GridBagConstraints gbc_campoFNacimiento = new GridBagConstraints();
-		gbc_campoFNacimiento.gridwidth = 2;
-		gbc_campoFNacimiento.insets = new Insets(0, 0, 5, 5);
-		gbc_campoFNacimiento.fill = GridBagConstraints.HORIZONTAL;
-		gbc_campoFNacimiento.gridx = 1;
-		gbc_campoFNacimiento.gridy = 2;
-		panelCampos.add(campoFNacimiento, gbc_campoFNacimiento);
-		campoFNacimiento.setColumns(10);
+		JDateChooser campoFecha = new JDateChooser();
+		GridBagConstraints gbc_campoFecha = new GridBagConstraints();
+		gbc_campoFecha.gridwidth = 3;
+		gbc_campoFecha.insets = new Insets(0, 0, 5, 0);
+		gbc_campoFecha.fill = GridBagConstraints.BOTH;
+		gbc_campoFecha.gridx = 1;
+		gbc_campoFecha.gridy = 2;
+		panelCampos.add(campoFecha, gbc_campoFecha);
 		
 		JLabel etiquetaEmail = new JLabel("email:");
 		etiquetaEmail.setForeground(Color.WHITE);
@@ -210,7 +207,9 @@ public class PanelRegistro extends JPanel {
 		
 		botonRegistrar.addActionListener(ev -> {
 			//hay que ver esto para que si tiene los opcionales, mandarlo a un registrarUser con los atrib opcionales
-				if (this.frameBase.getAppVideo().registrarUser(campoNombre.getText(), campoFNacimiento.getText(), campoUsuario.getText(), String.valueOf(campoContraseña.getPassword()), String.valueOf(campoRepContraseña.getPassword()))) {
+				if (this.frameBase.getAppVideo().registrarUser(campoNombre.getText(), campoFecha.getDate(), campoUsuario.getText(), String.valueOf(campoContraseña.getPassword()), String.valueOf(campoRepContraseña.getPassword())
+						, String.valueOf(campoApellidos.getText()), String.valueOf(campoEmail.getText()))) {
+					
 					JOptionPane.showMessageDialog((Component) ev.getSource(), "Registro exitodo");
 					frameBase.getAppVideo().login(campoUsuario.getText(), String.valueOf(campoContraseña.getPassword()));
 					this.frameBase.actualizarEtiqueta();
@@ -226,7 +225,7 @@ public class PanelRegistro extends JPanel {
 		botonCancelar.addActionListener(ev -> {
 				campoNombre.setText("");
 				campoApellidos.setText("");
-				campoFNacimiento.setText("");
+				campoFecha.setDate(null);
 				campoEmail.setText("");
 				campoUsuario.setText("");
 				campoContraseña.setText("");

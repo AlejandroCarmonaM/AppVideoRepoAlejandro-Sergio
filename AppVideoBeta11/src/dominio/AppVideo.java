@@ -75,16 +75,13 @@ public class AppVideo implements VideosListener {
 	}
 
 	
-	public boolean registrarUser(String nombre, String fechaNacimiento, String nombreUsuario, String contrasena, String contrasenaRep) {
+	public boolean registrarUser(String nombre, Date fechaNacimiento, String nombreUsuario, String contrasena, String contrasenaRep, String apellidos, String email) {
 		if (!catalogoUsuario.existeUsuario(nombreUsuario) && (contrasena.equals(contrasenaRep))) {
-			SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-			Date fecha;
-			try {
-				fecha = formato.parse(fechaNacimiento);
-			} catch (ParseException e) {
-				return false;
-			}
-			Usuario usuarioAux = new Usuario(nombre, fecha, nombreUsuario, contrasena);
+			Usuario usuarioAux = new Usuario(nombre, fechaNacimiento, nombreUsuario, contrasena);
+			if (!apellidos.equals(""))
+				usuarioAux.setApellidos(apellidos);
+			if (!email.equals(""))
+				usuarioAux.setEmail(email);
 			adaptadorUsuario.registrarUsuario(usuarioAux);
 			catalogoUsuario.registrarUsuario(usuarioAux);
 			return true;

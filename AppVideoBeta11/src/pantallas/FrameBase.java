@@ -123,7 +123,6 @@ public class FrameBase extends JFrame {
 		btnPremium.setForeground(Color.RED);
 		panel_norte1.add(btnPremium);
 		
-		
 		//btnPremium.setBorder(new EmptyBorder(0, 40, 0, 0));
 		
 		JPanel panel_norte2 = new JPanel();
