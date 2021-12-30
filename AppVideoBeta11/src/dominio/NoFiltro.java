@@ -30,10 +30,4 @@ public class NoFiltro implements Filtro {
 		return nombre;
 	}
 
-	/*@Override
-	public void setNombre(String nombre) {
-		this.nombre=nombre;
-		
-	}*/
-
 }

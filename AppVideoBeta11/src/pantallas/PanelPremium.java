@@ -57,13 +57,6 @@ public class PanelPremium extends JPanel {
 		
 		
 		DefaultListModel<String> model = new DefaultListModel<String>();
-		/*List<Class<? extends dominio.Filtro>> ClassList = new ArrayList<Class<? extends dominio.Filtro>>(); 
-		if (ClassList.isEmpty()) System.out.println("vacia"); -> preguntar profesor
-		for (Class<? extends dominio.Filtro> clase: ClassList)
-		{
-			System.out.println(clase.toString());
-			model.addElement(clase.toString());
-		}*/
 		List<String> filtros = new LinkedList<String>();
 		filtros.add(FiltroNombresLargos.class.getSimpleName());
 		filtros.add(FiltroMisListas.class.getSimpleName());
@@ -126,7 +119,6 @@ public class PanelPremium extends JPanel {
 				String selected = source.getSelectedValue().toString();
 				
 					try {
-						//System.out.println("oooooooolaaaaaaa");
 						Filtro filtro =(Filtro)Class.forName("dominio."+selected).getDeclaredConstructor().newInstance();
 						//registrar filtro persistencia
 						this.frameBase.getAppVideo().registrarFiltro(filtro); //funciona, pero poco eficiente

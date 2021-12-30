@@ -102,9 +102,7 @@ public class PanelCargadorVideo extends JPanel {
 
 		
 		botonAceptar.addActionListener(ev-> {
-			//HashSet<String> etiquetas = new HashSet<String>();
-			//etiquetas.add(textField_2.getText());
-			String textoSinEspacios = textField_2.getText()/*.replace(" ", "")*/;
+			String textoSinEspacios = textField_2.getText();
 			ArrayList<String> etiquetas = new ArrayList<String>(Arrays.asList(textoSinEspacios.split(",")));
 			frameBase.getAppVideo().registrarVideo(textField.getText(), textField_1.getText(), etiquetas);
 			botonAceptar.setBackground(Color.GREEN);

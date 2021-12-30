@@ -32,7 +32,6 @@ public class PanelRecientes extends JPanel {
 		setBackground(Color.GRAY);
 		setForeground(Color.LIGHT_GRAY);
 		setLayout(new BorderLayout(0, 0));
-		;
 		
 		JPanel panelIzquierdo = new JPanel();
 		panelIzquierdo.setPreferredSize(new Dimension(235, 250));
@@ -129,7 +128,6 @@ public class PanelRecientes extends JPanel {
 					frameBase.creaPanelReproduccion(panelDerecho, new PanelReproduccion(frameBase, v));
 					validate();
 				}
-				//Hay que crear otro panel
 			}
 		});
 	}

@@ -15,63 +15,44 @@ public class CuartetoVideos {
 		this.video4 = null;
 	}
 	
-	public CuartetoVideos(Video video1) {
-		this.video1 = video1;
-		this.video2 = null;
-		this.video3 = null;
-		this.video4 = null;
-	}
-	
-	public CuartetoVideos(Video video1, Video video2) {
-		this.video1 = video1;
-		this.video2 = video2;
-		this.video3 = null;
-		this.video4 = null;
-	}
-	
-	public CuartetoVideos(Video video1, Video video2, Video video3) {
-		this.video1 = video1;
-		this.video2 = video2;
-		this.video3 = video3;
-		this.video4 = null;
-	}
-	
-	public CuartetoVideos(Video video1, Video video2, Video video3, Video video4) {
-		this.video1 = video1;
-		this.video2 = video2;
-		this.video3 = video3;
-		this.video4 = video4;
+	public CuartetoVideos(Video ... videos) {
+		this();
+		if (videos.length <= 4) {
+			for (int i = 0; i < videos.length; i++) {
+				
+				switch (i) {
+				case 0:
+					this.video1 = videos[0];
+					break;
+				case 1:
+					this.video2 = videos[1];
+					break;
+				case 2:
+					this.video3 = videos[2];
+					break;
+				case 3:
+					this.video4 = videos[3];
+					break;
+				default:
+					break;
+				}
+			}
+		}
 	}
 
 	public Video getVideo1() {
 		return video1;
 	}
 
-	public void setVideo1(Video video1) {
-		this.video1 = video1;
-	}
-
 	public Video getVideo2() {
 		return video2;
-	}
-
-	public void setVideo2(Video video2) {
-		this.video2 = video2;
 	}
 
 	public Video getVideo3() {
 		return video3;
 	}
-
-	public void setVideo3(Video video3) {
-		this.video3 = video3;
-	}
-
+	
 	public Video getVideo4() {
 		return video4;
-	}
-
-	public void setVideo4(Video video4) {
-		this.video4 = video4;
 	}
 }

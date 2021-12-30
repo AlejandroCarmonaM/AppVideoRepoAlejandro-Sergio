@@ -51,9 +51,6 @@ public class PanelLoginProto extends JPanel {
 		
 		JButton btnCancelar = new JButton("Cancelar");
 		panel_cc_sur.add(btnCancelar);
-		/*btnCancelar.addActionListener(ev -> {
-			creaFramePruebas();
-			});*/
 		
 		Component rigidArea_8 = Box.createRigidArea(new Dimension(0, 50));
 		panel_cc_sur.add(rigidArea_8);
@@ -95,15 +92,12 @@ public class PanelLoginProto extends JPanel {
 		passwordField.setColumns(15);
 		panel_password.add(passwordField);
 		
-		
-		//nota: se obtiene un string del campo contrasena de la siguiente manera:
-				//de otra manera, no se obtiene bien
 		btn_aceptar.addActionListener(ev -> {
 					if(this.frameBase.getAppVideo().login(textFieldLogin.getText(), String.valueOf(passwordField.getPassword())))
 					{
 						JOptionPane.showMessageDialog(panel_centro_central, "Login aceptado");
-						PanelPrueba panel_prueba = new PanelPrueba();
-						this.frameBase.creaPanel(this.frameBase.getPanelCentro(), panel_prueba);
+						PanelRecientes panel_recientes = new PanelRecientes(frameBase);
+						this.frameBase.creaPanel(this.frameBase.getPanelCentro(), panel_recientes);
 						this.frameBase.actualizarEtiqueta();
 						this.frameBase.validate();
 					}
@@ -123,6 +117,5 @@ public class PanelLoginProto extends JPanel {
 		
 		
 	}
-//Hola?
-	}
+}
 

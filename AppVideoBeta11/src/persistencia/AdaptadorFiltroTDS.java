@@ -16,7 +16,7 @@ public class AdaptadorFiltroTDS implements IAdaptadorFiltroDAO {
 	private static ServicioPersistencia servPersistencia;
 	private static AdaptadorFiltroTDS unicaInstancia = null;
 
-	public static AdaptadorFiltroTDS getUnicaInstancia() { // patron singleton
+	public static AdaptadorFiltroTDS getUnicaInstancia() {
 		if (unicaInstancia == null) {
 			return new AdaptadorFiltroTDS();
 		} else
@@ -27,7 +27,6 @@ public class AdaptadorFiltroTDS implements IAdaptadorFiltroDAO {
 		servPersistencia = FactoriaServicioPersistencia.getInstance().getServicioPersistencia();
 	}
 
-	/* cuando se registra un producto se le asigna un identificador unico */
 	public void registrarFiltro(Filtro filtro) {
 		Entidad eFiltro = null;
 		try {
@@ -35,21 +34,16 @@ public class AdaptadorFiltroTDS implements IAdaptadorFiltroDAO {
 		} catch (NullPointerException e) {}
 		if (eFiltro != null) return;
 		
-		// crear entidad producto
 		eFiltro = new Entidad();
 		eFiltro.setNombre("filtro");
 		eFiltro.setPropiedades(new ArrayList<Propiedad>(Arrays.asList(
 				new Propiedad("nombre", filtro.getNombre()))));
 		
-		// registrar entidad producto
 		eFiltro = servPersistencia.registrarEntidad(eFiltro);
-		// asignar identificador unico
-		// Se aprovecha el que genera el servicio de persistencia
 		filtro.setCodigo(eFiltro.getId());
 	}
 
 	public void borrarFiltro(Filtro filtro) {
-		// No se comprueba integridad con lineas de venta
 		Entidad eFiltro = servPersistencia.recuperarEntidad(filtro.getCodigo());
 		servPersistencia.borrarEntidad(eFiltro);
 	}
@@ -73,11 +67,9 @@ public class AdaptadorFiltroTDS implements IAdaptadorFiltroDAO {
 
 		eFiltro = servPersistencia.recuperarEntidad(codigo);
 		nombre = servPersistencia.recuperarPropiedadEntidad(eFiltro, "nombre");
-		//filtro nulo->no se registra el filtro
 
 		Filtro filtro;
 		try {
-			//System.out.println("holaa");
 			filtro =(Filtro)Class.forName(nombre).getDeclaredConstructor().newInstance();
 			filtro.setCodigo(codigo);
 			return filtro;
@@ -86,7 +78,7 @@ public class AdaptadorFiltroTDS implements IAdaptadorFiltroDAO {
 		{
 			e.printStackTrace();
 		}
-		return null; //comprobar esto
+		return null;
 	}
 
 	public List<Filtro> recuperarTodosFiltros() {

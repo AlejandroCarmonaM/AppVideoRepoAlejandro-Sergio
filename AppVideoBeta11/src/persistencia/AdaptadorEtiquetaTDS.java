@@ -26,7 +26,6 @@ public class AdaptadorEtiquetaTDS implements IAdaptadorEtiquetaDAO {
 		servPersistencia = FactoriaServicioPersistencia.getInstance().getServicioPersistencia();
 	}
 
-	/* cuando se registra un producto se le asigna un identificador unico */
 	public void registrarEtiqueta(Etiqueta etiqueta) {
 		Entidad eEtiqueta = null;
 		try {
@@ -34,21 +33,16 @@ public class AdaptadorEtiquetaTDS implements IAdaptadorEtiquetaDAO {
 		} catch (NullPointerException e) {}
 		if (eEtiqueta != null) return;
 		
-		// crear entidad producto
 		eEtiqueta = new Entidad();
 		eEtiqueta.setNombre("etiqueta");
 		eEtiqueta.setPropiedades(new ArrayList<Propiedad>(Arrays.asList(
 				new Propiedad("nombre", etiqueta.getNombre()))));
 		
-		// registrar entidad producto
 		eEtiqueta = servPersistencia.registrarEntidad(eEtiqueta);
-		// asignar identificador unico
-		// Se aprovecha el que genera el servicio de persistencia
 		etiqueta.setCodigo(eEtiqueta.getId());  
 	}
 
 	public void borrarEtiqueta(Etiqueta etiqueta) {
-		// No se comprueba integridad con lineas de venta
 		Entidad eEtiqueta = servPersistencia.recuperarEntidad(etiqueta.getCodigo());
 		servPersistencia.borrarEntidad(eEtiqueta);
 	}

@@ -20,7 +20,7 @@ public class AdaptadorVideoTDS implements IAdaptadorVideoDAO{
 
 	private static AdaptadorVideoTDS unicaInstancia;
 
-	public static AdaptadorVideoTDS getUnicaInstancia() { // patron singleton
+	public static AdaptadorVideoTDS getUnicaInstancia() {
 		if (unicaInstancia == null)
 			return new AdaptadorVideoTDS();
 		else
@@ -31,7 +31,6 @@ public class AdaptadorVideoTDS implements IAdaptadorVideoDAO{
 		servPersistencia = FactoriaServicioPersistencia.getInstance().getServicioPersistencia();
 	}
 
-	/* cuando se registra una venta se le asigna un identificador unico */
 	public void registrarVideo(Video video) {
 		Entidad eVideo = null;
 		try {
@@ -39,13 +38,10 @@ public class AdaptadorVideoTDS implements IAdaptadorVideoDAO{
 		} catch (NullPointerException e) {}
 		if (eVideo != null)	return;
 		
-		// registrar primero los atributos que son objetos
 		AdaptadorEtiquetaTDS adaptadorEtiqueta = AdaptadorEtiquetaTDS.getUnicaInstancia();
 		for (Etiqueta v : video.getEtiquetas())
 			adaptadorEtiqueta.registrarEtiqueta(v);
 		
-		// registrar primero los atributos que son objetos
-		// Crear entidad venta
 		eVideo = new Entidad();
 
 		eVideo.setNombre("video");
@@ -54,15 +50,11 @@ public class AdaptadorVideoTDS implements IAdaptadorVideoDAO{
 						new Propiedad("numRepro", String.valueOf(video.getNumeroReproducciones())),
 						new Propiedad("url", String.valueOf(video.getUrl())),
 						new Propiedad("etiquetas", obtenerCodigosEtiquetas(video.getEtiquetas())))));
-		// registrar entidad venta
 		eVideo = servPersistencia.registrarEntidad(eVideo);
-		// asignar identificador unico
-		// Se aprovecha el que genera el servicio de persistencia
 		video.setCodigo(eVideo.getId());
 	}
 
 	public void borrarVideo(Video video) {
-		// No se comprueban restricciones de integridad con Cliente
 		Entidad eVideo;
 		AdaptadorEtiquetaTDS adaptadorE = AdaptadorEtiquetaTDS.getUnicaInstancia();
 
@@ -95,11 +87,8 @@ public class AdaptadorVideoTDS implements IAdaptadorVideoDAO{
 	}
 
 	public Video recuperarVideo(int codigo) {
-		// si no, la recupera de la base de datos
-		// recuperar entidad
 		Entidad eVideo = servPersistencia.recuperarEntidad(codigo);
 
-		// recuperar propiedades que no son objetos
 		
 		String titulo = servPersistencia.recuperarPropiedadEntidad(eVideo, "titulo");
 		String url = servPersistencia.recuperarPropiedadEntidad(eVideo, "url");
@@ -108,22 +97,12 @@ public class AdaptadorVideoTDS implements IAdaptadorVideoDAO{
 		Video video = new Video(titulo, url);
 		video.setNumeroReproducciones(numRepro);
 		video.setCodigo(codigo);
-
-		// recuperar propiedades que son objetos llamando a adaptadores
-		// cliente
-		/*AdaptadorEtiquetaTDS adaptadorEtiqueta = AdaptadorEtiquetaTDS.getUnicaInstancia();
-		int codigoEtiqueta = Integer.parseInt(servPersistencia.recuperarPropiedadEntidad(eVideo, "etiquetas"));
-		
-		Etiqueta etiqueta = adaptadorEtiqueta.recuperarEtiqueta(codigoEtiqueta);
-		video.anadirEtiqueta(etiqueta);*/
-		
 		Set<Etiqueta> etiquetas = obtenerEtiquetasDesdeCodigos(
 				servPersistencia.recuperarPropiedadEntidad(eVideo, "etiquetas"));
 
 		for (Etiqueta e : etiquetas)
 			video.anadirEtiqueta(e);
 
-		// devolver el objeto venta
 		return video;
 	}
 
@@ -137,7 +116,6 @@ public class AdaptadorVideoTDS implements IAdaptadorVideoDAO{
 		return videos;
 	}
 
-	// -------------------Funciones auxiliares-----------------------------
 	private String obtenerCodigosEtiquetas(Set<Etiqueta> etiquetas) {
 		String lineas = "";
 		for (Etiqueta etiqueta : etiquetas) {

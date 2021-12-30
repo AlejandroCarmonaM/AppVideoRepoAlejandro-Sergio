@@ -23,7 +23,7 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO{
 	private static AdaptadorUsuarioTDS unicaInstancia = null;
 	private SimpleDateFormat dateFormat;
 
-	public static AdaptadorUsuarioTDS getUnicaInstancia() { // patron singleton
+	public static AdaptadorUsuarioTDS getUnicaInstancia() {
 		if (unicaInstancia == null)
 			return new AdaptadorUsuarioTDS();
 		else
@@ -35,17 +35,14 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO{
 		dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 	}
 
-	/* cuando se registra un cliente se le asigna un identificador ï¿½nico */
 	public void registrarUsuario(Usuario usuario) {
 		Entidad eUsuario = null;
 
-		// Si la entidad esta registrada no la registra de nuevo
 		try {
 			eUsuario = servPersistencia.recuperarEntidad(usuario.getCodigo());
 		} catch (NullPointerException e) {}
 		if (eUsuario != null) return;
 
-		// registrar primero los atributos que son objetos
 		AdaptadorListaVideosTDS adaptadorLV = AdaptadorListaVideosTDS.getUnicaInstancia();
 		for (ListaVideos lv : usuario.getListasVideos())
 			adaptadorLV.registrarListaVideos(lv);
@@ -57,7 +54,6 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO{
 		AdaptadorFiltroTDS adaptadorFiltroTDS = AdaptadorFiltroTDS.getUnicaInstancia();
 		adaptadorFiltroTDS.registrarFiltro(usuario.getFiltro());
 
-		// crear entidad Cliente
 		eUsuario = new Entidad();
 		eUsuario.setNombre("usuario");
 		eUsuario.setPropiedades(new ArrayList<Propiedad>(
@@ -73,11 +69,7 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO{
 						new Propiedad("listasVideos", obtenerCodigosListasVideos(usuario.getListasVideos())),
 						new Propiedad("recientes", obtenerCodigosVideos(usuario.getRecientes())))));
 						
-
-		// registrar entidad cliente
 		eUsuario = servPersistencia.registrarEntidad(eUsuario);
-		// asignar identificador unico
-		// Se aprovecha el que genera el servicio de persistencia
 		usuario.setCodigo(eUsuario.getId());
 	}
 
@@ -103,8 +95,7 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO{
 
 	}
 
-	public void modificarUsuario(Usuario usuario) { //antes de modificar un objeto, si lo que hago es cambiar ese objeto
-		//por otro, debería registrarlo, no?
+	public void modificarUsuario(Usuario usuario) {
 
 		Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getCodigo());
 
@@ -151,10 +142,8 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO{
 		boolean premium;
 		Filtro filtro;
 
-		// recuperar entidad
 		eUsuario = servPersistencia.recuperarEntidad(codigo);
 
-		// recuperar propiedades que no son objetos
 		nombre = servPersistencia.recuperarPropiedadEntidad(eUsuario, "nombre");
 		apellidos = servPersistencia.recuperarPropiedadEntidad(eUsuario, "apellidos");
 		Date fecha = null;
@@ -172,11 +161,9 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO{
 		usuarioFinal.setPremium(premium);
 		usuarioFinal.setCodigo(codigo);
 
-		// recuperar propiedades que son objetos llamando a adaptadores
 		AdaptadorFiltroTDS adaptadorFiltroTDS = AdaptadorFiltroTDS.getUnicaInstancia();
-		//prop.setValor(String.valueOf(usuario.getFiltro()));
 		filtro = adaptadorFiltroTDS.recuperarFiltro
-				(Integer.parseInt(servPersistencia.recuperarPropiedadEntidad(eUsuario, "filtro"))); //da fallo al cambiar el filtro
+				(Integer.parseInt(servPersistencia.recuperarPropiedadEntidad(eUsuario, "filtro")));
 		usuarioFinal.setFiltro(filtro);
 		listasVideos = obtenerListasVideosDesdeCodigos(servPersistencia.recuperarPropiedadEntidad(eUsuario, "listasVideos"));
 		recientes = obtenerRecientesDesdeCodigos(servPersistencia.recuperarPropiedadEntidad(eUsuario, "recientes"));
@@ -201,7 +188,6 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO{
 		return usuarios;
 	}
 
-	// -------------------Funciones auxiliares-----------------------------
 	private String obtenerCodigosListasVideos(List<ListaVideos> listaListasVideos) {
 		String aux = "";
 		for (ListaVideos listaVideo : listaListasVideos) {

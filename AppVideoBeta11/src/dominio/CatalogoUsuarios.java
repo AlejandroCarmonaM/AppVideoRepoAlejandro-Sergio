@@ -65,45 +65,18 @@ public class CatalogoUsuarios {
 	}
 
 	
-public void registrarUsuario(Usuario usuario) {
-	this.addUsuario(usuario);
-}
-	
-public boolean existeUsuario(String nombreUsuario)
-{
-	for (Usuario elemento : this.getUsuarios()) {
-		if (elemento.getNombre().equals(nombreUsuario))
-			return true;
+	public void registrarUsuario(Usuario usuario) {
+		this.addUsuario(usuario);
 	}
-	return false;
-}
 	
-/*public boolean registrarUsuarioCompleto(String nombre, String apellidos, String fechaNacimiento, String email, String nombreUsuario, String contrasena, String contrasenaRep) {
-		
-		boolean existeUsuario = false;
-		boolean coincideContrasena = true;
-		
+	public boolean existeUsuario(String nombreUsuario)
+	{
 		for (Usuario elemento : this.getUsuarios()) {
 			if (elemento.getNombre().equals(nombreUsuario))
-				existeUsuario = true;
-		}
-		
-		if (!contrasena.equals(contrasenaRep))
-			coincideContrasena = false;
-		
-		if (!existeUsuario && coincideContrasena) {
-			SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-			try {
-				Date fecha = formato.parse(fechaNacimiento);
-				Usuario nuevoUsuario = new Usuario(nombre, apellidos, fecha, email, nombreUsuario, contrasena);
-				this.getUsuarios().add(nuevoUsuario);
-			} catch (ParseException e) {
-				return false;
-			}
-			return true;
+				return true;
 		}
 		return false;
-	}*/
+	}
 
 	public void modificarUsuario(Usuario usuario)
 	{

@@ -112,33 +112,15 @@ public class PanelExplorar extends JPanel {
 		JButton btnNuevaBusqueda = new JButton("Nueva b\u00FAsqueda");
 		panel_3.add(btnNuevaBusqueda);
 		
-		Component horizontalStrut = Box.createHorizontalStrut(500);
-		panel.add(horizontalStrut);
-		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(Color.GRAY);
 		panel_1.setForeground(Color.GRAY);
 		panel.add(panel_1);
 		
-		
-		/*JPanel panel_tabla_videos = new JPanel();
-		panel_tabla_videos.setMinimumSize(new Dimension(500, 500));
-		panel_tabla_videos.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
-		panel_tabla_videos.setBackground(Color.GRAY);
-		panel_oeste.add(panel_tabla_videos);
-		
-		Component verticalStrut = Box.createVerticalStrut(350);
-		panel_tabla_videos.add(verticalStrut);*/
-		
 		JTable tablaVideos = new JTable();
 		
 		tablaVideos.setCellSelectionEnabled(true);
 		tablaVideos.setBackground(Color.GRAY);
-		/*GridBagConstraints gbc_tablaVideos = new GridBagConstraints();
-		gbc_tablaVideos.fill = GridBagConstraints.BOTH;
-		gbc_tablaVideos.gridx = 0;
-		gbc_tablaVideos.gridy = 0;*/
-		
 		tablaVideos.setDefaultRenderer(Object.class, new ImgTabla());
 		CuartetoVideos gVideos = new CuartetoVideos();
 		LinkedList<CuartetoVideos> listaCVideos = new LinkedList<CuartetoVideos>();
@@ -150,7 +132,7 @@ public class PanelExplorar extends JPanel {
 		tm.rellenarTabla(videosAux, FrameBase.getVideoWeb());
 		
 		tablaVideos.setModel(tm);
-		tablaVideos.setRowHeight(120); //cambio en la altura para que se vean los titulos
+		tablaVideos.setRowHeight(125); //cambio en la altura para que se vean los titulos
 		tablaVideos.getTableHeader().setUI(null);  //Elimina la cabecera
 		TableColumnModel colModel=tablaVideos.getColumnModel();
 		for(int i=0; i<4; i++)
@@ -158,12 +140,10 @@ public class PanelExplorar extends JPanel {
 			TableColumn col=colModel.getColumn(i);
 			col.setPreferredWidth(145);
 		}
-		tablaVideos.setModel(tm);
+		
 		tablaVideos.setShowGrid(false);
 		JScrollPane js=new JScrollPane(tablaVideos);
-        //js.setVisible(true);
 		panel_oeste.add(js);
-		
 		
 		JPanel panel_este = new JPanel();
 		panel_este.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
@@ -179,13 +159,9 @@ public class PanelExplorar extends JPanel {
 		
 		JList<String> lista = new JList<String>();
 		lista.setBackground(Color.WHITE);
-		/*lista.setPreferredSize(new Dimension(100, 200));
-		lista.setMaximumSize(new Dimension(100, 200));*/
-		//lista.setFixedCellWidth(0);
 		lista.setVisibleRowCount(4);
 		lista.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		lista.setSelectedIndex(0);
-		
 		
 		DefaultListModel<String> model = new DefaultListModel<String>();
 		for (String item: this.frameBase.getAppVideo().getEtiquetasHabitualesS())
@@ -195,33 +171,8 @@ public class PanelExplorar extends JPanel {
 		lista.setModel(model);
 		JScrollPane scroller = new JScrollPane(lista);
 		scroller.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-		//scroller.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 0));
-		//lista.setPrototypeCellValue("Alejandro");
 		scroller.setMaximumSize(new Dimension(500, 15000));
-		//scroller.setBounds(700, 100, 250, 200000);
 		panel_este.add(scroller);
-		
-		
-		/*JList<String> lista2 = new JList<String>();/
-		//lista.setFixedCellWidth(0);
-		lista2.setVisibleRowCount(15);
-		lista2.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
-		lista2.setSelectedIndex(0);
-		
-		
-		DefaultListModel<String> model2 = new DefaultListModel<String>();
-		for (String item: this.frameBase.getAppVideo().getEtiquetasHabitualesS())
-		{
-			model2.addElement(item);
-		}
-		lista2.setModel(model2);
-		JScrollPane scroller2 = new JScrollane(lista2);
-		scroller2.setVerticalScrollBarPolicy(JScrollPane.VERTICALP_SCROLLBAR_NEVER);
-		scroller2.setMaximumSize(new Dimension(500, 15000));
-		panel_tabla_videos.add(scroller2);*/
-		
-		
-		
 		JLabel lblBuscarEtiquetas = new JLabel("Buscar etiquetas");
 		lblBuscarEtiquetas.setHorizontalAlignment(SwingConstants.CENTER);
 		lblBuscarEtiquetas.setForeground(Color.WHITE);
@@ -323,7 +274,6 @@ public class PanelExplorar extends JPanel {
 				if(frameBase.getAppVideo().usuarioLogeado())frameBase.getAppVideo().addVideoRecientes(tm.getValueAt(fila, columna));
 				frameBase.creaPanelReproduccion(frameBase.getPanelCentro(), new PanelReproduccion(frameBase, tm.getValueAt(fila, columna)));
 				validate();
-				//Hay que crear otro panel
 			}
 		});
 	

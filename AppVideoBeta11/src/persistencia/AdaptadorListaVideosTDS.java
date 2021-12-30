@@ -17,7 +17,7 @@ public class AdaptadorListaVideosTDS implements IAdaptadorListaVideosDAO{
 	private static ServicioPersistencia servPersistencia;
 	private static AdaptadorListaVideosTDS unicaInstancia;
 
-	public static AdaptadorListaVideosTDS getUnicaInstancia() { // patron singleton
+	public static AdaptadorListaVideosTDS getUnicaInstancia() {
 		if (unicaInstancia == null)
 			return new AdaptadorListaVideosTDS();
 		else
@@ -28,7 +28,6 @@ public class AdaptadorListaVideosTDS implements IAdaptadorListaVideosDAO{
 		servPersistencia = FactoriaServicioPersistencia.getInstance().getServicioPersistencia();
 	}
 
-	/* cuando se registra una venta se le asigna un identificador unico */
 	public void registrarListaVideos(ListaVideos lv) {
 		Entidad eLv = null;
 		try {
@@ -36,28 +35,21 @@ public class AdaptadorListaVideosTDS implements IAdaptadorListaVideosDAO{
 		} catch (NullPointerException e) {}
 		if (eLv != null)	return;
 
-		// registrar primero los atributos que son objetos
-		// registrar lineas de venta
 		AdaptadorVideoTDS adaptadorVideo = AdaptadorVideoTDS.getUnicaInstancia();
 		for (Video video : lv.getListaVideos())
 			adaptadorVideo.registrarVideo(video);
 		
-		// Crear entidad venta
 		eLv = new Entidad();
 
 		eLv.setNombre("listaVideos");
 		eLv.setPropiedades(new ArrayList<Propiedad>(
 				Arrays.asList(new Propiedad("nombre", String.valueOf(lv.getNombre())),
 						new Propiedad("listaVideos", obtenerCodigosListaVideo(lv.getListaVideos())))));
-		// registrar entidad venta
 		eLv = servPersistencia.registrarEntidad(eLv);
-		// asignar identificador unico
-		// Se aprovecha el que genera el servicio de persistencia
 		lv.setCodigo(eLv.getId());
 	}
 
 	public void borrarListaVideos(ListaVideos lv) {
-		// No se comprueban restricciones de integridad con Cliente
 		Entidad eLv;
 		AdaptadorVideoTDS adaptadorVideo = AdaptadorVideoTDS.getUnicaInstancia();
 
@@ -86,26 +78,18 @@ public class AdaptadorListaVideosTDS implements IAdaptadorListaVideosDAO{
 	}
 
 	public ListaVideos recuperarListaVideos(int codigo) {
-		// si no, la recupera de la base de datos
-		// recuperar entidad
 		Entidad eLv = servPersistencia.recuperarEntidad(codigo);
 
-		// recuperar propiedades que no son objetos
 		String nombre = String.valueOf(servPersistencia.recuperarPropiedadEntidad(eLv, "nombre"));
 		
 		ListaVideos nuevaListaVideos = new ListaVideos(nombre);
 		nuevaListaVideos.setCodigo(codigo);
-		
-		// recuperar propiedades que son objetos llamando a adaptadores
-		
-		// lineas de venta
 		List<Video> videos = obtenerListaVideosDesdeCodigos(
 				servPersistencia.recuperarPropiedadEntidad(eLv, "listaVideos"));
 
 		for (Video video : videos)
 			nuevaListaVideos.addVideo(video);
 
-		// devolver el objeto venta
 		return nuevaListaVideos;
 	}
 
@@ -119,7 +103,6 @@ public class AdaptadorListaVideosTDS implements IAdaptadorListaVideosDAO{
 		return listasVideos;
 	}
 
-	// -------------------Funciones auxiliares-----------------------------
 	private String obtenerCodigosListaVideo(List<Video> listaVideos) {
 		String lineas = "";
 		for (Video video : listaVideos) {

@@ -45,7 +45,6 @@ public class PanelMisListas extends JPanel {
 		setBackground(Color.GRAY);
 		setForeground(Color.LIGHT_GRAY);
 		setLayout(new BorderLayout(0, 0));
-		;
 		
 		JPanel panelIzquierdo = new JPanel();
 		panelIzquierdo.setPreferredSize(new Dimension(235, 250));
@@ -145,7 +144,6 @@ public class PanelMisListas extends JPanel {
 					frameBase.creaPanelReproduccion(panelDerecho, new PanelReproduccion(frameBase, v));
 					validate();
 				}
-				//Hay que crear otro panel
 			}
 		});
 		

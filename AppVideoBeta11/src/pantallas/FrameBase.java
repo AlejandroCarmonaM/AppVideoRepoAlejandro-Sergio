@@ -67,7 +67,6 @@ public class FrameBase extends JFrame {
 		//diseño frame
 		this.setAppVideo(appVideo);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//setBounds(100, 100, 667, 448);
 		setBounds(100, 100, 800, 600);
 		this.setResizable(false); //con esto bloqueamos la pantalla a la resolución que queramos
 		contentPane = new JPanel();
@@ -93,7 +92,6 @@ public class FrameBase extends JFrame {
 		lblAppVideo.setForeground(Color.RED);
 		lblAppVideo.setFont(new Font("Trebuchet MS", Font.BOLD, 25));
 		panel_norte1.add(lblAppVideo);
-		//lblAppVideo.setBorder(new EmptyBorder(0, 0, 0, 50));
 		
 		Component rigidArea_0 = Box.createRigidArea(new Dimension(70, 0));
 		panel_norte1.add(rigidArea_0);
@@ -122,8 +120,6 @@ public class FrameBase extends JFrame {
 		JButton btnPremium = new JButton("Premium");
 		btnPremium.setForeground(Color.RED);
 		panel_norte1.add(btnPremium);
-		
-		//btnPremium.setBorder(new EmptyBorder(0, 40, 0, 0));
 		
 		JPanel panel_norte2 = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) panel_norte2.getLayout();
@@ -163,11 +159,6 @@ public class FrameBase extends JFrame {
 		panel_norte2.add(luz);
 		
 		JPanel panel_centro = new JPanel();
-		//panel_centro.setSize(new Dimension(742, 383));
-		
-		/*panel_centro.setPreferredSize(new Dimension(742, 383));
-		panel_centro.setMinimumSize(new Dimension(742, 383));
-		panel_centro.setMaximumSize(new Dimension(742, 383));*/
 		
 		
 		panel_centro.setForeground(Color.GRAY);
@@ -219,6 +210,8 @@ public class FrameBase extends JFrame {
 				PanelPremium panelPremium = new PanelPremium(this);
 				this.creaPanel(panel_centro, panelPremium);
 			}
+			else
+				JOptionPane.showMessageDialog(panel_centro, "Necesitas estar registrado");
 			
 			});
 		
@@ -279,12 +272,10 @@ public class FrameBase extends JFrame {
 		FrameBase.getVideoWeb().cancel();
 		panel_central.setVisible(false);
 		panel_central.removeAll();
-		//panel_nuevo.setSize(panel_central.getSize());
 		panel_nuevo.setVisible(true);
 		panel_central.add(panel_nuevo);
 		panel_central.setVisible(true);
 		panel_central.repaint();
-		//this.pack();
 		panel_central.revalidate();
 		this.validate();
 		
@@ -298,21 +289,12 @@ public class FrameBase extends JFrame {
 	{
 		panel_central.setVisible(false);
 		panel_central.removeAll();
-		//panel_nuevo.setSize(panel_central.getSize());
 		panel_nuevo.setVisible(true);
 		panel_central.add(panel_nuevo);
 		panel_central.setVisible(true);
 		panel_central.repaint();
-		//this.pack();
 		panel_central.revalidate();
 		this.validate();
 		
 	}
-
-
-	
-	/*public void setUsuario() {
-		etiquetaUsuario = appVideo.creaEtiqueta();
-		this.validate();
-	}*/
 }

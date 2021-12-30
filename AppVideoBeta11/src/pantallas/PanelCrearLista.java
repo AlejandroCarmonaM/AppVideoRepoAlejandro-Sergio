@@ -12,6 +12,8 @@ import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import javax.swing.border.BevelBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 import dominio.CuartetoVideos;
 import dominio.ListaVideos;
@@ -50,6 +52,7 @@ public class PanelCrearLista extends JPanel {
 	private JTextField campoNombreLista;
 	private JTextField campoBuscarTitulo;
 	private JTable tablaVideos;
+	private Video videoSeleccionado = null;
 
 	/**
 	 * Create the panel.
@@ -60,7 +63,7 @@ public class PanelCrearLista extends JPanel {
 		setBackground(Color.GRAY);
 		setForeground(Color.LIGHT_GRAY);
 		setLayout(new BorderLayout(0, 0));
-		;
+		
 		
 		JPanel panelIzquierdo = new JPanel();
 		panelIzquierdo.setPreferredSize(new Dimension(235, 250));
@@ -154,6 +157,7 @@ public class PanelCrearLista extends JPanel {
 		panelAQA.setLayout(gbl_panelAQA);
 		
 		JButton botonAnadir = new JButton("A\u00F1adir");
+		
 		GridBagConstraints gbc_botonAnadir = new GridBagConstraints();
 		gbc_botonAnadir.insets = new Insets(5, 5, 5, 5);
 		gbc_botonAnadir.gridx = 0;
@@ -237,17 +241,6 @@ public class PanelCrearLista extends JPanel {
 		gbc_botonNuevaLista.gridy = 2;
 		panelBT.add(botonNuevaLista, gbc_botonNuevaLista);
 		
-		JPanel panel_5 = new JPanel();
-		panel_5.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		panel_5.setBackground(Color.GRAY);
-		panelDerecho.add(panel_5);
-		GridBagLayout gbl_panel_5 = new GridBagLayout();
-		gbl_panel_5.columnWidths = new int[]{0, 0};
-		gbl_panel_5.rowHeights = new int[]{0, 0};
-		gbl_panel_5.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_panel_5.rowWeights = new double[]{1.0, Double.MIN_VALUE};
-		panel_5.setLayout(gbl_panel_5);
-		
 		tablaVideos = new JTable();
 		
 		tablaVideos.setCellSelectionEnabled(true);
@@ -269,9 +262,21 @@ public class PanelCrearLista extends JPanel {
 		
 		tablaVideos.setModel(tm);
 		tablaVideos.setRowHeight(120); //cambio en la altura para que se vean los titulos
-		tablaVideos.setModel(tm);
+		tablaVideos.getTableHeader().setUI(null); //Elimina la cabecera de la tabla
+		tablaVideos.setShowGrid(false); //Elimina los bordes de las celdas
+		TableColumnModel colModel=tablaVideos.getColumnModel();
 		
-		panel_5.add(tablaVideos, gbc_tablaVideos);
+		for(int i=0; i<4; i++)
+        {
+            TableColumn col=colModel.getColumn(i);
+            col.setPreferredWidth(160);
+        }
+		JScrollPane js=new JScrollPane(tablaVideos);
+		JScrollPane scroller = new JScrollPane(tablaVideos);
+		scroller.setMaximumSize(new Dimension(580, 15000));
+		
+		panelDerecho.add(scroller);
+		
 		
 		//Listener para buscar los videos, si buscamos sin escribir nada la tabla se resetea
 		botonBuscarVideo.addActionListener(event -> {
@@ -295,31 +300,27 @@ public class PanelCrearLista extends JPanel {
 			validate();	
 		});
 		
-		botonQuitar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if (modeloLista.size() > 0)
-					modeloLista.remove(listaActual.getSelectedIndex());
-			}
+		botonQuitar.addActionListener(event -> {
+			if (modeloLista.size() > 0)
+				modeloLista.remove(listaActual.getSelectedIndex());
 		});
 		
-		botonAceptar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ev) {
-				String nombreLista = campoNombreLista.getText();
-				if (!frameBase.getAppVideo().usuarioLogeado())
-					JOptionPane.showMessageDialog(panelDerecho, "Necesitas estar registrado");
-				else if (nombreLista.equals(""))
-					JOptionPane.showMessageDialog(panelDerecho, "Necesitar introducir un nombre para la lista");
-				else if (modeloLista.size() == 0)
-					JOptionPane.showMessageDialog(panelDerecho, "La lista esta vacía");
-				else {
-					ListaVideos nuevaLisa = new ListaVideos(nombreLista);
-					for(int i = 0; i < modeloLista.size(); i++){
-						nuevaLisa.addVideo(modeloLista.get(i));
-					}
-					frameBase.getAppVideo().anadirListaVideos(nuevaLisa);
-					
-					JOptionPane.showMessageDialog(panelDerecho, "Nueva lista añadida");
+		botonAceptar.addActionListener(event -> {
+			String nombreLista = campoNombreLista.getText();
+			if (!frameBase.getAppVideo().usuarioLogeado())
+				JOptionPane.showMessageDialog(panelDerecho, "Necesitas estar registrado");
+			else if (nombreLista.equals(""))
+				JOptionPane.showMessageDialog(panelDerecho, "Necesitar introducir un nombre para la lista");
+			else if (modeloLista.size() == 0)
+				JOptionPane.showMessageDialog(panelDerecho, "La lista esta vacía");
+			else {
+				ListaVideos nuevaLisa = new ListaVideos(nombreLista);
+				for(int i = 0; i < modeloLista.size(); i++){
+					nuevaLisa.addVideo(modeloLista.get(i));
 				}
+				frameBase.getAppVideo().anadirListaVideos(nuevaLisa);
+				
+				JOptionPane.showMessageDialog(panelDerecho, "Nueva lista añadida");
 			}
 		});
 		
@@ -329,7 +330,14 @@ public class PanelCrearLista extends JPanel {
 				int fila = tablaVideos.rowAtPoint(e.getPoint());
 				int columna = tablaVideos.columnAtPoint(e.getPoint());
 				if ((fila >= 0) && (columna >= 0))
-					modeloLista.addElement(tm.getValueAt(fila, columna));
+					videoSeleccionado = tm.getValueAt(fila, columna);
+			}
+		});
+		
+		botonAnadir.addActionListener(event -> {
+			if (videoSeleccionado != null) {
+				modeloLista.addElement(videoSeleccionado);
+				videoSeleccionado = null;
 			}
 		});
 	}

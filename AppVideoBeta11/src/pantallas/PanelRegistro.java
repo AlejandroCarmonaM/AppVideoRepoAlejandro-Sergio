@@ -31,7 +31,6 @@ public class PanelRegistro extends JPanel {
 	
 	public PanelRegistro(FrameBase frameBase) {
 		this.frameBase=frameBase;
-		//panelRegistro = new JPanel();
 		this.setBackground(Color.GRAY);
 		this.setBorder(new EmptyBorder(5, 5, 5, 5));
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -206,7 +205,6 @@ public class PanelRegistro extends JPanel {
 		panelCampos.add(etiquetaCamposObligatorios, gbc_etiquetaCamposObligatorios);
 		
 		botonRegistrar.addActionListener(ev -> {
-			//hay que ver esto para que si tiene los opcionales, mandarlo a un registrarUser con los atrib opcionales
 				if (this.frameBase.getAppVideo().registrarUser(campoNombre.getText(), campoFecha.getDate(), campoUsuario.getText(), String.valueOf(campoContraseña.getPassword()), String.valueOf(campoRepContraseña.getPassword())
 						, String.valueOf(campoApellidos.getText()), String.valueOf(campoEmail.getText()))) {
 					
@@ -215,7 +213,6 @@ public class PanelRegistro extends JPanel {
 					this.frameBase.actualizarEtiqueta();
 					this.frameBase.validate();
 					frameBase.creaPanel(frameBase.getPanelCentro(), new PanelExplorar(frameBase));
-					//frameBase.setUsuario();
 				}
 				else {
 					JOptionPane.showMessageDialog((Component) ev.getSource(), "Registro fallido");
@@ -233,5 +230,5 @@ public class PanelRegistro extends JPanel {
 		});
 	}
 
-	}
+}
 
