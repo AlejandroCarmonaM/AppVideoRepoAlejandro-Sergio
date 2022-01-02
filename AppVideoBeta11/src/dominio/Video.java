@@ -13,6 +13,13 @@ public class Video {
 	private String url;
 	private int numRepro;
 	
+	public Video(String titulo, String url) {
+		this.titulo = titulo;
+		this.etiquetas = new HashSet<Etiqueta>();
+		this.url = url;
+		this.numRepro = 0;
+	}
+	
 	public String getTitulo() {
 		return titulo;
 	}
@@ -27,7 +34,7 @@ public class Video {
 	}
 	
 	public void anadirEtiqueta(String nueva) {
-		this.etiquetas.add(new Etiqueta(nueva));
+		this.etiquetas.add(PoolEtiquetas.INSTANCE.get(nueva));
 	}
 	
 	public void anadirEtiqueta(Etiqueta nueva) {
@@ -39,12 +46,6 @@ public class Video {
 		.forEach(e->this.etiquetas.add(e));
 	}
 	
-	public Video(String titulo, String url) {
-		this.titulo = titulo;
-		this.etiquetas = new HashSet<Etiqueta>();
-		this.url = url;
-		this.numRepro = 0;
-	}
 	
 	public int getCodigo() {
 		return codigo;

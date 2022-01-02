@@ -206,7 +206,7 @@ public class FrameBase extends JFrame {
 			});
 		
 		btnPremium.addActionListener(ev -> {
-			if(this.getAppVideo().getUser()!=null) {
+			if(this.getAppVideo().usuarioLogeado()) {
 				PanelPremium panelPremium = new PanelPremium(this);
 				this.creaPanel(panel_centro, panelPremium);
 			}
@@ -226,8 +226,12 @@ public class FrameBase extends JFrame {
 		});
 		
 		btnMisListas.addActionListener(ev -> {
-			PanelMisListas panelMisListas = new PanelMisListas(this);
-			this.creaPanel(panel_centro, panelMisListas);
+			if (this.getAppVideo().usuarioLogeado()) {
+				PanelMisListas panelMisListas = new PanelMisListas(this);
+				this.creaPanel(panel_centro, panelMisListas);
+			}
+			else
+				JOptionPane.showMessageDialog(panel_centro, "Necesitas estar registrado");
 		});
 		
 		btnRecientes.addActionListener(ev -> {

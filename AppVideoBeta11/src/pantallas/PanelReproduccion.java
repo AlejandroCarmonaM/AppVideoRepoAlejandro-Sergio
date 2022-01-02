@@ -4,6 +4,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import dominio.Etiqueta;
+import dominio.PoolEtiquetas;
 import dominio.Video;
 import tds.video.VideoWeb;
 import javax.swing.BoxLayout;
@@ -47,7 +48,7 @@ public class PanelReproduccion extends JPanel {
 		btnEtiquetaAnadir.addActionListener(ev -> {
 			String textoEtiqueta = textFieldEtiqueta.getText();
 			if(textoEtiqueta!="") {
-				Etiqueta e = new Etiqueta(textoEtiqueta);
+				Etiqueta e = PoolEtiquetas.INSTANCE.get(textoEtiqueta);
 				this.frameBase.getAppVideo().registrarEtiqueta(e);
 				v.anadirEtiqueta(e);
 				this.frameBase.getAppVideo().modificarVideo(v);

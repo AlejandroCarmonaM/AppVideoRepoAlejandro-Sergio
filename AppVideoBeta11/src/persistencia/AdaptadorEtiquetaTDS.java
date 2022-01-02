@@ -8,6 +8,7 @@ import java.util.List;
 import beans.Entidad;
 import beans.Propiedad;
 import dominio.Etiqueta;
+import dominio.PoolEtiquetas;
 import tds.driver.FactoriaServicioPersistencia;
 import tds.driver.ServicioPersistencia;
 
@@ -67,7 +68,7 @@ public class AdaptadorEtiquetaTDS implements IAdaptadorEtiquetaDAO {
 		eEtiqueta = servPersistencia.recuperarEntidad(codigo);
 		nombre = servPersistencia.recuperarPropiedadEntidad(eEtiqueta, "nombre");
 
-		Etiqueta etiqueta = new Etiqueta(nombre);
+		Etiqueta etiqueta = PoolEtiquetas.INSTANCE.get(nombre);
 		etiqueta.setCodigo(codigo);
 		return etiqueta;
 	}

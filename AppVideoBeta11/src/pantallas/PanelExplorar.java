@@ -39,6 +39,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.border.LineBorder;
 import javax.swing.border.BevelBorder;
 import dominio.Etiqueta;
+import dominio.PoolEtiquetas;
 import dominio.Video;
 
 import javax.swing.event.ListSelectionListener;
@@ -201,9 +202,10 @@ public class PanelExplorar extends JPanel {
 			if (!event.getValueIsAdjusting()){
 				JList source = (JList)event.getSource();
 				String selected = source.getSelectedValue().toString();
-				if(!etiquetasSeleccionadas.contains(new Etiqueta(selected)))
+				Etiqueta nueva = PoolEtiquetas.INSTANCE.get(selected);
+				if(!etiquetasSeleccionadas.contains(nueva))
 				{
-					etiquetasSeleccionadas.add(new Etiqueta(selected));
+					etiquetasSeleccionadas.add(nueva);
 					model1.addElement(selected);
 					lista1.setModel(model1);
 					panel_este.repaint();
@@ -230,7 +232,7 @@ public class PanelExplorar extends JPanel {
 		
 		btnAnadir.addActionListener(ev -> {
 			String textoEtiquetaNueva = etiquetaPersonalizada.getText();
-			Etiqueta etiquetaNueva = new Etiqueta(textoEtiquetaNueva);
+			Etiqueta etiquetaNueva = PoolEtiquetas.INSTANCE.get(textoEtiquetaNueva);
 			etiquetaPersonalizada.setText("");
 			if(!etiquetasSeleccionadas.contains(etiquetaNueva))
 			{
