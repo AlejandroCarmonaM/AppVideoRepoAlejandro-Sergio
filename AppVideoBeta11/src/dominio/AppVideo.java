@@ -72,9 +72,9 @@ public enum AppVideo implements VideosListener {
 	public boolean registrarUser(String nombre, Date fechaNacimiento, String nombreUsuario, String contrasena, String contrasenaRep, String apellidos, String email) {
 		if (!catalogoUsuario.existeUsuario(nombreUsuario) && (contrasena.equals(contrasenaRep))) {
 			Usuario usuarioAux = new Usuario(nombre, fechaNacimiento, nombreUsuario, contrasena);
-			if (!apellidos.equals(""))
+			if (!apellidos.isBlank())
 				usuarioAux.setApellidos(apellidos);
-			if (!email.equals(""))
+			if (!email.isBlank())
 				usuarioAux.setEmail(email);
 			adaptadorUsuario.registrarUsuario(usuarioAux);
 			catalogoUsuario.registrarUsuario(usuarioAux);

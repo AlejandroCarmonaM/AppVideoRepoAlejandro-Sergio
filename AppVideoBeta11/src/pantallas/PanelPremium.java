@@ -125,8 +125,9 @@ public class PanelPremium extends JPanel {
 				excepcionAdministrador.printStackTrace();
 			}
 			finally {
-				if(btnGenerarPDF.getBackground().equals(Color.RED))
+				if(btnGenerarPDF.getBackground().equals(Color.RED)) {
 					JOptionPane.showMessageDialog(this, "No tienes permisos para escribir en C:");
+				}
 				else
 					JOptionPane.showMessageDialog(this, "PDF creado en C:");
 			};
