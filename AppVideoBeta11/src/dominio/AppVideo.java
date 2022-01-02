@@ -260,7 +260,7 @@ public enum AppVideo implements VideosListener {
 		return this.usuario.getInfoListas();
 	}
 	
-	public boolean generaPDF()
+	public boolean generaPDF() throws FileNotFoundException
 	{
 		FileOutputStream archivo=null;
 		try {
@@ -285,5 +285,39 @@ public enum AppVideo implements VideosListener {
 		}
 	    documento.close();
 	    return true;
+	}
+	
+	public void borrarFiltroUsuarioActivo()
+	{
+		Usuario usuarioActivo = this.getUser();
+		if(usuarioActivo!=null) this.borrarFiltro(usuarioActivo.getFiltro());
+	}
+	
+	public void borrarFiltro(Filtro filtro)
+	{
+		this.adaptadorFiltro.borrarFiltro(filtro);
+	}
+
+	public void setUsuarioNoPremium(Filtro noFiltro)
+	{
+		Usuario usuarioActivo = this.getUser();
+		if(usuarioActivo!=null) {
+			usuarioActivo.setPremium(false);
+			this.registrarFiltro(noFiltro);
+			usuarioActivo.setFiltro(noFiltro);
+			this.modificarUsuarioAppVideo();
+		}
+	}
+	
+	public void cambioFiltroPremium(Filtro filtro) 
+	{
+		Usuario usuarioActivo = this.getUser();
+		if(usuarioActivo!=null) {
+			this.registrarFiltro(filtro);
+			this.borrarFiltroUsuarioActivo();
+			usuarioActivo.setPremium(true);
+			usuarioActivo.setFiltro(filtro);
+			this.modificarUsuarioAppVideo();
+		}
 	}
 }

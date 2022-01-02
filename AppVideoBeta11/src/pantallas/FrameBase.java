@@ -188,6 +188,7 @@ public class FrameBase extends JFrame {
 			});
 		
 		btnLogout.addActionListener(ev -> {
+			this.cargarPanelExplorar();
 			this.appVideo.logOut();
 			
 			this.actualizarEtiqueta();
@@ -196,8 +197,7 @@ public class FrameBase extends JFrame {
 			});
 		
 		btnExplorar.addActionListener(ev -> {
-			PanelExplorar panelExplorarBox = new PanelExplorar(this);
-			this.creaPanel(panel_centro, panelExplorarBox);
+			this.cargarPanelExplorar();
 			});
 		
 		btnRegistro.addActionListener(ev -> {
@@ -283,6 +283,12 @@ public class FrameBase extends JFrame {
 
 	public static VideoWeb getVideoWeb() {
 		return vWeb;
+	}
+	
+	private void cargarPanelExplorar()
+	{
+		PanelExplorar panelExplorarBox = new PanelExplorar(this);
+		this.creaPanel(panel_centro, panelExplorarBox);
 	}
 	
 	public void creaPanelReproduccion(JPanel panel_central, JPanel panel_nuevo)

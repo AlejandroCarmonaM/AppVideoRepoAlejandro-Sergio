@@ -6,10 +6,11 @@ import javax.swing.JTextField;
 
 import dominio.Etiqueta;
 import dominio.Video;
-
+import java.util.regex.*;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -19,9 +20,9 @@ import java.util.Arrays;
 import java.awt.Color;
 
 public class PanelCargadorVideo extends JPanel {
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
+	private JTextField textField_titulo;
+	private JTextField textField_URL;
+	private JTextField textField_etiquetas;
 	private JLabel etiquetaURL;
 	private JLabel etiqueta;
 	private JButton botonAceptar;
@@ -31,6 +32,7 @@ public class PanelCargadorVideo extends JPanel {
 	 * Create the panel.
 	 */
 	public PanelCargadorVideo(FrameBase frameBase) {
+		setBackground(Color.GRAY);
 		this.frameBase = frameBase;
 		
 		GridBagLayout gridBagLayout = new GridBagLayout();
@@ -41,6 +43,7 @@ public class PanelCargadorVideo extends JPanel {
 		setLayout(gridBagLayout);
 		
 		JLabel etiquetaTitulo = new JLabel("titulo");
+		etiquetaTitulo.setForeground(Color.WHITE);
 		GridBagConstraints gbc_etiquetaTitulo = new GridBagConstraints();
 		gbc_etiquetaTitulo.insets = new Insets(0, 0, 5, 5);
 		gbc_etiquetaTitulo.anchor = GridBagConstraints.EAST;
@@ -48,16 +51,17 @@ public class PanelCargadorVideo extends JPanel {
 		gbc_etiquetaTitulo.gridy = 2;
 		add(etiquetaTitulo, gbc_etiquetaTitulo);
 		
-		textField = new JTextField();
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.insets = new Insets(0, 0, 5, 0);
-		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField.gridx = 5;
-		gbc_textField.gridy = 2;
-		add(textField, gbc_textField);
-		textField.setColumns(10);
+		textField_titulo = new JTextField();
+		GridBagConstraints gbc_textField_titulo = new GridBagConstraints();
+		gbc_textField_titulo.insets = new Insets(0, 0, 5, 0);
+		gbc_textField_titulo.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_titulo.gridx = 5;
+		gbc_textField_titulo.gridy = 2;
+		add(textField_titulo, gbc_textField_titulo);
+		textField_titulo.setColumns(10);
 		
 		etiquetaURL = new JLabel("URL");
+		etiquetaURL.setForeground(Color.WHITE);
 		GridBagConstraints gbc_etiquetaURL = new GridBagConstraints();
 		gbc_etiquetaURL.insets = new Insets(0, 0, 5, 5);
 		gbc_etiquetaURL.anchor = GridBagConstraints.EAST;
@@ -65,16 +69,17 @@ public class PanelCargadorVideo extends JPanel {
 		gbc_etiquetaURL.gridy = 3;
 		add(etiquetaURL, gbc_etiquetaURL);
 		
-		textField_1 = new JTextField();
-		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
-		gbc_textField_1.insets = new Insets(0, 0, 5, 0);
-		gbc_textField_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_1.gridx = 5;
-		gbc_textField_1.gridy = 3;
-		add(textField_1, gbc_textField_1);
-		textField_1.setColumns(10);
+		textField_URL = new JTextField();
+		GridBagConstraints gbc_textField_URL = new GridBagConstraints();
+		gbc_textField_URL.insets = new Insets(0, 0, 5, 0);
+		gbc_textField_URL.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_URL.gridx = 5;
+		gbc_textField_URL.gridy = 3;
+		add(textField_URL, gbc_textField_URL);
+		textField_URL.setColumns(10);
 		
 		etiqueta = new JLabel("etiquetas");
+		etiqueta.setForeground(Color.WHITE);
 		GridBagConstraints gbc_etiqueta = new GridBagConstraints();
 		gbc_etiqueta.insets = new Insets(0, 0, 5, 5);
 		gbc_etiqueta.anchor = GridBagConstraints.EAST;
@@ -82,14 +87,14 @@ public class PanelCargadorVideo extends JPanel {
 		gbc_etiqueta.gridy = 4;
 		add(etiqueta, gbc_etiqueta);
 		
-		textField_2 = new JTextField();
-		GridBagConstraints gbc_textField_2 = new GridBagConstraints();
-		gbc_textField_2.insets = new Insets(0, 0, 5, 0);
-		gbc_textField_2.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_2.gridx = 5;
-		gbc_textField_2.gridy = 4;
-		add(textField_2, gbc_textField_2);
-		textField_2.setColumns(20);
+		textField_etiquetas = new JTextField();
+		GridBagConstraints gbc_textField_etiquetas = new GridBagConstraints();
+		gbc_textField_etiquetas.insets = new Insets(0, 0, 5, 0);
+		gbc_textField_etiquetas.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_etiquetas.gridx = 5;
+		gbc_textField_etiquetas.gridy = 4;
+		add(textField_etiquetas, gbc_textField_etiquetas);
+		textField_etiquetas.setColumns(20);
 		
 		botonAceptar = new JButton("Aceptar");
 		botonAceptar.setBackground(Color.RED);
@@ -102,12 +107,19 @@ public class PanelCargadorVideo extends JPanel {
 
 		
 		botonAceptar.addActionListener(ev-> {
-			String textoSinEspacios = textField_2.getText();
-			ArrayList<String> etiquetas = new ArrayList<String>(Arrays.asList(textoSinEspacios.split(",")));
-			frameBase.getAppVideo().registrarVideo(textField.getText(), textField_1.getText(), etiquetas);
-			botonAceptar.setBackground(Color.GREEN);
-			this.validate();
+			Pattern p = Pattern.compile("^(http(s)?:\\/\\/)?((w){3}.)?youtu(be|.be)?(\\.com)?\\/.+");
+			Matcher m = p.matcher(textField_URL.getText());
+			
+			if(!textField_titulo.getText().isBlank() && m.matches()) {
+				ArrayList<String> etiquetas = new ArrayList<String>(Arrays.asList(textField_etiquetas.getText().split(",")));
+				this.frameBase.getAppVideo().registrarVideo(textField_titulo.getText(), textField_URL.getText(), etiquetas);
+				botonAceptar.setBackground(Color.GREEN);
+				this.validate();
+				JOptionPane.showMessageDialog(this, "Vídeo subido");
+			}
+			else JOptionPane.showMessageDialog(this, "Campo URL y campo título no válidos");
 		});
 	}
-
 }
+
+

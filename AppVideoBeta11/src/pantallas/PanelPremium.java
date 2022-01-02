@@ -27,26 +27,34 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JList;
+import javax.swing.JOptionPane;
+
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
 import java.awt.event.ActionEvent;
 import javax.swing.JButton;
 import pulsador.Luz;
+import javax.swing.border.BevelBorder;
 
 public class PanelPremium extends JPanel {
 	private FrameBase frameBase;
 	private Filtro filtroActual;
 	
 	public PanelPremium(FrameBase frameBase) {
+		setBackground(Color.GRAY);
+		setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		this.frameBase= frameBase;
 		filtroActual= this.frameBase.getAppVideo().getUser().getFiltro(); //si hay que evitar clases dios 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		JLabel lblPremium = new JLabel("Premium");
+		lblPremium.setForeground(Color.WHITE);
 		lblPremium.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblPremium.setHorizontalAlignment(SwingConstants.CENTER);
 		add(lblPremium);
 		
 		JRadioButton rdbtnPremium = new JRadioButton("On");
+		rdbtnPremium.setBackground(Color.GRAY);
 		
 		if(this.frameBase.getAppVideo().getUser().isPremium()) rdbtnPremium.setSelected(true);
 		add(rdbtnPremium);
@@ -72,10 +80,12 @@ public class PanelPremium extends JPanel {
 		this.add(scroller);
 		
 		JLabel lblFiltroActual = new JLabel("FiltroActual: "+filtroActual.getNombre().substring(8));
+		lblFiltroActual.setForeground(Color.WHITE);
 		lblFiltroActual.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		add(lblFiltroActual);
 		
 		JButton btnGenerarPDF = new JButton("Generar PDF listas");
+		btnGenerarPDF.setVisible(frameBase.getAppVideo().getUser().isPremium());
 		btnGenerarPDF.setForeground(Color.WHITE);
 		btnGenerarPDF.setBackground(Color.RED);
 		btnGenerarPDF.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -87,17 +97,16 @@ public class PanelPremium extends JPanel {
 			if (rdbtnPremium.isSelected()) {
 				this.frameBase.getAppVideo().getUser().setPremium(true);
 				scroller.setVisible(true);
+				btnGenerarPDF.setVisible(true);
 				this.repaint();
 				this.validate();
 				this.frameBase.validate();
 			}
 			else {
 				scroller.setVisible(false);
-				this.frameBase.getAppVideo().getUser().setPremium(false);
+				btnGenerarPDF.setVisible(true);
 				Filtro noFiltro = new NoFiltro();
-				this.frameBase.getAppVideo().registrarFiltro(noFiltro);
-				this.frameBase.getAppVideo().getUser().setFiltro(noFiltro);
-				this.frameBase.getAppVideo().modificarUsuarioAppVideo();
+				this.frameBase.getAppVideo().setUsuarioNoPremium(noFiltro);
 				this.filtroActual=noFiltro;
 				lblFiltroActual.setText("FiltroActual: "+filtroActual.getNombre().substring(8));
 				this.repaint();
@@ -107,9 +116,19 @@ public class PanelPremium extends JPanel {
 		});
 		
 		btnGenerarPDF.addActionListener(ev->{
-			if(this.frameBase.getAppVideo().generaPDF()) {
-				btnGenerarPDF.setBackground(Color.GREEN);
-				this.validate();
+			try {
+				if(this.frameBase.getAppVideo().generaPDF()) {
+					btnGenerarPDF.setBackground(Color.GREEN);
+					this.validate();
+				}
+			} catch (FileNotFoundException excepcionAdministrador) {
+				excepcionAdministrador.printStackTrace();
+			}
+			finally {
+				if(btnGenerarPDF.getBackground().equals(Color.RED))
+					JOptionPane.showMessageDialog(this, "No tienes permisos para escribir en C:");
+				else
+					JOptionPane.showMessageDialog(this, "PDF creado en C:");
 			};
 		});
 		
@@ -120,13 +139,7 @@ public class PanelPremium extends JPanel {
 				
 					try {
 						Filtro filtro =(Filtro)Class.forName("dominio."+selected).getDeclaredConstructor().newInstance();
-						//registrar filtro persistencia
-						this.frameBase.getAppVideo().registrarFiltro(filtro); //funciona, pero poco eficiente
-						//pd:es completamente necesario tener el filtro del usuario registrado en persistencia
-						//deberiamos eliminar el filtro anterior?
-						this.frameBase.getAppVideo().getUser().setPremium(true);
-						this.frameBase.getAppVideo().getUser().setFiltro(filtro); //corregir cuando sea posible
-						this.frameBase.getAppVideo().modificarUsuarioAppVideo();
+						this.frameBase.getAppVideo().cambioFiltroPremium(filtro); //metodo que cambia el filtro antiguo por el nuevo
 						this.filtroActual=filtro;
 						lblFiltroActual.setText("FiltroActual: "+selected);
 						this.repaint();
