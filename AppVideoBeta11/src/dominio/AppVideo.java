@@ -31,9 +31,10 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
-public class AppVideo implements VideosListener {
+public enum AppVideo implements VideosListener {
 	
-	private static final String[] ETIQUETAS = {"Videoclips", "Peliculas", "Series", "Comedia", "Drama"};
+	INSTANCE; //instancia del enumerado
+	//private static final String[] ETIQUETAS = {"Videoclips", "Peliculas", "Series", "Comedia", "Drama"};
 	private Usuario usuario;
 	private List <String> etiquetasHabituales;
 	private CargadorVideos cv;
@@ -48,15 +49,21 @@ public class AppVideo implements VideosListener {
 	private CatalogoVideo catalogoVideo;
 	private CatalogoUsuarios catalogoUsuario;
 	
-	public AppVideo() {
+	private AppVideo() {
 		cv = new CargadorVideos();
 		cv.addSueldoListener(this);
 		this.etiquetasHabituales = new LinkedList<String>();
-		for(String etiqueta: ETIQUETAS)
+		/*for(String etiqueta: ETIQUETAS)
 		{
 			etiquetasHabituales.add(etiqueta);
-		}
-		
+		}*/
+		/*se hace asi porque no podemos tener un array de etiquetas estatico ya que 
+		los campos estaticos se inicializan despues del constructor*/
+		etiquetasHabituales.add("Videoclips");
+		etiquetasHabituales.add("Peliculas");
+		etiquetasHabituales.add("Series");
+		etiquetasHabituales.add("Comedia");
+		etiquetasHabituales.add("Drama");
 		inicializarAdaptadores();
 		inicializarCatalogos();
 	}

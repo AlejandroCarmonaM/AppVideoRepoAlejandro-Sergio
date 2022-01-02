@@ -45,11 +45,11 @@ public class FrameBase extends JFrame {
 	private JLabel etiquetaUsuario = new JLabel("");
 	private static VideoWeb vWeb = new VideoWeb();
 	
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AppVideo appVideo = new AppVideo();
+					AppVideo appVideo = AppVideo.INSTANCE;
 					FrameBase frame = new FrameBase(appVideo);
 					frame.setVisible(true);
 					
@@ -58,7 +58,7 @@ public class FrameBase extends JFrame {
 				}
 			}
 		});
-	}
+	}*/
 
 	/**
 	 * Create the frame.

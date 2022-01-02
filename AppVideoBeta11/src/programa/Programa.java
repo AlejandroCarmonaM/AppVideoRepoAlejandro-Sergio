@@ -14,7 +14,7 @@ public class Programa {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AppVideo appvideo = new AppVideo();
+					AppVideo appvideo = AppVideo.INSTANCE;
 					FrameBase frame = new FrameBase(appvideo);
 					frame.setVisible(true);
 				} catch (Exception e) {
