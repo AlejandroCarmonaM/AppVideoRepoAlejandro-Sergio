@@ -140,8 +140,8 @@ public class Usuario {
 	
 	public void addVideoRecientes(Video v) {
 		recientes.add(0, v);
-		if (recientes.size() > 10)
-			recientes.remove(10);
+		if (recientes.size() > 5)
+			recientes.remove(5);
 	}
 
 	public List<Video> getRecientes() {

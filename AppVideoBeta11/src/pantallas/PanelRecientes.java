@@ -126,7 +126,6 @@ public class PanelRecientes extends JPanel {
 				if (modeloLista.size() > 0) {
 					Video v = modeloLista.get(listaActual.getSelectedIndex());
 					frameBase.getAppVideo().addVideoRecientes(v);
-					modeloLista.add(0, v);
 					frameBase.creaPanelReproduccion(panelDerecho, new PanelReproduccion(frameBase, v));
 					validate();
 				}

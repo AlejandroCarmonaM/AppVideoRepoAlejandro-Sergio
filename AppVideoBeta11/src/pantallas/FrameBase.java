@@ -218,6 +218,8 @@ public class FrameBase extends JFrame {
 				PanelRecientes panelRecientes = new PanelRecientes(this);
 				this.creaPanel(panel_centro, panelRecientes);
 			}
+			else
+				JOptionPane.showMessageDialog(panel_centro, "Necesitas estar registrado");
 		});
 	}
 	
