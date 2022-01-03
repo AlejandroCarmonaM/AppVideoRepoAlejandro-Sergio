@@ -160,7 +160,13 @@ public class PanelPremium extends JPanel {
 		});
 		
 		btnTopTen.addActionListener(ev->{
-			this.frameBase.getAppVideo().generarTopTen();
+			if(btnTopTen.getBackground().equals(Color.RED)) {
+				this.frameBase.getAppVideo().generarTopTen();
+				btnTopTen.setBackground(Color.GREEN);
+				JOptionPane.showMessageDialog(this, "Lista top ten añadida a tus listas.\n "
+						+ "En caso de cancelar tu subscripción seguirás teniendo la última\n "
+						+ "lista top ten que generaste, pero ya no podrás generar más");
+			}
 		});
 		
 		lista.addListSelectionListener(event->{
