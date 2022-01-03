@@ -9,8 +9,6 @@ import tds.video.VideoWeb;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 
 public class TablaAbstract extends AbstractTableModel {
 	private static final int NUM_COLUMNAS =4;

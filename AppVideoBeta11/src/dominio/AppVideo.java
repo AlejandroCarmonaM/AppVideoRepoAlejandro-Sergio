@@ -1,8 +1,6 @@
 package dominio;
 
 import java.io.File;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import java.util.EventObject;
@@ -150,6 +148,16 @@ public enum AppVideo implements VideosListener {
 			this.usuario.addListaVideos(lv);
 			this.modificarUsuarioAppVideo();
 			
+	}
+	
+	public void eliminarListaVideos(String nombreLista)
+	{
+		Usuario user = this.getUser();
+		ListaVideos lv = user.getListaVideosPorNombre(nombreLista);
+		user.borraLista(lv);
+		this.adaptadorListaVideos.borrarListaVideos(lv);
+		this.adaptadorUsuario.modificarUsuario(user);
+		
 	}
 	
 	public List<String> getNombreMisListas() {

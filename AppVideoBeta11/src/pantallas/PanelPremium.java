@@ -4,7 +4,6 @@ import javax.swing.JPanel;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 
@@ -12,7 +11,6 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
-import dominio.Etiqueta;
 import dominio.Filtro;
 import dominio.FiltroMisListas;
 import dominio.FiltroNombresLargos;
@@ -22,21 +20,21 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 
 import java.awt.Font;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 
-import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
-import java.awt.event.ActionEvent;
 import javax.swing.JButton;
-import pulsador.Luz;
 import javax.swing.border.BevelBorder;
 
 public class PanelPremium extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private FrameBase frameBase;
 	private Filtro filtroActual;
 	

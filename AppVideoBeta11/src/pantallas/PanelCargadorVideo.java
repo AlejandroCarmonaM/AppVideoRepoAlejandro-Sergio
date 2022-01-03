@@ -4,22 +4,21 @@ import javax.swing.JPanel;
 import java.awt.GridBagLayout;
 import javax.swing.JTextField;
 
-import dominio.Etiqueta;
-import dominio.Video;
 import java.util.regex.*;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JButton;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.awt.event.ActionEvent;
 import java.util.Arrays;
 import java.awt.Color;
 
 public class PanelCargadorVideo extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JTextField textField_titulo;
 	private JTextField textField_URL;
 	private JTextField textField_etiquetas;

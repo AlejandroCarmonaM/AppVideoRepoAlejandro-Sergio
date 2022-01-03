@@ -18,6 +18,10 @@ import javax.swing.JButton;
 
 public class PanelReproduccion extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private FrameBase frameBase;
 	private JTextField textFieldEtiqeuta;
 

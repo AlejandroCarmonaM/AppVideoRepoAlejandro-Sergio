@@ -1,19 +1,18 @@
 package pantallas;
 
-import java.awt.Component;
 import java.util.List;
 
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableCellRenderer;
 
 import dominio.Video;
 
 
 public class TablaVideos extends AbstractTableModel {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	//atributos
 	private final static int ANCHO_TABLA=5;
 	private List<Video> videos;

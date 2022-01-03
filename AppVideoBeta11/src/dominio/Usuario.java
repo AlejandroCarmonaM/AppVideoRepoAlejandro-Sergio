@@ -1,6 +1,4 @@
 package dominio;
-
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
@@ -133,6 +131,11 @@ public class Usuario {
 	
 	public void addListaVideos(ListaVideos lv) {
 		this.listasVideos.add(lv);
+	}
+	
+	public void borraLista(ListaVideos lv)
+	{
+		this.listasVideos.remove(lv);
 	}
 	
 	public void addVideoRecientes(Video v) {

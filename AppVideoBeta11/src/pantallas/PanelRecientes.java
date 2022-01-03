@@ -21,11 +21,14 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.BevelBorder;
 
-import dominio.ListaVideos;
 import dominio.Video;
 
 public class PanelRecientes extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private FrameBase frameBase;
 	public PanelRecientes(FrameBase frameBase) {
 		this.frameBase=frameBase;

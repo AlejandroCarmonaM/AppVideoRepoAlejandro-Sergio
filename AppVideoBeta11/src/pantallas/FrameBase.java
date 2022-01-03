@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Font;
 
@@ -16,49 +15,29 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 
 import dominio.AppVideo;
-import dominio.Usuario;
 import tds.video.VideoWeb;
-import umu.tds.componente.VideoEvent;
-import umu.tds.componente.Videos;
-import umu.tds.componente.VideosListener;
 
-import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.EventObject;
-import java.awt.event.ActionEvent;
 
-import pulsador.IEncendidoListener;
+
 import pulsador.Luz;
 
 public class FrameBase extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private AppVideo appVideo;
 	private JPanel panel_centro;
 	private JLabel etiquetaUsuario = new JLabel("");
 	private static VideoWeb vWeb = new VideoWeb();
-	
-	/*public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AppVideo appVideo = AppVideo.INSTANCE;
-					FrameBase frame = new FrameBase(appVideo);
-					frame.setVisible(true);
-					
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}*/
 
 	/**
 	 * Create the frame.

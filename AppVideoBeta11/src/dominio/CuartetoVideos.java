@@ -1,7 +1,5 @@
 package dominio;
 
-import javax.swing.JLabel;
-
 public class CuartetoVideos {
 	private Video video1;
 	private Video video2;

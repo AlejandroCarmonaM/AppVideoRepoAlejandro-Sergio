@@ -5,16 +5,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import javax.swing.border.TitledBorder;
-import javax.swing.event.ListSelectionEvent;
 
-import dominio.AppVideo;
 import dominio.CuartetoVideos;
 
 import javax.swing.JLabel;
-import java.awt.GridLayout;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 
@@ -23,11 +18,9 @@ import javax.swing.Box;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import javax.swing.JTextField;
-import javax.swing.JViewport;
 import javax.swing.JButton;
 import java.awt.Font;
 import javax.swing.JList;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -35,22 +28,23 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.awt.event.ActionEvent;
 import javax.swing.border.LineBorder;
 import javax.swing.border.BevelBorder;
 import dominio.Etiqueta;
 import dominio.PoolEtiquetas;
 import dominio.Video;
 
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.SwingConstants;
-import javax.swing.ScrollPaneConstants;
 
 public class PanelExplorar extends JPanel {
 	//atributos
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JTextField campoBuscarTitulo;
 	private FrameBase frameBase;
 	private Set<Etiqueta> etiquetasSeleccionadas= new HashSet<Etiqueta>();  
@@ -200,7 +194,7 @@ public class PanelExplorar extends JPanel {
 		
 		lista.addListSelectionListener(event->{
 			if (!event.getValueIsAdjusting()){
-				JList source = (JList)event.getSource();
+				JList<?> source = (JList<?>)event.getSource();
 				String selected = source.getSelectedValue().toString();
 				Etiqueta nueva = PoolEtiquetas.INSTANCE.get(selected);
 				if(!etiquetasSeleccionadas.contains(nueva))

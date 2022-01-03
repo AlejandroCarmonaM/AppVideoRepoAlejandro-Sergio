@@ -20,6 +20,10 @@ import javax.swing.border.EmptyBorder;
 import tds.video.VideoWeb;
 
 public class VideoApp extends JFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private static VideoWeb videoWeb;
 

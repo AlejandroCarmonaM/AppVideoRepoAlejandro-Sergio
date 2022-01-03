@@ -6,22 +6,18 @@ import javax.swing.JScrollPane;
 import java.awt.Color;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
 
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import javax.swing.border.BevelBorder;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 import dominio.CuartetoVideos;
 import dominio.ListaVideos;
 import dominio.Video;
-import tds.video.VideoWeb;
 
 import javax.swing.JTextField;
-import javax.swing.ListCellRenderer;
 
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -30,17 +26,11 @@ import javax.swing.JButton;
 import java.awt.Component;
 import java.awt.Dimension;
 import javax.swing.Box;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.Image;
 
 import javax.swing.JTable;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
-import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JList;
@@ -49,6 +39,10 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.JComboBox;
 
 public class PanelCrearLista extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private FrameBase frameBase;
 	private JTextField campoNombreLista;
 	private JTextField campoBuscarTitulo;
@@ -73,7 +67,7 @@ public class PanelCrearLista extends JPanel {
 		panelIzquierdo.setLayout(new BoxLayout(panelIzquierdo, BoxLayout.Y_AXIS));
 		
 		JPanel panelINL = new JPanel();
-		panelINL.setPreferredSize(new Dimension(10, 100));
+		panelINL.setPreferredSize(new Dimension(10, 115));
 		panelINL.setMaximumSize(new Dimension(32767, 12000));
 		panelINL.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		panelINL.setBackground(Color.GRAY);
@@ -102,12 +96,12 @@ public class PanelCrearLista extends JPanel {
 		panelINL.add(campoNombreLista, gbc_campoNombreLista);
 		campoNombreLista.setColumns(10);
 		
-		JButton botonBuscarLista = new JButton("Buscar\r\n");
+		/*JButton botonBuscarLista = new JButton("Buscar\r\n");
 		GridBagConstraints gbc_botonBuscarLista = new GridBagConstraints();
 		gbc_botonBuscarLista.insets = new Insets(0, 0, 5, 0);
 		gbc_botonBuscarLista.gridx = 1;
 		gbc_botonBuscarLista.gridy = 1;
-		panelINL.add(botonBuscarLista, gbc_botonBuscarLista);
+		panelINL.add(botonBuscarLista, gbc_botonBuscarLista);*/
 		
 		JButton botonEliminar = new JButton("Eliminar");
 		GridBagConstraints gbc_botonEliminar = new GridBagConstraints();
@@ -125,7 +119,7 @@ public class PanelCrearLista extends JPanel {
 		gbc_comboBoxListasHechas.gridx = 0;
 		gbc_comboBoxListasHechas.gridy = 3;
 		List<String> listaNombres = frameBase.getAppVideo().getNombreMisListas();
-        for(int i = 0; i < listaNombres.size(); i++) {
+		for(int i = 0; i < listaNombres.size(); i++) {
         	comboBoxListasHechas.addItem(listaNombres.get(i));
         }
         comboBoxListasHechas.setSelectedItem(null);
@@ -317,6 +311,25 @@ public class PanelCrearLista extends JPanel {
 			validate();	
 		});
 		
+		botonNuevaLista.addActionListener(event -> {
+			comboBoxListasHechas.setSelectedItem(null);
+			modeloLista.clear();
+            modeloLista.removeAllElements();
+            this.validate();
+		});
+		
+		botonEliminar.addActionListener(event -> {
+			if(comboBoxListasHechas.getSelectedItem()!=null) {
+				Object itemLista=comboBoxListasHechas.getSelectedItem();
+				this.frameBase.getAppVideo().eliminarListaVideos(itemLista.toString());
+				comboBoxListasHechas.setSelectedItem(null);
+				comboBoxListasHechas.removeItem(itemLista);
+				modeloLista.clear();
+	            modeloLista.removeAllElements();
+	            this.validate();
+			}
+		});
+		
 		botonQuitar.addActionListener(event -> {
 			if (modeloLista.size() > 0)
 				modeloLista.remove(listaActual.getSelectedIndex());
@@ -356,10 +369,12 @@ public class PanelCrearLista extends JPanel {
 		});
 		
 		comboBoxListasHechas.addActionListener(ev -> {
-            String nombreListaSeleccionada = comboBoxListasHechas.getSelectedItem().toString();
-            ListaVideos lv = frameBase.getAppVideo().getListaVideosPorNombre(nombreListaSeleccionada);
-            for (Video elemento : lv.getListaVideos())
-                modeloLista.addElement(elemento);
+			if(comboBoxListasHechas.getSelectedItem()!=null) {
+	            String nombreListaSeleccionada = comboBoxListasHechas.getSelectedItem().toString();
+	            ListaVideos lv = frameBase.getAppVideo().getListaVideosPorNombre(nombreListaSeleccionada);
+	            for (Video elemento : lv.getListaVideos())
+	                modeloLista.addElement(elemento);
+			}
         });
 		
 		tablaVideos.addMouseListener(new MouseAdapter() {

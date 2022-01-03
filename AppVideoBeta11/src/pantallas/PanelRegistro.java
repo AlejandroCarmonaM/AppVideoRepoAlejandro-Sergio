@@ -15,11 +15,14 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import dominio.AppVideo;
 import com.toedter.calendar.JDateChooser;
 
 public class PanelRegistro extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	//Atributos
 	private JTextField campoNombre;
 	private JTextField campoApellidos;

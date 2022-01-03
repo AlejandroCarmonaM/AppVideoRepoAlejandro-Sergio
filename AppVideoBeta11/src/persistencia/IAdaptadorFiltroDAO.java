@@ -3,7 +3,6 @@ package persistencia;
 import java.util.List;
 
 import dominio.Filtro;
-import dominio.ListaVideos;
 
 public interface IAdaptadorFiltroDAO {
 	public void registrarFiltro(Filtro filtro);

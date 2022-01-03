@@ -2,7 +2,6 @@ package pruebaVideoAlumnos;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
