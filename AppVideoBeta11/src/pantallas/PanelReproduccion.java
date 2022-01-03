@@ -6,9 +6,14 @@ import javax.swing.JPanel;
 import dominio.Etiqueta;
 import dominio.PoolEtiquetas;
 import dominio.Video;
+import javafx.scene.paint.Color;
 import tds.video.VideoWeb;
+
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JTextField;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
 import javax.swing.JButton;
 
 public class PanelReproduccion extends JPanel {
@@ -42,8 +47,19 @@ public class PanelReproduccion extends JPanel {
 		
 		JButton btnEtiquetaAnadir = new JButton("Anadir");
 		panel_1.add(btnEtiquetaAnadir);
+		
+		JPanel panel_etiquetas = new JPanel();
+		panel.add(panel_etiquetas);
 		vWeb.playVideo(v.getUrl());
 		this.frameBase.validate();
+		
+		for(Etiqueta e :v.getEtiquetas())
+		{
+			JLabel label_etiqueta = new JLabel(e.getNombre());
+			label_etiqueta.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+			label_etiqueta.setForeground(java.awt.Color.BLACK);
+			panel_etiquetas.add(label_etiqueta);
+		}
 		
 		btnEtiquetaAnadir.addActionListener(ev -> {
 			String textoEtiqueta = textFieldEtiqueta.getText();

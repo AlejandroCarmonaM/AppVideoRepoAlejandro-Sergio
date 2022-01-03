@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import persistencia.DAOException;
@@ -108,6 +109,16 @@ public class CatalogoVideo {
 			nuevoVideo.anadirEtiqueta(e);
 		}
 		this.getVideos().add(nuevoVideo);
+	}
+	
+	public LinkedList<Video> getTopTen()
+	{
+		Supplier<LinkedList<Video>> supplier = () -> new LinkedList<Video>();
+		
+		return videos.values().stream()
+		.sorted((v1, v2)->v2.getNumeroReproducciones()-v1.getNumeroReproducciones())
+		.limit(10)
+		.collect(Collectors.toCollection(supplier));
 	}
 	
 }

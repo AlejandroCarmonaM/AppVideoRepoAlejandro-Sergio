@@ -87,12 +87,12 @@ public class PanelMisListas extends JPanel {
 		gbc_misListas.gridy = 1;
 		panelSL.add(misListas, gbc_misListas);
 		
-		JButton botonReproducir = new JButton("Reproducir");
+		/*JButton botonReproducir = new JButton("Reproducir");
 		GridBagConstraints gbc_botonReproducir = new GridBagConstraints();
 		gbc_botonReproducir.gridwidth = 2;
 		gbc_botonReproducir.gridx = 0;
 		gbc_botonReproducir.gridy = 2;
-		panelSL.add(botonReproducir, gbc_botonReproducir);
+		panelSL.add(botonReproducir, gbc_botonReproducir);*/
 		
 		JPanel panelMiLista = new JPanel();
 		panelMiLista.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));

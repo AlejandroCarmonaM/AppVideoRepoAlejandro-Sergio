@@ -322,12 +322,28 @@ public enum AppVideo implements VideosListener {
 		}
 	}
 	
-	public void modificarListaVideos(ListaVideos original, ListaVideos modificada)
+	public void modificarListaVideos(ListaVideos original, LinkedList<Video> modificada)
 	{
 		if (usuario != null)
-			original.modificarListaVideos(modificada.getListaVideos());
+			original.modificarListaVideos(modificada);
 			adaptadorListaVideos.modificarListaVideos(original);
 			this.modificarUsuarioAppVideo();
 				
+	}
+
+
+	public void generarTopTen() {
+		
+		ListaVideos topTen = this.usuario.getListaVideosPorNombre("Top Ten");
+		if(topTen==null) {
+			topTen = new ListaVideos("Top Ten");
+			topTen.modificarListaVideos(this.catalogoVideo.getTopTen());
+			this.anadirListaVideos(topTen);
+		}
+		else {
+			this.modificarListaVideos(topTen, this.catalogoVideo.getTopTen());
+		}
+
+		
 	}
 }

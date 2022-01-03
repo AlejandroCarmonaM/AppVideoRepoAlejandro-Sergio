@@ -347,7 +347,7 @@ public class PanelCrearLista extends JPanel {
                     nuevaLisa.addVideo(modeloLista.get(i));
                 }
                 ListaVideos listaAux = frameBase.getAppVideo().getListaVideosPorNombre(comboBoxListasHechas.getSelectedItem().toString());
-                frameBase.getAppVideo().modificarListaVideos(listaAux, nuevaLisa);
+                frameBase.getAppVideo().modificarListaVideos(listaAux, nuevaLisa.getListaVideos());
 
                 JOptionPane.showMessageDialog(panelDerecho, "Lista Modificada");
                 modeloLista.clear();

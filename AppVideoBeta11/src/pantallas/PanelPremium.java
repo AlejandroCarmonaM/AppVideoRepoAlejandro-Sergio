@@ -92,19 +92,27 @@ public class PanelPremium extends JPanel {
 		btnGenerarPDF.setHorizontalAlignment(SwingConstants.RIGHT);
 		add(btnGenerarPDF);
 		
+		JButton btnTopTen = new JButton("Crear lista Top ten");
+		btnTopTen.setBackground(Color.RED);
+		btnTopTen.setForeground(Color.WHITE);
+		add(btnTopTen);
+		btnTopTen.setVisible(frameBase.getAppVideo().getUser().isPremium());
+		
 		
 		rdbtnPremium.addActionListener(ev ->{
 			if (rdbtnPremium.isSelected()) {
 				this.frameBase.getAppVideo().getUser().setPremium(true);
 				scroller.setVisible(true);
 				btnGenerarPDF.setVisible(true);
+				btnTopTen.setVisible(true);
 				this.repaint();
 				this.validate();
 				this.frameBase.validate();
 			}
 			else {
 				scroller.setVisible(false);
-				btnGenerarPDF.setVisible(true);
+				btnGenerarPDF.setVisible(false);
+				btnTopTen.setVisible(false);
 				Filtro noFiltro = new NoFiltro();
 				this.frameBase.getAppVideo().setUsuarioNoPremium(noFiltro);
 				this.filtroActual=noFiltro;
@@ -131,6 +139,28 @@ public class PanelPremium extends JPanel {
 				else
 					JOptionPane.showMessageDialog(this, "PDF creado en C:");
 			};
+		});
+		
+		btnGenerarPDF.addActionListener(ev->{
+			try {
+				if(this.frameBase.getAppVideo().generaPDF()) {
+					btnGenerarPDF.setBackground(Color.GREEN);
+					this.validate();
+				}
+			} catch (FileNotFoundException excepcionAdministrador) {
+				excepcionAdministrador.printStackTrace();
+			}
+			finally {
+				if(btnGenerarPDF.getBackground().equals(Color.RED)) {
+					JOptionPane.showMessageDialog(this, "No tienes permisos para escribir en C:");
+				}
+				else
+					JOptionPane.showMessageDialog(this, "PDF creado en C:");
+			};
+		});
+		
+		btnTopTen.addActionListener(ev->{
+			this.frameBase.getAppVideo().generarTopTen();
 		});
 		
 		lista.addListSelectionListener(event->{
