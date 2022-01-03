@@ -66,6 +66,7 @@ public class PanelRecientes extends JPanel {
 		
 		JComboBox misListas = new JComboBox();
 		misListas.addItem("Recientes");
+		misListas.setSelectedIndex(0);
 		GridBagConstraints gbc_misListas = new GridBagConstraints();
 		gbc_misListas.gridwidth = 2;
 		gbc_misListas.insets = new Insets(0, 0, 5, 5);
@@ -101,6 +102,9 @@ public class PanelRecientes extends JPanel {
 		gbc_listaActual.gridy = 0;
 		
 		DefaultListModel<Video> modeloLista = new DefaultListModel<Video>();
+		List<Video> lv = frameBase.getAppVideo().getRecientes();
+		for (Video elemento : lv)
+			modeloLista.addElement(elemento);
 		listaActual.setModel(modeloLista);
 		
 		JScrollPane scroller1 = new JScrollPane(listaActual);
@@ -115,11 +119,6 @@ public class PanelRecientes extends JPanel {
 		add(panelDerecho, BorderLayout.CENTER);
 		panelDerecho.setLayout(new BoxLayout(panelDerecho, BoxLayout.Y_AXIS));
 		
-		misListas.addActionListener(ev -> {
-				List<Video> lv = frameBase.getAppVideo().getRecientes();
-				for (Video elemento : lv)
-					modeloLista.addElement(elemento);
-		});
 		
 		listaActual.addMouseListener(new MouseAdapter() {
 			@Override
