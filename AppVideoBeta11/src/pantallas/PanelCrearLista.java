@@ -352,6 +352,9 @@ public class PanelCrearLista extends JPanel {
 					frameBase.getAppVideo().anadirListaVideos(nuevaLisa);
 					
 					JOptionPane.showMessageDialog(panelDerecho, "Nueva lista añadida");
+					modeloLista.clear();
+		            modeloLista.removeAllElements();
+					comboBoxListasHechas.addItem(nombreLista);
 				}
 			}
 			else {
