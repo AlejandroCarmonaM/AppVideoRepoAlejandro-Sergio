@@ -385,8 +385,8 @@ public class PanelCrearLista extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				int fila = tablaVideos.rowAtPoint(e.getPoint());
 				int columna = tablaVideos.columnAtPoint(e.getPoint());
-				if ((fila >= 0) && (columna >= 0))
-					videoSeleccionado = tm.getValueAt(fila, columna);
+				if ((fila >= 0) && (columna >= 0)) //evitamos coger un valor nulo
+					/*if(tm.getValueAt(fila, columna)!=null)*/videoSeleccionado = tm.getValueAt(fila, columna);
 			}
 		});
 		

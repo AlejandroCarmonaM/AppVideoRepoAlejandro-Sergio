@@ -43,6 +43,7 @@ public class FrameBase extends JFrame {
 	 * Create the frame.
 	 */
 	public FrameBase(AppVideo appVideo) {
+		setBackground(Color.GRAY);
 		//diseño frame
 		this.setAppVideo(appVideo);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

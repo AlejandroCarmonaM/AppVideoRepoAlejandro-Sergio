@@ -138,6 +138,7 @@ public class PanelExplorar extends JPanel {
 		
 		tablaVideos.setShowGrid(false);
 		JScrollPane js=new JScrollPane(tablaVideos);
+		js.setBackground(Color.GRAY);
 		panel_oeste.add(js);
 		
 		JPanel panel_este = new JPanel();
@@ -267,9 +268,11 @@ public class PanelExplorar extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				int fila = tablaVideos.rowAtPoint(e.getPoint());
 				int columna = tablaVideos.columnAtPoint(e.getPoint());
-				if(frameBase.getAppVideo().usuarioLogeado())frameBase.getAppVideo().addVideoRecientes(tm.getValueAt(fila, columna));
-				frameBase.creaPanelReproduccion(frameBase.getPanelCentro(), new PanelReproduccion(frameBase, tm.getValueAt(fila, columna)));
-				validate();
+				if(tm.getValueAt(fila, columna)!=null) {
+					if(frameBase.getAppVideo().usuarioLogeado())frameBase.getAppVideo().addVideoRecientes(tm.getValueAt(fila, columna));
+					frameBase.creaPanelReproduccion(frameBase.getPanelCentro(), new PanelReproduccion(frameBase, tm.getValueAt(fila, columna)));
+					validate();
+				}
 			}
 		});
 	
