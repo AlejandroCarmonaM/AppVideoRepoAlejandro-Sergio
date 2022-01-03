@@ -42,4 +42,10 @@ public class ListaVideos {
 		infoLista+="\n";
 		return infoLista;
 	}
+	public void modificarListaVideos(LinkedList<Video> lv) {
+        //this.listaVideos.clear();
+        /*for(Video elemento : lv)
+            this.listaVideos.add(elemento);*/
+        this.listaVideos = lv;
+    }
 }

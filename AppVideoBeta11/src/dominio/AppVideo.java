@@ -321,4 +321,13 @@ public enum AppVideo implements VideosListener {
 			this.modificarUsuarioAppVideo();
 		}
 	}
+	
+	public void modificarListaVideos(ListaVideos original, ListaVideos modificada)
+	{
+		if (usuario != null)
+			original.modificarListaVideos(modificada.getListaVideos());
+			adaptadorListaVideos.modificarListaVideos(original);
+			this.modificarUsuarioAppVideo();
+				
+	}
 }

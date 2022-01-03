@@ -46,6 +46,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.JComboBox;
 
 public class PanelCrearLista extends JPanel {
 	private FrameBase frameBase;
@@ -79,9 +80,9 @@ public class PanelCrearLista extends JPanel {
 		panelIzquierdo.add(panelINL);
 		GridBagLayout gbl_panelINL = new GridBagLayout();
 		gbl_panelINL.columnWidths = new int[]{0, 0, 0};
-		gbl_panelINL.rowHeights = new int[]{0, 0, 0, 0};
+		gbl_panelINL.rowHeights = new int[]{0, 0, 0, 0, 0};
 		gbl_panelINL.columnWeights = new double[]{1.0, 0.0, Double.MIN_VALUE};
-		gbl_panelINL.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panelINL.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panelINL.setLayout(gbl_panelINL);
 		
 		JLabel etiquetaINL = new JLabel("Introducir nueva lista:\r\n");
@@ -110,11 +111,27 @@ public class PanelCrearLista extends JPanel {
 		
 		JButton botonEliminar = new JButton("Eliminar");
 		GridBagConstraints gbc_botonEliminar = new GridBagConstraints();
+		gbc_botonEliminar.insets = new Insets(0, 0, 5, 0);
 		gbc_botonEliminar.gridwidth = 2;
-		gbc_botonEliminar.insets = new Insets(0, 0, 0, 5);
 		gbc_botonEliminar.gridx = 0;
 		gbc_botonEliminar.gridy = 2;
 		panelINL.add(botonEliminar, gbc_botonEliminar);
+		
+		JComboBox<String> comboBoxListasHechas = new JComboBox<String> ();
+		GridBagConstraints gbc_comboBoxListasHechas = new GridBagConstraints();
+		gbc_comboBoxListasHechas.gridwidth = 2;
+		gbc_comboBoxListasHechas.insets = new Insets(0, 0, 0, 5);
+		gbc_comboBoxListasHechas.fill = GridBagConstraints.HORIZONTAL;
+		gbc_comboBoxListasHechas.gridx = 0;
+		gbc_comboBoxListasHechas.gridy = 3;
+		List<String> listaNombres = frameBase.getAppVideo().getNombreMisListas();
+        for(int i = 0; i < listaNombres.size(); i++) {
+        	comboBoxListasHechas.addItem(listaNombres.get(i));
+        }
+        comboBoxListasHechas.setSelectedItem(null);
+		panelINL.add(comboBoxListasHechas, gbc_comboBoxListasHechas);
+		
+		
 		
 		JPanel panelMiLista = new JPanel();
 		panelMiLista.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
@@ -306,23 +323,44 @@ public class PanelCrearLista extends JPanel {
 		});
 		
 		botonAceptar.addActionListener(event -> {
-			String nombreLista = campoNombreLista.getText();
-			if (!frameBase.getAppVideo().usuarioLogeado())
-				JOptionPane.showMessageDialog(panelDerecho, "Necesitas estar registrado");
-			else if (nombreLista.equals(""))
-				JOptionPane.showMessageDialog(panelDerecho, "Necesitar introducir un nombre para la lista");
-			else if (modeloLista.size() == 0)
-				JOptionPane.showMessageDialog(panelDerecho, "La lista esta vacía");
-			else {
-				ListaVideos nuevaLisa = new ListaVideos(nombreLista);
-				for(int i = 0; i < modeloLista.size(); i++){
-					nuevaLisa.addVideo(modeloLista.get(i));
+			if(comboBoxListasHechas.getSelectedItem()==null){
+				String nombreLista = campoNombreLista.getText();
+				if (!frameBase.getAppVideo().usuarioLogeado())
+					JOptionPane.showMessageDialog(panelDerecho, "Necesitas estar registrado");
+				else if (nombreLista.equals(""))
+					JOptionPane.showMessageDialog(panelDerecho, "Necesitar introducir un nombre para la lista");
+				else if (modeloLista.size() == 0)
+					JOptionPane.showMessageDialog(panelDerecho, "La lista esta vacía");
+				else {
+					ListaVideos nuevaLisa = new ListaVideos(nombreLista);
+					for(int i = 0; i < modeloLista.size(); i++){
+						nuevaLisa.addVideo(modeloLista.get(i));
+					}
+					frameBase.getAppVideo().anadirListaVideos(nuevaLisa);
+					
+					JOptionPane.showMessageDialog(panelDerecho, "Nueva lista añadida");
 				}
-				frameBase.getAppVideo().anadirListaVideos(nuevaLisa);
-				
-				JOptionPane.showMessageDialog(panelDerecho, "Nueva lista añadida");
 			}
+			else {
+                ListaVideos nuevaLisa = new ListaVideos(comboBoxListasHechas.getSelectedItem().toString());
+                for(int i = 0; i < modeloLista.size(); i++){
+                    nuevaLisa.addVideo(modeloLista.get(i));
+                }
+                ListaVideos listaAux = frameBase.getAppVideo().getListaVideosPorNombre(comboBoxListasHechas.getSelectedItem().toString());
+                frameBase.getAppVideo().modificarListaVideos(listaAux, nuevaLisa);
+
+                JOptionPane.showMessageDialog(panelDerecho, "Lista Modificada");
+                modeloLista.clear();
+                modeloLista.removeAllElements();
+            }
 		});
+		
+		comboBoxListasHechas.addActionListener(ev -> {
+            String nombreListaSeleccionada = comboBoxListasHechas.getSelectedItem().toString();
+            ListaVideos lv = frameBase.getAppVideo().getListaVideosPorNombre(nombreListaSeleccionada);
+            for (Video elemento : lv.getListaVideos())
+                modeloLista.addElement(elemento);
+        });
 		
 		tablaVideos.addMouseListener(new MouseAdapter() {
 			@Override

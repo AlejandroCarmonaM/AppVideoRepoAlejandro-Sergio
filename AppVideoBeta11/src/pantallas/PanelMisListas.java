@@ -129,6 +129,8 @@ public class PanelMisListas extends JPanel {
 		panelDerecho.setLayout(new BoxLayout(panelDerecho, BoxLayout.Y_AXIS));
 		
 		misListas.addActionListener(ev -> {
+				modeloLista.clear();
+				modeloLista.removeAllElements();
 				String nombreListaSeleccionada = misListas.getSelectedItem().toString();
 				ListaVideos lv = frameBase.getAppVideo().getListaVideosPorNombre(nombreListaSeleccionada);
 				for (Video elemento : lv.getListaVideos())
