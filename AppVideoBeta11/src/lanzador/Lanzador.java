@@ -1,4 +1,4 @@
-package programa;
+package lanzador;
 
 import pantallas.FrameBase;
 
@@ -8,7 +8,7 @@ import dominio.AppVideo;
 
 
 
-public class Programa {
+public class Lanzador {
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {

@@ -146,7 +146,8 @@ public class FrameBase extends JFrame {
 		this.getContentPane().add(panel_centro, BorderLayout.CENTER);
 		panel_centro.setLayout(new BorderLayout(0, 0));
 		this.setPanelCentro(panel_centro);
-		
+		PanelLoginProto panelLoginProtoOriginal = new PanelLoginProto(this);
+		this.creaPanel(panel_centro, panelLoginProtoOriginal);
 		//listeners
 		
 		luz.addEncendidoListener(ev->
@@ -168,13 +169,15 @@ public class FrameBase extends JFrame {
 			});
 		
 		btnLogout.addActionListener(ev -> {
-			this.cargarPanelExplorar();
-			this.appVideo.logOut();
-			
-			this.actualizarEtiqueta();
-			panel_norte.repaint();
-			panel_norte.revalidate();
-			});
+			if(this.appVideo.usuarioLogeado()){
+				this.cargarPanelExplorar();
+				this.appVideo.logOut();
+				
+				this.actualizarEtiqueta();
+				panel_norte.repaint();
+				panel_norte.revalidate();
+			}
+		});
 		
 		btnExplorar.addActionListener(ev -> {
 			this.cargarPanelExplorar();
